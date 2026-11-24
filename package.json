@@ -11,7 +11,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --check main.js"
+    "test": "node --check main.js && node --test test/*.test.js"
   },
   "author": "hotwin",
   "repository": {
