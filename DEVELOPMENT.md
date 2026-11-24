@@ -27,3 +27,13 @@ Repository Checker 5.24.3 completed against `f599957`. Its CLI returned `OK` but
 - GitHub Actions: align concurrency, job dependencies, deployment and the Node.js/OS test matrix with the current template (E3009, E3012, E3014, E3025, E3027). The checker could not retrieve the job logs for run 45495429792.
 - Release and repository settings: npm package missing (E2000), beta.6 tag missing (E3032), author and copyright email metadata missing (E4048, E4050, E4051), and repository topics missing (E8002).
 - The inline README changelog now includes beta.6 (commit `af06c72`, addressing W6030). The separate changelog still triggers W6017 and W6032; consolidate the layout before the final repository check.
+
+## First npm beta from GitHub Actions
+
+The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after both validation jobs succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
+
+1. After approving the workflow for the default branch, create the GitHub Actions environment `npm-beta`. Allow deployments from the development branch and store a short-lived granular npm token as the environment secret `NPM_TOKEN`. The token must permit creating the unscoped package and have Bypass 2FA enabled. Keep the token in GitHub Secrets.
+2. Under **Actions → Test and Release → Run workflow**, select the development branch. First run with the publish checkbox cleared to exercise validation only. Verify the version and select the publish checkbox only when ready to release.
+3. Confirm the published version with `npm view iobroker.energy-manager@beta version`. Revoke the bootstrap token after use. Subsequent releases can use npm Trusted Publishing after configuring an OIDC workflow and its npm package settings.
+
+This workflow prepares a GitHub Actions path. Developer Portal detection and automated version, changelog and Git tag creation still require the ioBroker release script configuration.
