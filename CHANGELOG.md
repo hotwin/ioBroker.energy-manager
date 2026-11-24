@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Nativer JSON-Admin-Tab zur Diagnose mit drei schreibgeschützten Datenpunkten; Admin 8.3.5 beim Nutzer bestätigt, Integration noch ungetestet.
+- EN: Native JSON Admin diagnostic tab with three read-only states; user runs Admin 8.3.5, integration not yet tested.
 - DE: Admin-Verbindungsdiagnose, sofortige Abfrage bei bestehender Verbindung und Timeout ergänzt. Tagesverbrauch im Praxistest aufgezeichnet.
 - EN: Added Admin connection diagnostics, immediate read for existing connections and timeout. Daily consumption recorded in practical testing.
 - DE: Helles responsives Dashboard mit überarbeiteten Kacheln, Navigation, Tabellen und Preisübersicht; visuelle Prüfung offen.
