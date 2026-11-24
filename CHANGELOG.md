@@ -1,42 +1,22 @@
 # Changelog / Änderungsprotokoll
 
-## Unreleased / In Entwicklung
-- DE: Jey-Cee-Entwicklerleitfaden geprüft; ioBroker-Timer, info.connection und Standardtests in Arbeit.
-- EN: Reviewed Jey-Cee guide; adapter timers, info.connection and package tests in progress.
-- DE: Paket-Metadaten um Autor, Repository, Fehlerberichte und Suchbegriffe ergänzt.
-- EN: Added author, repository, issue tracker and keywords to package metadata.
-- DE: Verweis auf GitHub-Releases in der Admin-Übersicht ergänzt; Praxistest ausstehend.
-- EN: Added GitHub releases reference to the admin overview; practical test pending.
-- DE: Herstellerübergreifende Messstellenerkennung aus Strommessungs-Aufzählungen vor Shelly-Fallback; noch ungetestet.
-- EN: Vendor-independent discovery from energy measurement enums before Shelly fallback; untested.
-- DE: Web-Navigation mit getrennten Ansichten und Vertragsübersicht; native Admin-Einzelwerte bleiben erhalten. Web-Änderungen noch ungetestet.
-- EN: Separate web views and contract overview; native Admin summary retained. Web changes not yet tested.
-- DE: Native JSON-Anbindung im Praxistest bestätigt; formatierte Einzelwerte statt Rohdaten im Praxistest mit Admin 8.3.5 bestätigt.
-- EN: Native JSON connection confirmed in practice; formatted summary values confirmed in practical testing with Admin 8.3.5.
-- DE: Nativer JSON-Admin-Tab zur Diagnose mit drei schreibgeschützten Datenpunkten; Admin 8.3.5 beim Nutzer bestätigt, Integration noch ungetestet.
-- EN: Native JSON Admin diagnostic tab with three read-only states; user runs Admin 8.3.5, integration not yet tested.
-- DE: Admin-Verbindungsdiagnose, sofortige Abfrage bei bestehender Verbindung und Timeout ergänzt. Tagesverbrauch im Praxistest aufgezeichnet.
-- EN: Added Admin connection diagnostics, immediate read for existing connections and timeout. Daily consumption recorded in practical testing.
-- DE: Helles responsives Dashboard mit überarbeiteten Kacheln, Navigation, Tabellen und Preisübersicht; visuelle Prüfung offen.
-- EN: Refreshed responsive light dashboard, cards, navigation, tables and price overview; visual review pending.
-- DE: Automatische Leistungsanzeige in kW ab 1.000 W in Web und Admin.
-- EN: Automatically display power in kW from 1,000 W in web and Admin.
-- DE: Admin unterstützt auch Socket-Client-Objekte mit io.connect statt ausschließlich Funktionsaufruf.
-- EN: Admin supports socket client objects exposing io.connect, not only callable clients.
-- DE: Admin-spezifische Socket.IO-Skriptpfade ergänzt; Weboberfläche unverändert. Praxistest offen.
-- EN: Added Admin-specific Socket.IO script path fallbacks; web dashboard unchanged. Practical test pending.
-- DE: Automatische Raum- und Funktionszuordnung über ioBroker-Aufzählungen, Raumkacheln mit aktueller Leistung. Ungetestet.
-- EN: Automatic room and function assignment via ioBroker enums, room cards with current power. Untested.
-- DE: Eigener Admin-Menüeintrag mit Dashboard und Statistik; Admin-Verbindung noch zu testen.
-- EN: Native Admin menu entry with dashboard and statistics; Admin connection not yet tested.
-- DE: Separate Netto-Tarifbestandteile, Grundgebühr, Messstellenbetrieb, Abschlag und Vertragsbeginn konfigurierbar. Variable Aufschläge in Tarifberechnung integriert; zeitanteilige Fixkostenstatistik noch offen.
-- EN: Configurable net tariff components, base charge, metering, advance payment and contract start. Variable surcharges included in tariff calculation; historical fixed charge allocation pending.
-- DE: Statistik mit Zeitraumwahl bis 365 Tage und Tagesbalken; ungetestet.
-- EN: Statistics with period selection up to 365 days and daily bars; untested.
-- DE: Persistente Tagesverbrauchserfassung aus Zählerdifferenzen; Messlücken, Rücksetzungen und Tageswechsel werden konservativ ausgelassen. Teilkosten nur bei bekanntem unverändertem Tarif. Noch ungetestet.
-- EN: Persistent daily meter delta aggregation; gaps, resets and day boundaries are conservatively skipped. Partial costs only for known unchanged tariffs. Not yet tested.
-- DE: Responsive Navigation und ioBroker-Gerätenamen ergänzt; noch ungetestet.
-- EN: Added responsive navigation and ioBroker device names; not yet tested.
+## 0.3.0-beta.1 – 2026-11-24
+
+### Deutsch
+
+- Responsives Dashboard im ioBroker Admin mit Übersicht, Geräten, Räumen, Verbrauchsstatistik, Preisen, Vertrag und Updates.
+- Geräteerkennung über die Aufzählung Strommessung, mit manueller Zuordnung und optionaler Shelly-Erkennung.
+- Neues PNG-Icon sowie deutsche und englische Texte im Dashboard und in der Konfiguration.
+- Auswertungen für sieben Tage, Monat, Quartal und Jahr. Tarifgrenzen und Fixkosten werden separat behandelt.
+- ESLint, ioBroker-Paketprüfung sowie Integrations- und Compact-Mode-Tests in der abgesicherten GitHub-Workflow-Matrix.
+
+### English
+
+- Responsive ioBroker Admin dashboard covering overview, devices, rooms, statistics, prices, contract and updates.
+- Energy measurement enum discovery across vendors, with manual mappings and optional Shelly discovery.
+- New PNG icon and English and German dashboard and configuration text.
+- Seven-day, monthly, quarterly and annual statistics. Tariff boundaries and fixed charges are handled separately.
+- ESLint, ioBroker package validation, and integration and Compact Mode tests in the pinned GitHub workflow matrix.
 
 ## 0.2.1 – 2026-11-24
 - DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Live-Anzeige im Praxistest bestätigt.

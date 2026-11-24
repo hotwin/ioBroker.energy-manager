@@ -1,51 +1,11 @@
-# ioBroker Energy Manager
+# Energy Manager einrichten
 
-**Deutsch** | [English](README.md)
+1. Lege im ioBroker Admin eine Funktionsaufzählung namens **Strommessung** oder **Energy measurement** an.
+2. Füge die numerischen Messdatenpunkte, deren Kanal oder das Gerät hinzu. **W** oder **kW** liefern die Live-Leistung, ein fortlaufender Zähler in **Wh** oder **kWh** liefert den Verbrauch. Lege Leistung und Energie nach Möglichkeit in denselben Kanal.
+3. Weise Geräte über die ioBroker-Raumaufzählungen zu. Manuell hinterlegte Raumnamen haben Vorrang. Die automatische Shelly-Erkennung lässt sich in der Instanzkonfiguration abschalten.
+4. Aktiviere die Instanz und öffne Energy Manager im Admin-Menü. Optional erreichst du das Dashboard über den Web-Adapter unter `/energy-manager/index.html` mit integriertem Socket und aktivierten WebSockets.
+5. Hinterlege die Nettobestandteile deines Vertrags und die Mehrwertsteuer in der Instanzkonfiguration. Aktiviere den berechneten Bruttotarif, sobald du die Bestandteile geprüft hast.
 
-Lokales Energiemanagement für ioBroker mit Shelly und dynamischen Stromtarifen.
+Der Adapter speichert Verbrauch anhand fortlaufender Zählerstände. Rücksetzungen, längere Messlücken und Intervalle über Mitternacht setzen den Ausgangswert neu. Die Aufzeichnung beginnt mit der Installation. Geräte mit reiner Leistungsmessung tragen zur Live-Leistung bei. Bei einem Preisintervall- oder Tarifwechsel zwischen Messungen wird der Verbrauch erfasst und bleibt ohne Kostenbewertung. Die Statistik zeigt erfasste variable Kosten und bewertete Kilowattstunden. Monatliche Fixkosten und Abschläge stehen unter Stromvertrag. Vergleiche den verwendeten aWATTar-Spotmarktpreis für Deutschland mit dem Preisindex deines Anbieters.
 
-**Status: 0.2.1 Alpha – Installation, Shelly-Datenerfassung und Live-Dashboard praktisch bestätigt. Version 0.3.0 in Entwicklung.**
-
-![Dashboard-Designvorschau mit Beispieldaten](docs/dashboard-preview.svg)
-
-## Funktionen
-
-Bereits im Quellcode vorhanden:
-- Automatische Suche nach Shelly-Leistungsdatenpunkten und Auslesen von Energiezählern.
-- Abruf der deutschen aWATTar-Börsenstrompreise.
-- Konfigurierbare Tarifaufschläge und Mehrwertsteuer.
-- Live-Dashboard über WebSocket und JSON-Momentaufnahme.
-
-## Roadmap
-
-- [x] Automatische Live-Anbindung des Dashboards.
-- [ ] Historische Verbrauchs- und Kostenberechnung mit zeitabhängigen Preisen.
-- [ ] Frei konfigurierbare Energiequellen, Namen, Räume und Datenpunkt-Auswahl.
-- [ ] Zigbee2MQTT und weitere Hersteller über beliebige ioBroker-Datenpunkte.
-- [ ] Admin-Integration und eigenständige responsive Webansicht.
-- [ ] Stromvertrag, Grundpreis, Abschläge und Prognosen.
-- [ ] Optionale KI-Analysen und Berichte.
-- [ ] Installations- und Integrationstests.
-
-## Voraussetzungen
-
-Geplant: ioBroker mit Shelly-Adapter, Node.js ab 18 sowie Web- und History-Adapter für die entsprechenden Integrationen.
-
-## Installation
-
-Alpha-Test: Backup erstellen, in ioBroker unter Adapter die Installation aus eigener URL wählen und https://github.com/hotwin/ioBroker.energy-manager eingeben. Dashboard über den Web-Adapter unter /energy-manager/index.html öffnen. Der main-Branch enthält auch laufende Entwicklung; keine stabile Freigabe.
-
-## Tarif und Messgenauigkeit
-
-Der Börsenpreis ist nicht der vollständige Endkundenpreis. Vertragsbestandteile müssen geprüft werden. Die Summe erfasster Geräte ist nicht automatisch der gesamte Wohnungsverbrauch. Überlappende Messstellen können doppelt zählen.
-
-## Datenschutz
-
-Die Messwerte werden lokal verarbeitet; der Preisabruf benötigt Internetzugang. Der Adapter soll ausschließlich lesend auf Energiequellen zugreifen.
-
-## Dokumentation
-
-- [Entwicklungsstand](docs/STATUS.md)
-- [Energiequellen](docs/ENERGY-SOURCES.md)
-
-- [Changelog / Änderungsprotokoll](CHANGELOG.md)
+Schließe überlappende Haupt- oder Unterzähler in den manuellen Energiequellen aus, damit die Summen sie nur einmal enthalten. Geräte mit uneindeutiger Datenpunktstruktur lassen sich ebenfalls manuell zuordnen. Der Adapter behält bis zu 400 Tageswerte in ioBroker.

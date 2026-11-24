@@ -1,34 +1,34 @@
 # ioBroker Energy Manager
 
-**English** | [Deutsch](README.de.md)
+Local energy monitoring for ioBroker. Read meter states from devices such as Shelly and Zigbee smart plugs, group them by room, and compare consumption with German day-ahead prices from [aWATTar](https://www.awattar.de/).
 
-Local energy monitoring for ioBroker with Shelly measurement states, manually configured sources and German day-ahead energy prices from aWATTar.
-
-**Status:** Experimental alpha 0.2.1; a separate beta is under development and has not been published.
-
-## Features
-
-- Read power and energy meter values from ioBroker states assigned manually or through energy measurement enums.
-- Optionally discover Shelly measurement states.
-- Display German market prices provided by aWATTar.
-- Configure tariff components, VAT, recurring charges and advances.
-- View a local daily consumption ledger and an experimental dashboard through the ioBroker Web adapter.
-
-## Installation
-
-This is experimental software. Back up ioBroker before using a development build. The optional web dashboard is served at `/energy-manager/index.html` when the ioBroker Web adapter is configured.
-
-Readings only cover selected measurement points. Overlapping meters can be counted twice. Exchange prices do not include contract charges, and cost estimates can be incomplete.
-
-## Development and releases
-
-- [German documentation](README.de.md)
-- [Changelog / version history](CHANGELOG.md)
+- [Setup and usage](doc/en/README.md)
+- [German documentation](doc/de/README.md)
+- [Development and testing](DEVELOPMENT.md)
 - [GitHub Releases](https://github.com/hotwin/ioBroker.energy-manager/releases)
-- [Energy source documentation](docs/ENERGY-SOURCES.md)
 
-This independent adapter is not affiliated with [Shelly](https://www.shelly.com/) or [aWATTar](https://www.awattar.de/).
+## Requirements
+
+Node.js 22 or newer, ioBroker Admin 7.6.20 or newer, and js-controller 6.0.11 or newer. An ioBroker adapter that publishes measurement states must already be installed. The Energy Manager tab uses the Admin connection. The optional separate dashboard uses the ioBroker Web adapter.
+
+## Usage
+
+Add the selected cumulative energy and power states, their channel, or their device to an ioBroker function enum named `Strommessung` or `Energy measurement`. Configure optional manual sources, meter exclusions and tariff components in the instance settings, then open Energy Manager in the Admin sidebar. Room assignments are read from the ioBroker room enums.
+
+The adapter stores its local history in the `consumption` state and publishes the current dashboard data in `snapshot` and aggregate power in `totalPower`. Statistics use cumulative meter differences since recording began.
+
+## Changelog
+
+### 0.3.0-beta.1 (2026-11-24)
+
+- Responsive Admin dashboard with device, room, consumption, price and tariff views.
+- Vendor-independent meter discovery, German and English interfaces, and a new adapter icon.
+- Added official package validation and controller integration tests.
+
+See the [bilingual changelog](CHANGELOG.md) for details.
 
 ## License
+
+Copyright (c) 2026 hotwin
 
 MIT. See [LICENSE](LICENSE).

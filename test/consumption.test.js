@@ -34,3 +34,11 @@ test('midnight establishes a new daily baseline',()=>{
  assert.notEqual(a.day,b.day);
  assert.equal(b.days[b.day].kWh,0);
 });
+
+test('an equal price in a different slot leaves the interval unpriced', () => {
+ const a = accumulate(null, meter(10), t, 30, 'Europe/Berlin', 1);
+ const b = accumulate(a, meter(11), t + 60000, 30, 'Europe/Berlin', 2);
+ assert.equal(b.days[b.day].kWh, 1);
+ assert.equal(b.days[b.day].pricedKWh, 0);
+ assert.equal(a.days[a.day].kWh, 0);
+});

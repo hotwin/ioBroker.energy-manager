@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.2.1",
+    "version": "0.3.0-beta.1",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -13,24 +13,21 @@
     "authors": [
       "hotwin"
     ],
-    "license": "MIT",
     "platform": "Javascript/Node.js",
     "mode": "daemon",
     "type": "energy",
-    "enabled": true,
-    "materialize": true,
+    "enabled": false,
     "connectionType": "local",
     "dataSource": "poll",
     "adminUI": {
       "config": "json",
-      "tab": "json"
+      "tab": "html"
     },
     "wwwDontUpload": false,
-    "localLink": "%web_protocol%://%ip%:%web_port%/energy-manager/index.html",
     "news": {
       "0.3.0-beta.1": {
-        "de": "Entwicklung: ioBroker-konforme Timer, info.connection, Metadaten-Tests; noch nicht veröffentlicht.",
-        "en": "Development: adapter timers, info.connection and package tests; not released yet."
+        "de": "Responsives Admin-Dashboard, herstellerunabhängige Strommessung, Verbrauchsstatistik und neues Adapter-Icon.",
+        "en": "Responsive Admin dashboard, vendor-independent meter discovery, consumption statistics and new adapter icon."
       },
       "0.2.1": {
         "de": "WebSocket-Transport ausdrücklich aktiviert; Live-Verbindung erneut testen.",
@@ -46,11 +43,42 @@
         "de": "Energy Manager",
         "en": "Energy Manager"
       },
-      "singleton": true,
-      "icon": "energy.svg",
-      "link": "jsonTab.json"
+      "singleton": false,
+      "icon": "energy-manager.png"
     },
-    "icon": "energy.svg"
+    "icon": "energy-manager.png",
+    "compact": true,
+    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/refs/heads/develop/0.3.0-beta.1/admin/energy-manager.png",
+    "readme": "https://github.com/hotwin/ioBroker.energy-manager#readme",
+    "globalDependencies": [
+      {
+        "admin": ">=7.6.20"
+      }
+    ],
+    "docs": {
+      "en": [
+        "doc/en/README.md"
+      ],
+      "de": [
+        "doc/de/README.md"
+      ]
+    },
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "tier": 3,
+    "keywords": [
+      "energy",
+      "power",
+      "consumption",
+      "monitoring"
+    ],
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ]
   },
   "native": {
     "markupCt": 0,

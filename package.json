@@ -1,17 +1,24 @@
 {
   "name": "iobroker.energy-manager",
-  "version": "0.2.1",
+  "version": "0.3.0-beta.1",
   "description": "Local energy monitoring for ioBroker",
   "main": "main.js",
   "license": "MIT",
   "dependencies": {
-    "@iobroker/adapter-core": "^3.2.0"
+    "@iobroker/adapter-core": "^3.4.3"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "scripts": {
-    "test": "node --check main.js && node --test test/*.test.js"
+    "lint": "eslint . --max-warnings=0",
+    "test": "npm run test:unit && npm run test:package",
+    "test:unit": "node --test test/*.test.js",
+    "test:package": "mocha test/metadata.package.js",
+    "test:integration": "mocha test/adapter.integration.js",
+    "test:compact": "mocha --grep \"Compact mode\" test/adapter.integration.js",
+    "sync:dashboard": "node scripts/sync-dashboard.js",
+    "check:dashboard": "node scripts/sync-dashboard.js --check"
   },
   "author": "hotwin",
   "repository": {
@@ -23,9 +30,26 @@
   },
   "homepage": "https://github.com/hotwin/ioBroker.energy-manager#readme",
   "keywords": [
-    "iobroker",
+    "ioBroker",
     "energy",
     "power",
     "monitoring"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@iobroker/testing": "^6.3.3",
+    "eslint": "^9.39.5",
+    "globals": "^16.5.0",
+    "mocha": "^12.0.3"
+  },
+  "files": [
+    "main.js",
+    "lib/",
+    "admin/",
+    "www/",
+    "doc/",
+    "io-package.json",
+    "LICENSE",
+    "CHANGELOG.md"
   ]
 }
