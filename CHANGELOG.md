@@ -1,6 +1,10 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Paket-Metadaten um Autor, Repository, Fehlerberichte und Suchbegriffe ergänzt.
+- EN: Added author, repository, issue tracker and keywords to package metadata.
+- DE: Verweis auf GitHub-Releases in der Admin-Übersicht ergänzt; Praxistest ausstehend.
+- EN: Added GitHub releases reference to the admin overview; practical test pending.
 - DE: Herstellerübergreifende Messstellenerkennung aus Strommessungs-Aufzählungen vor Shelly-Fallback; noch ungetestet.
 - EN: Vendor-independent discovery from energy measurement enums before Shelly fallback; untested.
 - DE: Web-Navigation mit getrennten Ansichten und Vertragsübersicht; native Admin-Einzelwerte bleiben erhalten. Web-Änderungen noch ungetestet.
