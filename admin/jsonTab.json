@@ -9,35 +9,55 @@
       },
       "sm": 12
     },
-    "power": {
+    "displayPower": {
       "type": "state",
-      "oid": "totalPower",
+      "oid": "displayPower",
       "label": {
         "de": "Aktuelle Leistung",
         "en": "Current power"
       },
       "readOnly": true,
-      "sm": 12
+      "sm": 6
     },
-    "snapshot": {
+    "displayToday": {
       "type": "state",
-      "oid": "snapshot",
+      "oid": "displayToday",
       "label": {
-        "de": "Messdaten",
-        "en": "Measurement data"
+        "de": "Verbrauch heute",
+        "en": "Consumption today"
       },
       "readOnly": true,
-      "sm": 12
+      "sm": 6
     },
-    "history": {
+    "displayMarket": {
       "type": "state",
-      "oid": "consumption",
+      "oid": "displayMarket",
       "label": {
-        "de": "Verbrauchshistorie",
-        "en": "Consumption history"
+        "de": "Börsenpreis",
+        "en": "Market price"
       },
       "readOnly": true,
-      "sm": 12
+      "sm": 6
+    },
+    "displayTariff": {
+      "type": "state",
+      "oid": "displayTariff",
+      "label": {
+        "de": "Vertragstarif",
+        "en": "Contract tariff"
+      },
+      "readOnly": true,
+      "sm": 6
+    },
+    "displayCost": {
+      "type": "state",
+      "oid": "displayCost",
+      "label": {
+        "de": "Erfasste Teilkosten",
+        "en": "Recorded partial costs"
+      },
+      "readOnly": true,
+      "sm": 6
     }
   }
 }
