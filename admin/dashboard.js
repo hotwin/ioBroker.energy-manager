@@ -521,7 +521,7 @@ el('flowPeriod').addEventListener('change', renderOverviewCharts);
 const instanceSelect = el('instance');
 const given = params.get('instance') ?? location.search.slice(1);
 const defaultInstance = /^\d+$/.test(given) ? given : '0';
-instanceSelect.add(new Option('energy-manager.' + defaultInstance, defaultInstance));
+instanceSelect.add(new Option('hotwin-energy-manager.' + defaultInstance, defaultInstance));
 let socket;
 let stateId;
 let connected = false;
@@ -569,7 +569,7 @@ async function saveAlias(value) {
     for (const button of buttons) button.disabled = true;
     aliasStatus.textContent = '';
     try {
-        await contractRpc('extendObject', 'system.adapter.energy-manager.' + instance, {
+        await contractRpc('extendObject', 'system.adapter.hotwin-energy-manager.' + instance, {
             native: { deviceAliases: { [device.aliasKey]: value } },
         });
         aliasDialog.close();
@@ -620,7 +620,7 @@ async function loadContract() {
     contractFields.disabled = true;
     contractFeedback.textContent = words.contractLoading;
     try {
-        const object = await contractRpc('getObject', 'system.adapter.energy-manager.' + instanceSelect.value);
+        const object = await contractRpc('getObject', 'system.adapter.hotwin-energy-manager.' + instanceSelect.value);
         if (request !== contractRequest) return;
         if (object?.type !== 'instance' || !object.native) throw Error('Missing configuration');
         savedContract = object.native;
@@ -690,7 +690,7 @@ contractForm.addEventListener('submit', async event => {
     contractFields.disabled = true;
     contractFeedback.textContent = '';
     try {
-        await contractRpc('extendObject', 'system.adapter.energy-manager.' + instanceSelect.value, { native: changed });
+        await contractRpc('extendObject', 'system.adapter.hotwin-energy-manager.' + instanceSelect.value, { native: changed });
         if (request !== contractRequest) return;
         savedContract = { ...savedContract, ...changed };
         contractFeedback.textContent = words.contractSaved;
@@ -730,7 +730,7 @@ function selectInstance() {
     el('roomCards').replaceChildren();
     if (aliasDialog.open) aliasDialog.close();
     if (subscribed) socket.emit('unsubscribe', stateId);
-    stateId = 'energy-manager.' + instanceSelect.value + '.snapshot';
+    stateId = 'hotwin-energy-manager.' + instanceSelect.value + '.snapshot';
     subscribed = false;
     snapshot = null;
     displayStatus = 'waiting';
@@ -760,14 +760,14 @@ function onConnect() {
         if (savedContract) contractFields.disabled = false;
         else void loadContract();
         socket.emit('getObjectView', 'system', 'instance', {
-            startkey: 'system.adapter.energy-manager.', endkey: 'system.adapter.energy-manager.\u9999',
+            startkey: 'system.adapter.hotwin-energy-manager.', endkey: 'system.adapter.hotwin-energy-manager.\u9999',
         }, (error, view) => {
             if (error || !view?.rows?.length) return;
             const selected = instanceSelect.value;
             for (const row of view.rows) {
                 const id = row.id?.split('.').at(-1);
                 if (/^\d+$/.test(id) && ![...instanceSelect.options].some(option => option.value === id)) {
-                    instanceSelect.add(new Option('energy-manager.' + id, id));
+                    instanceSelect.add(new Option('hotwin-energy-manager.' + id, id));
                 }
             }
             if (!/^\d+$/.test(given) && !view.rows.some(row => row.id?.endsWith('.' + selected))) {
@@ -811,7 +811,7 @@ async function connect() {
         translate();
         await script(adminTab ? '../../lib/js/socket.io.js' : '../socket.io/socket.io.js');
         const base = new URL(adminTab ? '../../' : '../', location.href);
-        const options = { path: base.pathname + 'socket.io', query: 'ws=true', name: 'energy-manager' };
+        const options = { path: base.pathname + 'socket.io', query: 'ws=true', name: 'hotwin-energy-manager' };
         if (!adminTab) options.transports = ['websocket'];
         const client = window.io || window.iob;
         socket = client.connect ? client.connect(base.origin + (window.socketPath || ''), options) : client(base.origin, options);

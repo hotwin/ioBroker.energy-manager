@@ -1,6 +1,6 @@
 {
   "common": {
-    "name": "energy-manager",
+    "name": "hotwin-energy-manager",
     "version": "0.3.0-beta.8",
     "titleLang": {
       "de": "Energy Manager",
