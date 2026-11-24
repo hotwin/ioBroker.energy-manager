@@ -1,7 +1,7 @@
 const accumulate = require('./lib/consumption');
 const utils = require('@iobroker/adapter-core');
 class EnergyManager extends utils.Adapter {
- constructor(options={}) { super({...options,name:'energy-manager'}); this.on('ready',()=>this.start()); this.on('unload',cb=>{if(this.timer)this.clearInterval(this.timer);cb();}); }
+ constructor(options={}) { super({...options,name:'energy-manager'}); this.on('ready',()=>this.start()); this.on('unload',cb=>{if(this.timer)this.clearInterval(this.timer);this.setState('info.connection',false,true,()=>cb());}); }
  async start(){
   await this.setObjectNotExistsAsync('info',{type:'channel',common:{name:'Adapter information'},native:{}});
   await this.setObjectNotExistsAsync('info.connection',{type:'state',common:{name:'Local source access',type:'boolean',role:'indicator.connected',read:true,write:false},native:{}});
