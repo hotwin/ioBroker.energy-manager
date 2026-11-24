@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Admin unterstützt auch Socket-Client-Objekte mit io.connect statt ausschließlich Funktionsaufruf.
+- EN: Admin supports socket client objects exposing io.connect, not only callable clients.
 - DE: Admin-spezifische Socket.IO-Skriptpfade ergänzt; Weboberfläche unverändert. Praxistest offen.
 - EN: Added Admin-specific Socket.IO script path fallbacks; web dashboard unchanged. Practical test pending.
 - DE: Automatische Raum- und Funktionszuordnung über ioBroker-Aufzählungen, Raumkacheln mit aktueller Leistung. Ungetestet.
