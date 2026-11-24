@@ -4,8 +4,8 @@
     "heading": {
       "type": "staticText",
       "label": {
-        "de": "Energy Manager – Live-Daten",
-        "en": "Energy Manager – live data"
+        "de": "Energy Manager · Energieübersicht",
+        "en": "Energy Manager · Energy overview"
       },
       "sm": 12
     },
@@ -58,6 +58,14 @@
       },
       "readOnly": true,
       "sm": 6
+    },
+    "note": {
+      "type": "staticText",
+      "label": {
+        "de": "Verbrauchswerte seit Beginn der Aufzeichnung. Vertragsdaten in der Instanzkonfiguration bearbeiten.",
+        "en": "Consumption since recording began. Edit contract details in instance configuration."
+      },
+      "sm": 12
     }
   }
 }
