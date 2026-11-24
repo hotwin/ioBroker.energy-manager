@@ -42,7 +42,15 @@
     "vatPercent": 19,
     "tariffConfigured": false,
     "sources": [],
-    "autoShelly": true
+    "autoShelly": true,
+    "baseMonthly": 0,
+    "meterAnnual": 0,
+    "electricityTaxCt": 0,
+    "networkCt": 0,
+    "concessionCt": 0,
+    "leviesCt": 0,
+    "advanceMonthly": 0,
+    "contractStart": ""
   },
   "instanceObjects": []
 }
