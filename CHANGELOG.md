@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Herstellerübergreifende Messstellenerkennung aus Strommessungs-Aufzählungen vor Shelly-Fallback; noch ungetestet.
+- EN: Vendor-independent discovery from energy measurement enums before Shelly fallback; untested.
 - DE: Web-Navigation mit getrennten Ansichten und Vertragsübersicht; native Admin-Einzelwerte bleiben erhalten. Web-Änderungen noch ungetestet.
 - EN: Separate web views and contract overview; native Admin summary retained. Web changes not yet tested.
 - DE: Native JSON-Anbindung im Praxistest bestätigt; formatierte Einzelwerte statt Rohdaten im Praxistest mit Admin 8.3.5 bestätigt.
