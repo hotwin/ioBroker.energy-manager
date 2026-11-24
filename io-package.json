@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -27,6 +27,10 @@
     "wwwDontUpload": false,
     "localLink": "%web_protocol%://%ip%:%web_port%/energy-manager/index.html",
     "news": {
+      "0.2.1": {
+        "de": "WebSocket-Transport ausdrücklich aktiviert; Live-Verbindung erneut testen.",
+        "en": "Explicit WebSocket transport; live connection requires retesting."
+      },
       "0.2.0": {
         "de": "Experimentelle Socket.IO Live-Anbindung",
         "en": "Experimental Socket.IO live connection"
