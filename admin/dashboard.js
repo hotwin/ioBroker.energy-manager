@@ -10,6 +10,9 @@ const translations = {
         todayCost: 'Recorded variable cost today', unassigned: 'Unassigned', noDevices: 'No meters discovered.',
         noPrices: 'No price data available.', noHistory: 'No consumption recorded for this period.',
         coverage: 'Totals cover the selected measurement points. Exclude overlapping meters in the instance settings.',
+        renameDevice: 'Rename device', renameHint: 'Leave blank to restore the original name.',
+        saveName: 'Save', cancelRename: 'Cancel', nameSaved: 'Name saved.',
+        renameError: 'Could not save the name. Check the connection and permissions.',
         deviceHint: 'Add a meter, channel or device to the Strommessung enum, or configure it manually.',
         priceHint: 'aWATTar day-ahead prices for Germany, before taxes and surcharges. The gross rate uses your configured contract components. Times shown in Europe/Berlin.',
         costHint: 'Variable costs cover consumption with an attributable tariff. Monthly charges are shown under Electricity contract.',
@@ -30,6 +33,9 @@ const translations = {
         todayCost: 'Erfasste variable Kosten heute', unassigned: 'Ohne Raum', noDevices: 'Keine Messgeräte gefunden.',
         noPrices: 'Keine Strompreise verfügbar.', noHistory: 'In diesem Zeitraum wurde kein Verbrauch erfasst.',
         coverage: 'Die Summe umfasst die ausgewählten Messpunkte. Überlappende Zähler lassen sich in der Instanzkonfiguration ausschließen.',
+        renameDevice: 'Gerät umbenennen', renameHint: 'Leer lassen, um den ursprünglichen Namen wiederherzustellen.',
+        saveName: 'Speichern', cancelRename: 'Abbrechen', nameSaved: 'Name gespeichert.',
+        renameError: 'Name konnte nicht gespeichert werden. Prüfe Verbindung und Berechtigungen.',
         deviceHint: 'Füge einen Zähler, Kanal oder ein Gerät zur Aufzählung Strommessung hinzu oder hinterlege es manuell.',
         priceHint: 'aWATTar-Spotmarktpreise für Deutschland vor Steuern und Aufschlägen. Der Bruttopreis basiert auf deinen hinterlegten Vertragsbestandteilen. Uhrzeit in Europe/Berlin.',
         costHint: 'Die variablen Kosten umfassen Verbrauch mit zuordenbarem Tarif. Monatliche Fixkosten stehen unter Stromvertrag.',
@@ -119,7 +125,12 @@ function cards(target, entries) {
 function rows(target, records, empty, columns) {
     const result = records.map(record => {
         const row = node('tr');
-        row.append(...record.map(value => node('td', value)));
+        row.append(...record.map(value => {
+            const cell = node('td');
+            if (value instanceof HTMLElement) cell.append(value);
+            else cell.textContent = value;
+            return cell;
+        }));
         return row;
     });
     if (!result.length) {
@@ -161,6 +172,67 @@ function renderStats() {
     }));
 }
 
+let renameTarget;
+const renameDialog = el('renameDialog');
+const renameForm = el('renameForm');
+
+function powerCell(device) {
+    const value = node('span', format(device.powerW, 'W'));
+    if (device.powerId) value.title = device.powerId;
+    return value;
+}
+
+function deviceNameCell(device) {
+    const name = node('span', device.name || device.id);
+    if (!snapshot?.canRenameDevices || !connected) return name;
+    const button = node('button', words.renameDevice, 'rename-device');
+    button.type = 'button';
+    button.onclick = () => {
+        renameTarget = { id: device.id, stateId, instance: instanceSelect.value };
+        el('renameName').value = device.name || device.id;
+        el('renameStatus').textContent = '';
+        el('deviceStatus').textContent = '';
+        renameDialog.showModal();
+    };
+    name.append(button);
+    return name;
+}
+
+el('cancelRename').onclick = () => renameDialog.close();
+renameForm.onsubmit = event => {
+    event.preventDefault();
+    const target = renameTarget;
+    const status = el('renameStatus');
+    const submit = renameForm.querySelector('button[type="submit"]');
+    if (!connected || target.stateId !== stateId) {
+        status.textContent = words.renameError;
+        return;
+    }
+    if (submit.disabled) return;
+    submit.disabled = true;
+    let finished = false;
+    const finish = result => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timeout);
+        submit.disabled = false;
+        if (target !== renameTarget || target.stateId !== stateId || !renameDialog.open) return;
+        if (typeof result?.name !== 'string') {
+            status.textContent = words.renameError;
+            return;
+        }
+        const device = snapshot?.devices?.find(item => item.id === target.id);
+        if (device) device.name = result.name || device.defaultName || device.id;
+        renameDialog.close();
+        el('deviceStatus').textContent = words.nameSaved;
+        render();
+    };
+    const timeout = setTimeout(() => finish(), 10000);
+    socket.emit('sendTo', 'energy-manager.' + target.instance, 'renameDevice', {
+        id: target.id, name: el('renameName').value,
+    }, finish);
+};
+
 function render() {
     const data = snapshot || {};
     const today = data.daily?.[dayKey(Date.now())];
@@ -183,7 +255,7 @@ function render() {
         return tile;
     }));
     rows('deviceRows', (data.devices || []).map(device => [
-        device.name || device.id, device.room || words.unassigned, format(device.powerW, 'W'),
+        deviceNameCell(device), device.room || words.unassigned, powerCell(device),
         format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
     ]), words.noDevices, 5);
     cards('roomCards', (data.rooms || []).map(room => [
@@ -241,6 +313,8 @@ function read() {
 }
 
 function selectInstance() {
+    renameDialog.close();
+    el('deviceStatus').textContent = '';
     if (subscribed) socket.emit('unsubscribe', stateId);
     stateId = 'energy-manager.' + instanceSelect.value + '.snapshot';
     subscribed = false;

@@ -8,6 +8,7 @@ const { version } = require('./package.json');
 
 const states = {
     'info.connection': ['Local source access', 'boolean', 'indicator.connected'],
+    deviceNames: ['Custom device names', 'string', 'json'],
     snapshot: ['Energy snapshot', 'string', 'json'],
     totalPower: ['Measured power', 'number', 'value.power', 'W'],
     consumption: ['Daily consumption ledger', 'string', 'json'],
@@ -24,6 +25,21 @@ class EnergyManager extends utils.Adapter {
         this.on('ready', () => {
             this.pending = this.start().catch(error => this.log.error(String(error)));
         });
+        this.deviceNames = new Map();
+        this.deviceIds = new Set();
+        this.renameQueue = Promise.resolve();
+        this.on('message', message => {
+            if (message?.command !== 'renameDevice' || !message.callback) return;
+            this.renameQueue = this.renameQueue.then(async () => {
+                let result;
+                try {
+                    result = { name: await this.renameDevice(message.message) };
+                } catch (error) {
+                    result = { error: error.message };
+                }
+                await this.sendTo(message.from, message.command, result, message.callback);
+            }).catch(error => this.log.warn(String(error)));
+        });
         this.on('unload', callback => void this.unloadAdapter().finally(callback));
     }
 
@@ -39,8 +55,24 @@ class EnergyManager extends utils.Adapter {
         } catch {
             this.ledger = null;
         }
+        const names = (await this.getStateAsync('deviceNames'))?.val;
+        if (names != null) this.deviceNames = new Map(JSON.parse(names));
         await this.setStateAsync('info.connection', false, true);
         if (!this.stopping) await this.poll();
+    }
+
+    async renameDevice(request) {
+        const { id, name } = request || {};
+        if (this.stopping || !this.deviceIds.has(id) || typeof name !== 'string' || name.trim().length > 120) {
+            throw Error('Invalid device or name');
+        }
+        const trimmed = name.trim();
+        const names = new Map(this.deviceNames);
+        if (trimmed) names.set(id, trimmed);
+        else names.delete(id);
+        await this.setStateAsync('deviceNames', JSON.stringify([...names]), true);
+        this.deviceNames = names;
+        return trimmed;
     }
 
     async poll() {
@@ -67,6 +99,7 @@ class EnergyManager extends utils.Adapter {
         if (this.timer) this.clearTimeout(this.timer);
         this.priceRequest?.abort();
         await this.pending;
+        await this.renameQueue;
         await this.setStateAsync('info.connection', false, true).catch(() => {});
     }
 
@@ -122,6 +155,11 @@ class EnergyManager extends utils.Adapter {
         const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', current?.start_timestamp ?? null);
         await this.setStateAsync('consumption', JSON.stringify(ledger), true);
         this.ledger = ledger;
+        this.deviceIds = new Set(devices.map(device => device.id));
+        for (const device of devices) {
+            device.defaultName = device.name;
+            device.name = this.deviceNames.get(device.id) || device.defaultName;
+        }
         const today = ledger.days[ledger.day];
         const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
         const display = {
@@ -131,7 +169,7 @@ class EnergyManager extends utils.Adapter {
             displayTariff: show(tariffCt, 'ct/kWh'),
             displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
             totalPower,
-            snapshot: JSON.stringify({ ts: now, version, devices, totalPower, marketCt, tariffCt, prices,
+            snapshot: JSON.stringify({ ts: now, version, canRenameDevices: true, devices, totalPower, marketCt, tariffCt, prices,
                 daily: ledger.days, contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));

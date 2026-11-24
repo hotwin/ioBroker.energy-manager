@@ -15,6 +15,7 @@
     ],
     "platform": "Javascript/Node.js",
     "mode": "daemon",
+    "messagebox": true,
     "type": "energy",
     "enabled": false,
     "connectionType": "local",
