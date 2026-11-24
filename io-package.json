@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,7 +25,13 @@
       "config": "json"
     },
     "wwwDontUpload": false,
-    "localLink": "%web_protocol%://%ip%:%web_port%/energy-manager/index.html"
+    "localLink": "%web_protocol%://%ip%:%web_port%/energy-manager/index.html",
+    "news": {
+      "0.2.0": {
+        "de": "Experimentelle Socket.IO Live-Anbindung",
+        "en": "Experimental Socket.IO live connection"
+      }
+    }
   },
   "native": {
     "markupCt": 0,
