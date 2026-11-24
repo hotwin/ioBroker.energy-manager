@@ -12,5 +12,20 @@
   },
   "scripts": {
     "test": "node --check main.js"
-  }
+  },
+  "author": "hotwin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hotwin/ioBroker.energy-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hotwin/ioBroker.energy-manager/issues"
+  },
+  "homepage": "https://github.com/hotwin/ioBroker.energy-manager#readme",
+  "keywords": [
+    "iobroker",
+    "energy",
+    "power",
+    "monitoring"
+  ]
 }
