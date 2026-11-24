@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Admin-spezifische Socket.IO-Skriptpfade ergänzt; Weboberfläche unverändert. Praxistest offen.
+- EN: Added Admin-specific Socket.IO script path fallbacks; web dashboard unchanged. Practical test pending.
 - DE: Automatische Raum- und Funktionszuordnung über ioBroker-Aufzählungen, Raumkacheln mit aktueller Leistung. Ungetestet.
 - EN: Automatic room and function assignment via ioBroker enums, room cards with current power. Untested.
 - DE: Eigener Admin-Menüeintrag mit Dashboard und Statistik; Admin-Verbindung noch zu testen.
