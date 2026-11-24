@@ -4,7 +4,7 @@
 
 Local energy management for ioBroker with Shelly and dynamic electricity tariffs.
 
-**Status: 0.1.0 – under development. Not yet ready for installation or tested on ioBroker.**
+**Status: 0.2.1 alpha – installation, Shelly data collection and live dashboard confirmed in practical testing. Version 0.3.0 under development.**
 
 ![Dashboard design preview with sample data](docs/dashboard-preview.svg)
 
@@ -14,11 +14,11 @@ Currently present in the source code:
 - Automatic discovery of Shelly power data points and reading energy meters.
 - Retrieval of German aWATTar wholesale electricity prices.
 - Configurable tariff surcharges and VAT.
-- JSON snapshot and dashboard prototype with manual JSON import.
+- Live dashboard via WebSocket and JSON snapshot.
 
 ## Roadmap
 
-- [ ] Automatic live dashboard connection.
+- [x] Automatic live dashboard connection.
 - [ ] Historical consumption and cost calculations using time-dependent prices.
 - [ ] Configurable energy sources, names, rooms and data point selection.
 - [ ] Zigbee2MQTT and other manufacturers via arbitrary ioBroker data points.
@@ -33,7 +33,7 @@ Planned: ioBroker with the Shelly adapter, Node.js 18 or newer, and the Web and 
 
 ## Installation
 
-No approved installation version yet. Do not install on a production system. Verified instructions will follow with the test release.
+Alpha testing: create a backup, select installation from custom URL in ioBroker and enter https://github.com/hotwin/ioBroker.energy-manager. Open /energy-manager/index.html via the web adapter. The main branch also contains ongoing development; no stable release yet.
 
 ## Tariffs and measurement accuracy
 
@@ -47,3 +47,5 @@ Measurements are processed locally; retrieving prices requires internet access. 
 
 - [Development status (German)](docs/STATUS.md)
 - [Energy sources (German)](docs/ENERGY-SOURCES.md)
+
+- [Changelog / Änderungsprotokoll](CHANGELOG.md)
