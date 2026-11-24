@@ -70,18 +70,9 @@
     "versionHistory": {
       "type": "staticText",
       "label": {
-        "de": "Versionshistorie · Änderungen und Testversionen auf GitHub",
-        "en": "Version history · Changes and test releases on GitHub"
+        "de": "Updates & Versionshistorie: https://github.com/hotwin/ioBroker.energy-manager/releases",
+        "en": "Updates & version history: https://github.com/hotwin/ioBroker.energy-manager/releases"
       },
-      "sm": 12
-    },
-    "releaseLink": {
-      "type": "staticLink",
-      "label": {
-        "de": "GitHub Releases öffnen",
-        "en": "Open GitHub releases"
-      },
-      "href": "https://github.com/hotwin/ioBroker.energy-manager/releases",
       "sm": 12
     }
   }
