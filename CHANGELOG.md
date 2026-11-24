@@ -1,5 +1,10 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.6 – 2026-11-24
+
+- DE: Die Raumübersicht zeigt aktuelle Leistung und Geräteanzahl in kompakten Karten. Die Geräteliste mit Einzelwerten lässt sich je Raum aufklappen.
+- EN: Compact room cards show current power and device count. Expand each card to see individual device readings.
+
 ## 0.3.0-beta.5 – 2026-11-24
 
 - DE: Energiefluss von der erfassten Gesamtenergie über Räume zu Geräten sowie Verlauf für Stundenverbrauch, Tageskosten und Strompreise auf der Startseite. Die neuen Messreihen beginnen mit der Aufzeichnung nach dem Update.

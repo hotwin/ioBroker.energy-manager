@@ -2,6 +2,9 @@
 
 const translations = {
     en: {
+        roomDevices: count => count === 1 ? '1 device' : count + ' devices',
+        roomPower: 'Current draw', roomNoReading: 'No power reading',
+        roomExcluded: 'Excluded from total',
         energyFlow: 'Energy flow', capturedEnergy: 'Recorded energy', yesterday: 'Yesterday',
         hourlyUsage: 'Hourly consumption', weeklyCosts: 'Daily costs · last 7 days',
         priceHistory: 'Electricity price history',
@@ -52,6 +55,9 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        roomDevices: count => count === 1 ? '1 Gerät' : count + ' Geräte',
+        roomPower: 'Aktuelle Leistung', roomNoReading: 'Kein Leistungswert',
+        roomExcluded: 'Nicht in der Summe',
         energyFlow: 'Energiefluss', capturedEnergy: 'Erfasste Energie', yesterday: 'Gestern',
         hourlyUsage: 'Stundenverbrauch', weeklyCosts: 'Tageskosten · letzte 7 Tage',
         priceHistory: 'Strompreisverlauf',
@@ -410,6 +416,61 @@ function renderOverviewCharts() {
     renderPriceHistory(now);
 }
 
+function renderRooms(rooms, devices) {
+    const target = el('roomCards');
+    const details = [...target.querySelectorAll('details')];
+    const openRooms = new Set(details.filter(item => item.open).map(item => item.dataset.room));
+    const focusedRoom = details.find(item => item.firstElementChild === document.activeElement)?.dataset.room;
+    const devicesByRoom = new Map();
+    for (const device of devices) {
+        const key = device.room || '';
+        if (!devicesByRoom.has(key)) devicesByRoom.set(key, []);
+        devicesByRoom.get(key).push(device);
+    }
+    if (!rooms.length) {
+        target.replaceChildren(node('p', words.noDevices, 'surface'));
+        return;
+    }
+    let focus;
+    const cards = rooms.map(room => {
+        const key = room.name || '';
+        const name = !key || key === 'Ohne Raum' ? words.unassigned : key;
+        const card = node('article', null, 'room-card');
+        const header = node('div', null, 'room-heading');
+        const icon = node('span', '⌂', 'room-icon');
+        icon.setAttribute('aria-hidden', 'true');
+        header.append(icon, node('h3', name));
+        const power = node('div', null, 'room-power');
+        power.append(node('strong', format(room.powerW, 'W'), 'value'),
+            node('span', Number.isFinite(room.powerW) ? words.roomPower : words.roomNoReading));
+        card.append(header, power);
+        const localDevices = devicesByRoom.get(key) || [];
+        if (!localDevices.length) {
+            card.append(node('p', words.roomDevices(room.devices || 0), 'room-device-count'));
+            return card;
+        }
+        const disclosure = node('details');
+        disclosure.dataset.room = key;
+        disclosure.open = openRooms.has(key);
+        const summary = node('summary', words.roomDevices(localDevices.length));
+        summary.setAttribute('aria-label', name + ' · ' + summary.textContent);
+        if (key === focusedRoom) focus = summary;
+        const list = node('ul', null, 'room-device-list');
+        for (const device of localDevices) {
+            const item = node('li');
+            const label = node('span', device.name || device.id);
+            if (device.exclude) label.append(node('small', words.roomExcluded));
+            item.append(label, node('span', format(device.powerW, 'W'), 'room-device-power'));
+            list.append(item);
+        }
+        disclosure.append(summary, list);
+        card.append(disclosure);
+        return card;
+    });
+    target.replaceChildren(...cards);
+    focus?.focus({ preventScroll: true });
+}
+
 function render() {
     const data = snapshot || {};
     const today = data.daily?.[dayKey(Date.now())];
@@ -435,12 +496,7 @@ function render() {
         deviceLabel(device), device.room || words.unassigned, powerLabel(device),
         format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
     ]), words.noDevices, 5);
-    cards('roomCards', (data.rooms || []).map(room => [
-        room.name === 'Ohne Raum' ? words.unassigned : room.name || words.unassigned,
-        format(room.powerW, 'W'), (data.devices || []).filter(device => device.room === room.name).map(device => device.name || device.id).join(', ') ||
-            room.devices + ' · ' + words.devices,
-    ]));
-    if (!data.rooms?.length) el('roomCards').append(node('p', words.noDevices));
+    renderRooms(data.rooms || [], data.devices || []);
     rows('priceRows', (data.prices || []).filter(price => price.end_timestamp > Date.now()).map(price => [
         dateTime(price.start_timestamp), dateTime(price.end_timestamp), format(price.marketprice / 10, 'ct/kWh'),
         format(price.tariffCt, 'ct/kWh'),
@@ -669,6 +725,7 @@ function read() {
 }
 
 function selectInstance() {
+    el('roomCards').replaceChildren();
     if (aliasDialog.open) aliasDialog.close();
     if (subscribed) socket.emit('unsubscribe', stateId);
     stateId = 'energy-manager.' + instanceSelect.value + '.snapshot';
