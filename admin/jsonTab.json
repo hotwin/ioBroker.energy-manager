@@ -7,7 +7,8 @@
         "de": "Energy Manager · Energieübersicht",
         "en": "Energy Manager · Energy overview"
       },
-      "sm": 12
+      "sm": 12,
+      "xs": 12
     },
     "displayPower": {
       "type": "state",
@@ -17,7 +18,9 @@
         "en": "Current power"
       },
       "readOnly": true,
-      "sm": 6
+      "sm": 6,
+      "xs": 12,
+      "md": 4
     },
     "displayToday": {
       "type": "state",
@@ -27,7 +30,9 @@
         "en": "Consumption today"
       },
       "readOnly": true,
-      "sm": 6
+      "sm": 6,
+      "xs": 12,
+      "md": 4
     },
     "displayMarket": {
       "type": "state",
@@ -37,7 +42,9 @@
         "en": "Market price"
       },
       "readOnly": true,
-      "sm": 6
+      "sm": 6,
+      "xs": 12,
+      "md": 4
     },
     "displayTariff": {
       "type": "state",
@@ -47,7 +54,9 @@
         "en": "Contract tariff"
       },
       "readOnly": true,
-      "sm": 6
+      "sm": 6,
+      "xs": 12,
+      "md": 4
     },
     "displayCost": {
       "type": "state",
@@ -57,7 +66,9 @@
         "en": "Recorded partial costs"
       },
       "readOnly": true,
-      "sm": 6
+      "sm": 6,
+      "xs": 12,
+      "md": 4
     },
     "note": {
       "type": "staticText",
@@ -65,7 +76,8 @@
         "de": "Verbrauchswerte seit Beginn der Aufzeichnung. Vertragsdaten in der Instanzkonfiguration bearbeiten.",
         "en": "Consumption since recording began. Edit contract details in instance configuration."
       },
-      "sm": 12
+      "sm": 12,
+      "xs": 12
     },
     "versionHistory": {
       "type": "staticText",
@@ -73,7 +85,8 @@
         "de": "Updates & Versionshistorie: https://github.com/hotwin/ioBroker.energy-manager/releases",
         "en": "Updates & version history: https://github.com/hotwin/ioBroker.energy-manager/releases"
       },
-      "sm": 12
+      "sm": 12,
+      "xs": 12
     }
   }
 }
