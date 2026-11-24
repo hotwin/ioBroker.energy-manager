@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Jey-Cee-Entwicklerleitfaden geprüft; ioBroker-Timer, info.connection und Standardtests in Arbeit.
+- EN: Reviewed Jey-Cee guide; adapter timers, info.connection and package tests in progress.
 - DE: Paket-Metadaten um Autor, Repository, Fehlerberichte und Suchbegriffe ergänzt.
 - EN: Added author, repository, issue tracker and keywords to package metadata.
 - DE: Verweis auf GitHub-Releases in der Admin-Übersicht ergänzt; Praxistest ausstehend.
