@@ -493,7 +493,7 @@ function render() {
         return tile;
     }));
     rows('deviceRows', (data.devices || []).map(device => [
-        deviceLabel(device), device.room || words.unassigned, powerLabel(device),
+        deviceLabel(device), device.room || words.unassigned, format(device.powerW, 'W'),
         format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
     ]), words.noDevices, 5);
     renderRooms(data.rooms || [], data.devices || []);
@@ -535,9 +535,11 @@ const aliasStatus = el('aliasStatus');
 let editingAlias;
 
 function deviceLabel(device) {
+    const container = node('div', null, 'device-name');
     const label = node('span', device.name || device.id);
+    container.append(label);
     if (adminTab && connected && device.aliasKey) {
-        const edit = node('button', '✎');
+        const edit = node('button', '✎', 'device-edit');
         edit.type = 'button';
         edit.title = words.editName;
         edit.setAttribute('aria-label', words.editName + ' · ' + label.textContent);
@@ -549,15 +551,15 @@ function deviceLabel(device) {
             aliasDialog.showModal();
             aliasInput.select();
         });
-        label.append(' ', edit);
+        container.append(edit);
     }
-    return label;
-}
-
-function powerLabel(device) {
-    const label = node('span', format(device.powerW, 'W'));
-    if (device.powerId) label.append(node('small', [device.powerId, device.powerUnit].filter(Boolean).join(' · ')));
-    return label;
+    const source = [device.powerId, device.powerUnit].filter(Boolean).join(' · ');
+    if (device.powerId) {
+        const details = node('details', null, 'device-details');
+        details.append(node('summary', words.source), node('small', source));
+        container.append(details);
+    }
+    return container;
 }
 
 async function saveAlias(value) {

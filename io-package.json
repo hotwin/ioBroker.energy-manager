@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.3.0-beta.6",
+    "version": "0.3.0-beta.7",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,6 +25,10 @@
     },
     "wwwDontUpload": false,
     "news": {
+      "0.3.0-beta.7": {
+        "de": "Übersichtlicher Dialog für Gerätenamen und aufgeräumte Leistungsanzeige.",
+        "en": "Clearer device rename dialog and a clean power column."
+      },
       "0.3.0-beta.6": {
         "de": "Übersichtlichere Raumkarten mit aufklappbaren Gerätelisten.",
         "en": "Clearer room cards with expandable device lists."
@@ -48,14 +52,6 @@
       "0.3.0-beta.1": {
         "de": "Responsives Admin-Dashboard, herstellerunabhängige Strommessung, Verbrauchsstatistik und neues Adapter-Icon.",
         "en": "Responsive Admin dashboard, vendor-independent meter discovery, consumption statistics and new adapter icon."
-      },
-      "0.2.1": {
-        "de": "WebSocket-Transport ausdrücklich aktiviert; Live-Verbindung erneut testen.",
-        "en": "Explicit WebSocket transport; live connection requires retesting."
-      },
-      "0.2.0": {
-        "de": "Experimentelle Socket.IO Live-Anbindung",
-        "en": "Experimental Socket.IO live connection"
       }
     },
     "adminTab": {

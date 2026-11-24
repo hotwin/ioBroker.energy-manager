@@ -73,8 +73,19 @@
         progress { width: 100%; accent-color: var(--teal); }
         .note { margin-block: 12px; }
         [hidden] { display: none !important; }
-        #aliasDialog { max-width: min(90vw, 520px); }
-        #aliasForm button { font: inherit; margin: 8px 4px 0 0; }
+        .device-name { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+        .device-edit { border: 0; background: transparent; color: var(--teal); cursor: pointer; border-radius: 6px; min-width: 32px; min-height: 32px; font: inherit; font-size: 20px; }
+        .device-edit:hover { background: #e8f5f3; }
+        .device-details { flex-basis: 100%; color: var(--muted); font-size: .85em; }
+        .device-details summary { cursor: pointer; }
+        #aliasDialog { width: min(calc(100% - 32px), 440px); box-sizing: border-box; padding: 24px; color: var(--ink); }
+        #aliasDialog::backdrop { background: rgb(24 49 53 / 45%); }
+        #aliasForm label { display: grid; gap: 6px; }
+        #aliasInput { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+        .alias-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .alias-actions button { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); cursor: pointer; }
+        .alias-actions button[type="submit"] { background: var(--teal); color: white; }
+        .alias-actions button:disabled { opacity: .55; cursor: wait; }
         #deviceRows small { display: block; overflow-wrap: anywhere; }
         .overview-chart, .chart-grid { margin-top: 16px; }
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
@@ -118,7 +129,7 @@
         .room-device-list small { display: block; }
         .room-device-power { white-space: nowrap; font-variant-numeric: tabular-nums; }
     </style>
-    <script defer src="dashboard.js"></script>
+    <script defer src="dashboard.js?v=0.3.0-beta.7"></script>
 </head>
 <body>
 <main>
@@ -161,9 +172,11 @@
             <p class="note" id="originalDeviceName"></p>
             <label><span data-text="device"></span> <input id="aliasInput" maxlength="120" required></label>
             <p id="aliasStatus" class="note" role="status"></p>
-            <button type="submit" data-text="saveName"></button>
-            <button id="resetAlias" type="button" data-text="resetName"></button>
-            <button id="cancelAlias" type="button" data-text="cancelName"></button>
+            <div class="alias-actions">
+                <button type="submit" data-text="saveName"></button>
+                <button id="cancelAlias" type="button" data-text="cancelName"></button>
+                <button id="resetAlias" type="button" data-text="resetName"></button>
+            </div>
         </form>
     </dialog>
     <section id="rooms" data-page hidden>

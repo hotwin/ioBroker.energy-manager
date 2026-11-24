@@ -1,5 +1,10 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.7 – 2026-11-24
+
+- DE: Gerätenamen über ein dezentes Stiftsymbol und einen klareren Dialog bearbeiten. „Aktuelle Leistung“ zeigt nur Messwert und Einheit. Details zum Messpunkt stehen beim Gerätenamen.
+- EN: Edit device names with a pencil button and a clearer dialog. Current power displays only the reading and unit. Power source details appear under the device name.
+
 ## 0.3.0-beta.6 – 2026-11-24
 
 - DE: Die Raumübersicht zeigt aktuelle Leistung und Geräteanzahl in kompakten Karten. Die Geräteliste mit Einzelwerten lässt sich je Raum aufklappen.

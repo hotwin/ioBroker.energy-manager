@@ -19,9 +19,9 @@ The adapter stores its local history in the `consumption` state and publishes th
 
 ## Changelog
 
-### 0.3.0-beta.6 (2026-11-24)
+### 0.3.0-beta.7 (2026-11-24)
 
-- Compact room cards show current power and device count. Expand a room to see its device readings.
+- Simplified device name editing and moved technical data out of the current power column.
 
 See the [bilingual changelog](CHANGELOG.md) for the full release history.
 
