@@ -30,7 +30,10 @@ class EnergyManager extends utils.Adapter {
    const e=await this.getForeignStateAsync(base+'.Energy');
    const eo=objects[base+'.Energy'];
    if(!p||typeof p.val!=='number'||!Number.isFinite(p.val))continue;
-   devices.push({id:base,powerW:p.val,energyKWh:e&&typeof e.val==='number'?(eo?.common?.unit==='Wh'?e.val/1000:eo?.common?.unit==='kWh'?e.val:null):null,ts:p.ts});
+   const channel=await this.getForeignObjectAsync(base);
+   const parent=await this.getForeignObjectAsync(base.substring(0,base.lastIndexOf('.')));
+   const label=o=>typeof o?.common?.name==='string'?o.common.name:o?.common?.name?.de||o?.common?.name?.en;
+   devices.push({id:base,name:[label(parent),label(channel)].filter(Boolean).join(' / ')||base,powerW:p.val,energyKWh:e&&typeof e.val==='number'?(eo?.common?.unit==='Wh'?e.val/1000:eo?.common?.unit==='kWh'?e.val:null):null,ts:p.ts});
   }
   let prices=null;
   try{if(!this.prices||Date.now()-this.priceTime>900000){const r=await fetch('https://api.awattar.de/v1/marketdata',{signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('HTTP '+r.status);this.prices=(await r.json()).data;this.priceTime=Date.now();}prices=this.prices;}catch(e){this.log.warn('aWATTar: '+e.message);}
