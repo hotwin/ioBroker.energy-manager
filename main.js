@@ -1,9 +1,12 @@
+const accumulate = require('./lib/consumption');
 const utils = require('@iobroker/adapter-core');
 class EnergyManager extends utils.Adapter {
  constructor(options={}) { super({...options,name:'energy-manager'}); this.on('ready',()=>this.start()); this.on('unload',cb=>{clearInterval(this.timer);cb();}); }
  async start(){
   await this.setObjectNotExistsAsync('snapshot',{type:'state',common:{name:'Energy snapshot',type:'string',role:'json',read:true,write:false},native:{}});
   await this.setObjectNotExistsAsync('totalPower',{type:'state',common:{name:'Measured power',type:'number',role:'value.power',unit:'W',read:true,write:false},native:{}});
+  await this.setObjectNotExistsAsync('consumption',{type:'state',common:{name:'Daily consumption ledger',type:'string',role:'json',read:true,write:false},native:{}});
+  try{this.ledger=JSON.parse((await this.getStateAsync('consumption'))?.val||'null');}catch{this.ledger=null;}
   const poll=async()=>{if(this.busy)return;this.busy=true;try{await this.collect();}catch(e){this.log.warn(String(e));}finally{this.busy=false;}};
   this.timer=setInterval(poll,60000);await poll();
  }
@@ -41,8 +44,11 @@ class EnergyManager extends utils.Adapter {
   const marketCt=current?current.marketprice/10:null;
   const tariffCt=this.config.tariffConfigured&&marketCt!==null?(marketCt+Number(this.config.markupCt))*(1+Number(this.config.vatPercent)/100):null;
   const totalPower=devices.reduce((s,d)=>s+(d.exclude?0:d.powerW||0),0);
+  const ledger=accumulate(this.ledger,devices,now,tariffCt);
+  await this.setStateAsync('consumption',JSON.stringify(ledger),true);
+  this.ledger=ledger;
   await this.setStateAsync('totalPower',totalPower,true);
-  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices}),true);
+  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days}),true);
  }
 }
 if(require.main===module)new EnergyManager();else module.exports=options=>new EnergyManager(options);
