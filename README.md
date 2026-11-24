@@ -19,17 +19,11 @@ The adapter stores its local history in the `consumption` state and publishes th
 
 ## Changelog
 
-### 0.3.0-beta.2 (2026-11-24)
+### 0.3.0-beta.6 (2026-11-24)
 
-- Added clickable dashboard tiles and gross contract rates per price interval.
+- Compact room cards show current power and device count. Expand a room to see its device readings.
 
-### 0.3.0-beta.1 (2026-11-24)
-
-- Responsive Admin dashboard with device, room, consumption, price and tariff views.
-- Vendor-independent meter discovery, German and English interfaces, and a new adapter icon.
-- Added official package validation and controller integration tests.
-
-See the [bilingual changelog](CHANGELOG.md) for details.
+See the [bilingual changelog](CHANGELOG.md) for the full release history.
 
 ## License
 
