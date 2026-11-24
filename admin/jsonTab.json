@@ -1,0 +1,43 @@
+{
+  "type": "panel",
+  "items": {
+    "heading": {
+      "type": "staticText",
+      "label": {
+        "de": "Energy Manager – Live-Daten",
+        "en": "Energy Manager – live data"
+      },
+      "sm": 12
+    },
+    "power": {
+      "type": "state",
+      "oid": "totalPower",
+      "label": {
+        "de": "Aktuelle Leistung",
+        "en": "Current power"
+      },
+      "readOnly": true,
+      "sm": 12
+    },
+    "snapshot": {
+      "type": "state",
+      "oid": "snapshot",
+      "label": {
+        "de": "Messdaten",
+        "en": "Measurement data"
+      },
+      "readOnly": true,
+      "sm": 12
+    },
+    "history": {
+      "type": "state",
+      "oid": "consumption",
+      "label": {
+        "de": "Verbrauchshistorie",
+        "en": "Consumption history"
+      },
+      "readOnly": true,
+      "sm": 12
+    }
+  }
+}
