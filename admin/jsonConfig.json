@@ -7,7 +7,10 @@
     },
     "markupCt": {
       "type": "number",
-      "label": "Zusätzliche Netto-Tarifbestandteile (ct/kWh)",
+      "label": {
+        "de": "Weitere Netto-Aufschläge, ohne separat erfasste Beträge (ct/kWh)",
+        "en": "Other net surcharges excluding separately entered amounts (ct/kWh)"
+      },
       "min": 0
     },
     "vatPercent": {
@@ -70,6 +73,69 @@
           "title": "Exclude from total"
         }
       ]
+    },
+    "baseMonthly": {
+      "type": "number",
+      "label": {
+        "de": "Grundgebühr netto (€/Monat)",
+        "en": "Monthly base charge net (EUR)"
+      },
+      "min": 0
+    },
+    "meterAnnual": {
+      "type": "number",
+      "label": {
+        "de": "Messstellenbetrieb zusätzlich netto (€/Jahr)",
+        "en": "Additional annual metering net (EUR)"
+      },
+      "min": 0
+    },
+    "electricityTaxCt": {
+      "type": "number",
+      "label": {
+        "de": "Stromsteuer netto (ct/kWh)",
+        "en": "Electricity tax net (ct/kWh)"
+      },
+      "min": 0
+    },
+    "networkCt": {
+      "type": "number",
+      "label": {
+        "de": "Netzentgelte netto (ct/kWh)",
+        "en": "Network charges net (ct/kWh)"
+      },
+      "min": 0
+    },
+    "concessionCt": {
+      "type": "number",
+      "label": {
+        "de": "Konzessionsabgabe netto (ct/kWh)",
+        "en": "Concession fee net (ct/kWh)"
+      },
+      "min": 0
+    },
+    "leviesCt": {
+      "type": "number",
+      "label": {
+        "de": "Umlagen netto (ct/kWh)",
+        "en": "Levies net (ct/kWh)"
+      },
+      "min": 0
+    },
+    "advanceMonthly": {
+      "type": "number",
+      "label": {
+        "de": "Abschlag brutto (€/Monat)",
+        "en": "Monthly advance gross (EUR)"
+      },
+      "min": 0
+    },
+    "contractStart": {
+      "type": "text",
+      "label": {
+        "de": "Vertragsbeginn (JJJJ-MM-TT)",
+        "en": "Contract start (YYYY-MM-DD)"
+      }
     }
   }
 }
