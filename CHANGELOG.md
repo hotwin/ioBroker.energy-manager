@@ -1,5 +1,19 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.3 – 2026-11-24
+
+### Deutsch
+
+- Vertragsdaten im ioBroker Admin bearbeiten und dauerhaft in der Instanz speichern.
+- Brutto-Arbeitspreis anhand der gewählten Formel berechnen. aWATTar HOURLY unterstützt den prozentualen Aufschlag auf den Betrag des Börsenpreises und optionale Bruttopreisgrenzen für die Energie.
+- Fehlende Vertragsbeträge, einen späteren Vertragsstart und fehlende aktuelle Börsenpreise im Dashboard anzeigen.
+
+### English
+
+- Edit contract details in ioBroker Admin and persist them in the instance configuration.
+- Calculate gross rates with the selected formula. aWATTar HOURLY supports a percentage surcharge on the absolute spot price and optional gross energy price limits.
+- Explain missing contract inputs, future start dates and unavailable market prices in the dashboard.
+
 ## 0.3.0-beta.2 – 2026-11-24
 
 ### Deutsch

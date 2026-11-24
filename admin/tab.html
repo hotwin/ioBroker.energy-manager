@@ -63,6 +63,11 @@
         td:first-child { min-width: 130px; overflow-wrap: anywhere; }
         .stats-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
         select { padding: 6px; font: inherit; max-width: 100%; }
+        .contract-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 14px; }
+        .contract-fields label { display: grid; align-content: start; gap: 3px; }
+        .contract-fields input, .contract-fields select { width: 100%; min-width: 0; padding: 8px; font: inherit; }
+        #contractForm fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+        #contractForm button { font: inherit; padding: 8px 16px; }
         #statsBars { display: grid; gap: 5px; max-height: 520px; overflow: auto; }
         .stat-row { display: grid; grid-template-columns: 85px minmax(20px, 1fr) 95px; gap: 6px; align-items: center; }
         progress { width: 100%; accent-color: var(--teal); }
@@ -108,7 +113,38 @@
     </section>
     <section id="contract" data-page hidden>
         <h2 data-text="contract"></h2><div id="contractCards" class="grid"></div>
-        <p class="note" data-text="contractHint"></p>
+        <p class="note" id="tariffStatus" role="status"></p>
+        <p class="note" id="contractWebHint" data-text="contractWebHint" hidden></p>
+        <form class="surface" id="contractForm" hidden>
+            <fieldset disabled>
+                <legend class="note" data-text="contractHint"></legend>
+                <div class="contract-fields">
+                    <label><span data-text="provider"></span><input name="provider" maxlength="120"></label>
+                    <label><span data-text="tariffName"></span><input name="tariffName" maxlength="120"></label>
+                    <label><span data-text="contractStart"></span><input name="contractStart" type="date" max="9999-12-31"></label>
+                    <label><span data-text="tariffFormula"></span><select name="tariffFormula">
+                        <option value="additive" data-text="additive"></option>
+                        <option value="awattarHourly" data-text="awattarHourly"></option>
+                        <option value="unsupported" data-text="unsupported"></option>
+                    </select></label>
+                    <label><span data-text="baseMonthly"></span><input name="baseMonthly" inputmode="decimal"></label>
+                    <label><span data-text="meterAnnual"></span><input name="meterAnnual" inputmode="decimal"></label>
+                    <label><span data-text="markupCt"></span><input name="markupCt" inputmode="decimal" data-variable></label>
+                    <label><span data-text="networkCt"></span><input name="networkCt" inputmode="decimal" data-variable></label>
+                    <label><span data-text="electricityTaxCt"></span><input name="electricityTaxCt" inputmode="decimal" data-variable></label>
+                    <label><span data-text="concessionCt"></span><input name="concessionCt" inputmode="decimal" data-variable></label>
+                    <label><span data-text="leviesCt"></span><input name="leviesCt" inputmode="decimal" data-variable></label>
+                    <label><span data-text="vatPercent"></span><input name="vatPercent" inputmode="decimal" data-variable data-percent></label>
+                    <label><span data-text="advanceMonthly"></span><input name="advanceMonthly" inputmode="decimal"></label>
+                    <label data-hourly><span data-text="marketMarkupPercent"></span><input name="marketMarkupPercent" inputmode="decimal" data-variable data-percent></label>
+                    <label data-hourly><span data-text="energyMinGrossCt"></span><input name="energyMinGrossCt" inputmode="decimal" data-limit></label>
+                    <label data-hourly><span data-text="energyMaxGrossCt"></span><input name="energyMaxGrossCt" inputmode="decimal" data-limit></label>
+                </div>
+                <p class="note"><label><input name="tariffConfigured" type="checkbox"> <span data-text="tariffConfigured"></span></label></p>
+                <button type="submit" data-text="saveContract"></button>
+            </fieldset>
+            <p class="note" id="contractSaveStatus" role="status"></p>
+        </form>
     </section>
     <section id="updates" data-page hidden>
         <h2 data-text="updates"></h2>

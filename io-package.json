@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.3.0-beta.2",
+    "version": "0.3.0-beta.3",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,6 +25,10 @@
     },
     "wwwDontUpload": false,
     "news": {
+      "0.3.0-beta.3": {
+        "de": "Bearbeitbarer Stromvertrag und Brutto-Arbeitspreis mit aWATTar-HOURLY-Formel.",
+        "en": "Editable electricity contract and gross rate with the aWATTar HOURLY formula."
+      },
       "0.3.0-beta.2": {
         "de": "Anklickbare Übersichtskacheln und Brutto-Arbeitspreise für jedes verfügbare Preisintervall.",
         "en": "Clickable dashboard tiles and gross contract rates for each available price interval."
@@ -85,19 +89,25 @@
     ]
   },
   "native": {
-    "markupCt": 0,
-    "vatPercent": 19,
+    "markupCt": null,
+    "vatPercent": null,
     "tariffConfigured": false,
     "sources": [],
     "autoShelly": true,
-    "baseMonthly": 0,
-    "meterAnnual": 0,
-    "electricityTaxCt": 0,
-    "networkCt": 0,
-    "concessionCt": 0,
-    "leviesCt": 0,
-    "advanceMonthly": 0,
-    "contractStart": ""
+    "baseMonthly": null,
+    "meterAnnual": null,
+    "electricityTaxCt": null,
+    "networkCt": null,
+    "concessionCt": null,
+    "leviesCt": null,
+    "advanceMonthly": null,
+    "contractStart": "",
+    "provider": "",
+    "tariffName": "",
+    "tariffFormula": "additive",
+    "marketMarkupPercent": null,
+    "energyMinGrossCt": null,
+    "energyMaxGrossCt": null
   },
   "instanceObjects": []
 }

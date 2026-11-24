@@ -13,7 +13,28 @@ const translations = {
         deviceHint: 'Add a meter, channel or device to the Strommessung enum, or configure it manually.',
         priceHint: 'aWATTar day-ahead prices for Germany, before taxes and surcharges. The gross rate uses your configured contract components. Times shown in Europe/Berlin.',
         costHint: 'Variable costs cover consumption with an attributable tariff. Monthly charges are shown under Electricity contract.',
-        contractHint: 'Edit the tariff components in the Energy Manager instance settings.',
+        contractHint: 'Use the amounts from your contract. Enter 0 for charges that do not apply.',
+        contractWebHint: 'Open Energy Manager in ioBroker Admin to edit the contract.',
+        provider: 'Provider', tariffName: 'Tariff name', tariffFormula: 'Pricing formula',
+        additive: 'German spot price plus fixed surcharges', awattarHourly: 'aWATTar Germany HOURLY',
+        unsupported: 'Other formula (calculation unavailable)',
+        baseMonthly: 'Base charge (€/month net)', meterAnnual: 'Metering (€/year net)',
+        markupCt: 'Fixed provider surcharge (ct/kWh net)', networkCt: 'Grid fees (ct/kWh net)',
+        electricityTaxCt: 'Electricity tax (ct/kWh net)', concessionCt: 'Concession fee (ct/kWh net)',
+        leviesCt: 'Levies (ct/kWh net)', vatPercent: 'VAT (%)', advanceMonthly: 'Advance payment (€/month gross)',
+        marketMarkupPercent: 'Surcharge on absolute spot price (%)',
+        energyMinGrossCt: 'Minimum energy price (ct/kWh gross, optional)',
+        energyMaxGrossCt: 'Maximum energy price (ct/kWh gross, optional)',
+        tariffConfigured: 'Enable contract pricing (immediately if no start date is set)',
+        saveContract: 'Save contract', contractLoading: 'Loading contract …',
+        contractLoadError: 'Could not read this instance configuration.',
+        contractSaveError: 'Save could not be confirmed. Check your connection and write permission.',
+        contractSaved: 'Contract saved. The adapter will refresh prices automatically.',
+        invalidNumber: 'Enter a valid amount with a decimal point or comma.',
+        missingAmount: 'Enter the contract amount, or 0 if this charge does not apply.',
+        invalidLimit: 'The maximum must be at least the minimum.',
+        inactive: 'Contract pricing is disabled.', incomplete: 'Required contract amounts are missing or invalid.',
+        future: 'The contract has not started yet.', noMarket: 'No current market price is available.',
         fixed: 'Monthly fixed charge (gross)', extra: 'Surcharges (net)', advance: 'Monthly advance',
         contractStart: 'Contract start', ready: 'Updated', waiting: 'Waiting for the first snapshot',
         stale: 'Last available snapshot', offline: 'Disconnected', connectionError: 'Could not read ioBroker data',
@@ -33,7 +54,28 @@ const translations = {
         deviceHint: 'Füge einen Zähler, Kanal oder ein Gerät zur Aufzählung Strommessung hinzu oder hinterlege es manuell.',
         priceHint: 'aWATTar-Spotmarktpreise für Deutschland vor Steuern und Aufschlägen. Der Bruttopreis basiert auf deinen hinterlegten Vertragsbestandteilen. Uhrzeit in Europe/Berlin.',
         costHint: 'Die variablen Kosten umfassen Verbrauch mit zuordenbarem Tarif. Monatliche Fixkosten stehen unter Stromvertrag.',
-        contractHint: 'Die Tarifbestandteile lassen sich in der Instanzkonfiguration bearbeiten.',
+        contractHint: 'Übernimm die Beträge aus deinem Vertrag. Gib 0 ein, wenn ein Posten entfällt.',
+        contractWebHint: 'Öffne den Energy Manager im ioBroker Admin, um den Vertrag zu bearbeiten.',
+        provider: 'Anbieter', tariffName: 'Tarifname', tariffFormula: 'Preisformel',
+        additive: 'Deutscher Börsenpreis plus feste Aufschläge', awattarHourly: 'aWATTar Deutschland HOURLY',
+        unsupported: 'Andere Formel (Berechnung nicht verfügbar)',
+        baseMonthly: 'Grundpreis (€/Monat netto)', meterAnnual: 'Messstellenbetrieb (€/Jahr netto)',
+        markupCt: 'Fester Anbieteraufschlag (ct/kWh netto)', networkCt: 'Netzentgelte (ct/kWh netto)',
+        electricityTaxCt: 'Stromsteuer (ct/kWh netto)', concessionCt: 'Konzessionsabgabe (ct/kWh netto)',
+        leviesCt: 'Umlagen (ct/kWh netto)', vatPercent: 'MwSt. (%)', advanceMonthly: 'Abschlag (€/Monat brutto)',
+        marketMarkupPercent: 'Aufschlag auf den Betrag des Börsenpreises (%)',
+        energyMinGrossCt: 'Mindestpreis Energie (ct/kWh brutto, optional)',
+        energyMaxGrossCt: 'Höchstpreis Energie (ct/kWh brutto, optional)',
+        tariffConfigured: 'Tarifberechnung aktivieren (ohne Startdatum sofort)',
+        saveContract: 'Vertrag speichern', contractLoading: 'Vertrag wird geladen …',
+        contractLoadError: 'Die Konfiguration dieser Instanz konnte nicht gelesen werden.',
+        contractSaveError: 'Speichern konnte nicht bestätigt werden. Prüfe Verbindung und Schreibrechte.',
+        contractSaved: 'Vertrag gespeichert. Der Adapter aktualisiert die Preise automatisch.',
+        invalidNumber: 'Gib einen gültigen Betrag mit Dezimalkomma oder Dezimalpunkt ein.',
+        missingAmount: 'Gib den Vertragsbetrag ein oder 0, falls dieser Posten entfällt.',
+        invalidLimit: 'Der Höchstpreis muss mindestens so hoch wie der Mindestpreis sein.',
+        inactive: 'Die Tarifberechnung ist deaktiviert.', incomplete: 'Benötigte Vertragsbeträge fehlen oder sind ungültig.',
+        future: 'Der Vertrag hat noch nicht begonnen.', noMarket: 'Es liegt kein aktueller Börsenpreis vor.',
         fixed: 'Monatliche Fixkosten (brutto)', extra: 'Aufschläge (netto)', advance: 'Monatlicher Abschlag',
         contractStart: 'Vertragsbeginn', ready: 'Messstand', waiting: 'Warte auf den ersten Messstand',
         stale: 'Letzter verfügbarer Messstand', offline: 'Verbindung getrennt', connectionError: 'ioBroker-Daten konnten nicht gelesen werden',
@@ -196,10 +238,13 @@ function render() {
         format(price.tariffCt, 'ct/kWh'),
     ]), words.noPrices, 4);
     const contract = data.contract || {};
+    const reason = words[contract.status] || '';
+    el('tariffStatus').textContent = reason;
+    if (reason) el('summary').lastElementChild.append(node('small', reason));
     cards('contractCards', [
-        [words.fixed, format(contract.configured ? contract.fixedMonthlyGross : null, '€')],
-        [words.extra, format(contract.configured ? contract.extraCt : null, 'ct/kWh')],
-        [words.advance, format(contract.configured ? contract.advanceMonthly : null, '€')],
+        [words.fixed, format(contract.fixedMonthlyGross, '€')],
+        [words.extra, format(contract.extraCt, 'ct/kWh')],
+        [words.advance, format(contract.advanceMonthly, '€')],
         [words.contractStart, contract.start || '–'],
     ]);
     el('installed').textContent = words.installed + ' · ' + (data.version || '–');
@@ -215,6 +260,120 @@ let stateId;
 let connected = false;
 let subscribed = false;
 let lastAccessToken;
+
+const contractForm = el('contractForm');
+const contractFields = contractForm.querySelector('fieldset');
+const contractInputs = [...contractForm.querySelectorAll('[name]')];
+const contractFeedback = el('contractSaveStatus');
+let contractRequest = 0;
+let savedContract;
+
+function applyContractFormula() {
+    const hourly = contractForm.elements.tariffFormula.value === 'awattarHourly';
+    for (const label of contractForm.querySelectorAll('[data-hourly]')) {
+        label.hidden = !hourly;
+        label.querySelector('input').disabled = !hourly;
+    }
+}
+
+function contractRpc(command, ...args) {
+    return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => reject(Error('Timeout')), 10000);
+        socket.emit(command, ...args, (error, result) => {
+            clearTimeout(timeout);
+            if (error) reject(error);
+            else resolve(result);
+        });
+    });
+}
+
+async function loadContract() {
+    if (!adminTab) return;
+    const request = ++contractRequest;
+    contractFields.disabled = true;
+    contractFeedback.textContent = words.contractLoading;
+    try {
+        const object = await contractRpc('getObject', 'system.adapter.energy-manager.' + instanceSelect.value);
+        if (request !== contractRequest) return;
+        if (object?.type !== 'instance' || !object.native) throw Error('Missing configuration');
+        savedContract = object.native;
+        for (const input of contractInputs) {
+            const value = savedContract[input.name];
+            if (input.type === 'checkbox') input.checked = value === true;
+            else if (input.name === 'tariffFormula') {
+                input.value = value || 'additive';
+                if (!input.value) input.value = 'unsupported';
+            } else input.value = value ?? '';
+        }
+        applyContractFormula();
+        contractFields.disabled = false;
+        contractFeedback.textContent = '';
+    } catch {
+        if (request === contractRequest) contractFeedback.textContent = words.contractLoadError;
+    }
+}
+
+contractForm.addEventListener('input', event => {
+    event.target.setCustomValidity('');
+    contractForm.elements.energyMaxGrossCt.setCustomValidity('');
+});
+contractForm.elements.tariffFormula.addEventListener('change', () => {
+    for (const input of contractInputs) input.setCustomValidity('');
+    applyContractFormula();
+});
+contractForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!adminTab || !connected || !savedContract || contractFields.disabled) return;
+    const form = contractForm.elements;
+    const formula = form.tariffFormula.value;
+    const active = form.tariffConfigured.checked && formula !== 'unsupported';
+    const native = {};
+    for (const input of contractInputs) {
+        if (input.disabled) continue;
+        const raw = input.value.trim();
+        let value = input.type === 'checkbox' ? input.checked : raw;
+        if (input.inputMode === 'decimal') {
+            value = raw ? Number(raw.replace(',', '.')) : null;
+            let message = '';
+            if (value === null && active && input.hasAttribute('data-variable')) message = words.missingAmount;
+            else if (raw && (!/^[+-]?(?:\d+(?:[.,]\d+)?|[.,]\d+)$/.test(raw) || !Number.isFinite(value) ||
+                (value < 0 && !input.hasAttribute('data-limit')) ||
+                (value > 100 && input.hasAttribute('data-percent')))) message = words.invalidNumber;
+            if (message) {
+                input.setCustomValidity(message);
+                input.reportValidity();
+                return;
+            }
+        }
+        native[input.name] = value;
+    }
+    if (native.energyMinGrossCt != null && native.energyMaxGrossCt != null &&
+        native.energyMinGrossCt > native.energyMaxGrossCt) {
+        form.energyMaxGrossCt.setCustomValidity(words.invalidLimit);
+        form.energyMaxGrossCt.reportValidity();
+        return;
+    }
+    const changed = Object.fromEntries(Object.entries(native).filter(([key, value]) => savedContract[key] !== value));
+    if (!Object.keys(changed).length) {
+        contractFeedback.textContent = words.contractSaved;
+        return;
+    }
+
+    const request = contractRequest;
+    contractFields.disabled = true;
+    contractFeedback.textContent = '';
+    try {
+        await contractRpc('extendObject', 'system.adapter.energy-manager.' + instanceSelect.value, { native: changed });
+        if (request !== contractRequest) return;
+        savedContract = { ...savedContract, ...changed };
+        contractFeedback.textContent = words.contractSaved;
+        read();
+    } catch {
+        if (request === contractRequest) contractFeedback.textContent = words.contractSaveError;
+    } finally {
+        if (request === contractRequest) contractFields.disabled = !connected;
+    }
+});
 
 function accept(state) {
     try {
@@ -247,7 +406,15 @@ function selectInstance() {
     snapshot = null;
     displayStatus = 'waiting';
     render();
-    if (connected) subscribe();
+    savedContract = null;
+    contractRequest++;
+    contractFields.disabled = true;
+    contractForm.reset();
+    applyContractFormula();
+    if (connected) {
+        subscribe();
+        void loadContract();
+    }
 }
 
 function subscribe() {
@@ -261,6 +428,8 @@ function onConnect() {
     connected = true;
     subscribe();
     if (adminTab) {
+        if (savedContract) contractFields.disabled = false;
+        else void loadContract();
         socket.emit('getObjectView', 'system', 'instance', {
             startkey: 'system.adapter.energy-manager.', endkey: 'system.adapter.energy-manager.\u9999',
         }, (error, view) => {
@@ -282,7 +451,7 @@ function onConnect() {
 
 function syncAdminSession(force = false) {
     // The enclosing Admin owns renewal. Forward its current access token only
-    // to the same-origin Admin socket so the read-only session can stay active.
+    // to the same-origin Admin socket so the session can stay active.
     try {
         const value = window.sessionStorage.getItem('iob_tokens') || window.localStorage.getItem('iob_tokens');
         const [, , token, expires] = (value || '').split(';');
@@ -320,6 +489,7 @@ async function connect() {
         socket.on('stateChange', (id, state) => { if (id === stateId && connected) accept(state); });
         socket.on('disconnect', () => {
             connected = false;
+            contractFields.disabled = true;
             subscribed = false;
             lastAccessToken = undefined;
             displayStatus = 'offline';
@@ -358,6 +528,8 @@ async function connect() {
 window.addEventListener('hashchange', selectPage);
 instanceSelect.addEventListener('change', selectInstance);
 el('period').addEventListener('change', renderStats);
+contractForm.hidden = !adminTab;
+el('contractWebHint').hidden = adminTab;
 translate();
 selectInstance();
 void connect();

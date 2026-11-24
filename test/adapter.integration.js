@@ -37,9 +37,10 @@ tests.integration(path.join(__dirname, '..'), {
             });
         });
         suite('Compact mode', getHarness => {
-            it('starts, unloads and restarts in the same host process', async function () {
+            it('loads saved contract changes after restarting in the same host process', async function () {
                 this.timeout(45000);
-                const { states } = getHarness();
+                const harness = getHarness();
+                const { states } = harness;
                 const createAdapter = require(path.join(os.tmpdir(), 'test-iobroker.energy-manager',
                     'node_modules', 'iobroker.energy-manager'));
                 const instance = 'energy-manager.0';
@@ -51,13 +52,37 @@ tests.integration(path.join(__dirname, '..'), {
                     }
                     assert.fail('Compact adapter did not publish its connected state');
                 }
+                const { native: original } = await harness.getAdapterConfig();
                 for (let run = 0; run < 2; run++) {
+                    if (run === 1) {
+                        await harness.changeAdapterConfig('energy-manager', { native: {
+                            provider: 'aWATTar', tariffName: 'HOURLY', tariffConfigured: true,
+                            networkCt: 9.25, electricityTaxCt: 0, concessionCt: 0, leviesCt: 0,
+                            markupCt: 0.3, vatPercent: 19, tariffFormula: 'awattarHourly', marketMarkupPercent: 3,
+                        } });
+                    }
                     const adapter = createAdapter({ compact: true, compactInstance: 0 });
                     try {
                         await waitForConnection();
                         assert.equal((await states.getStateAsync('system.adapter.' + instance + '.compactMode')).val, true);
                         const result = await states.getStateAsync(instance + '.snapshot');
-                        assert.ok(Number.isFinite(JSON.parse(result.val).ts));
+                        const snapshot = JSON.parse(result.val);
+                        assert.ok(Number.isFinite(snapshot.ts));
+                        assert.equal(snapshot.contract.configured, run === 1);
+                        if (run === 1) {
+                            const { native: saved } = await harness.getAdapterConfig();
+                            assert.equal(saved.tariffName, 'HOURLY');
+                            assert.equal(saved.networkCt, 9.25);
+                            assert.deepEqual(saved.sources, original.sources);
+                            assert.equal(snapshot.contract.extraCt, 9.55);
+                            if (snapshot.marketCt !== null) {
+                                const expected = (snapshot.marketCt + Math.abs(snapshot.marketCt) * 0.03 + 9.55) * 1.19;
+                                assert.ok(Math.abs(snapshot.tariffCt - expected) < 1e-10);
+                            } else {
+                                assert.equal(snapshot.contract.status, 'noMarket');
+                                assert.equal(snapshot.tariffCt, null);
+                            }
+                        }
                     } finally {
                         const exit = once(adapter, 'exit');
                         await adapter.stop();
