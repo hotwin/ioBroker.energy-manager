@@ -1,0 +1,16 @@
+{
+  "name": "iobroker.energy-manager",
+  "version": "0.1.0",
+  "description": "Local energy monitoring for ioBroker",
+  "main": "main.js",
+  "license": "MIT",
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --check main.js"
+  }
+}
