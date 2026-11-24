@@ -1,8 +1,12 @@
 # Changelog / Änderungsprotokoll
 
+## Unreleased / In Entwicklung
+- DE: Responsive Navigation und ioBroker-Gerätenamen ergänzt; noch ungetestet.
+- EN: Added responsive navigation and ioBroker device names; not yet tested.
+
 ## 0.2.1 – 2026-11-24
-- DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Praxistest ausstehend.
-- EN: Explicit WebSocket transport avoids HTTP polling when WebSockets are forced. Practical test pending.
+- DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Live-Anzeige im Praxistest bestätigt.
+- EN: Explicit WebSocket transport avoids HTTP polling when WebSockets are forced. Live display confirmed in practical test.
 
 ## 0.2.0 – 2026-11-24
 - DE: Experimentelle Socket.IO-Live-Anbindung ersetzt REST-Abfrage. Weboberfläche erreichbar; Verbindung meldet `xhr poll error` bei erzwungenen WebSockets.
