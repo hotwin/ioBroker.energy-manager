@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.3.0-beta.3",
+    "version": "0.3.0-beta.4",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,6 +25,10 @@
     },
     "wwwDontUpload": false,
     "news": {
+      "0.3.0-beta.4": {
+        "de": "Bearbeitbare Gerätenamen und nachvollziehbare Leistungsdatenpunkte.",
+        "en": "Editable device names and transparent power data sources."
+      },
       "0.3.0-beta.3": {
         "de": "Bearbeitbarer Stromvertrag und Brutto-Arbeitspreis mit aWATTar-HOURLY-Formel.",
         "en": "Editable electricity contract and gross rate with the aWATTar HOURLY formula."

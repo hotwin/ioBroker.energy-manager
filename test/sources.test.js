@@ -46,3 +46,46 @@ test('manual exclusion takes precedence over the Shelly fallback', async () => {
     assert.equal(devices[0].powerW, 25);
     assert.equal(devices[0].exclude, true);
 });
+
+test('keeps live power and aliases distinct for identically named channels in one room', async () => {
+    const first = 'shelly.0.washer.relay0';
+    const second = 'shelly.0.dryer.relay0';
+    const measurement = unit => ({ type: 'state', common: { type: 'number', unit } });
+    const objects = {
+        'enum.functions.meter': { type: 'enum', common: { name: 'Strommessung', members: [first, second] } },
+        'enum.rooms.utility': { type: 'enum', common: { name: 'Utility', members: [first, second] } },
+        'shelly.0.washer': { type: 'device', common: { name: 'Washer' } },
+        'shelly.0.dryer': { type: 'device', common: { name: 'Dryer' } },
+        [first]: { type: 'channel', common: { name: 'Channel Relay0' } },
+        [second]: { type: 'channel', common: { name: 'Channel Relay0' } },
+        [first + '.MaxPower']: measurement('W'),
+        [first + '.Power']: measurement('W'),
+        [second + '.MaxPower']: measurement('W'),
+        [second + '.Power']: measurement('kW'),
+    };
+    const values = { [first + '.Power']: 247, [second + '.Power']: 1.25 };
+    const config = { autoShelly: false, deviceAliases: { ['meter:' + first + '.Power']: 'Laundry' } };
+    const discover = () => readDevices({
+        config: JSON.parse(JSON.stringify(config)),
+        getForeignObjectAsync: async id => objects[id],
+        getForeignObjectsAsync: async (pattern, type) => Object.fromEntries(
+            Object.entries(objects).filter(([id, item]) => id.startsWith(pattern.slice(0, -1)) && item.type === type),
+        ),
+        getForeignStateAsync: async id => ({ val: values[id] ?? 2500 }),
+    });
+    for (let discovery = 0; discovery < 2; discovery++) {
+        const devices = await discover();
+        const washer = devices.find(device => device.id === first);
+        const dryer = devices.find(device => device.id === second);
+        assert.equal(devices.length, 2);
+        assert.equal(washer.name, 'Laundry');
+        assert.equal(washer.room, dryer.room);
+        assert.equal(washer.originalName, 'Washer / Channel Relay0');
+        assert.equal(washer.powerId, first + '.Power');
+        assert.equal(washer.powerUnit, 'W');
+        assert.equal(washer.powerW, 247);
+        assert.equal(dryer.name, 'Dryer / Channel Relay0');
+        assert.equal(dryer.powerUnit, 'kW');
+        assert.equal(dryer.powerW, 1250);
+    }
+});

@@ -73,6 +73,9 @@
         progress { width: 100%; accent-color: var(--teal); }
         .note { margin-block: 12px; }
         [hidden] { display: none !important; }
+        #aliasDialog { max-width: min(90vw, 520px); }
+        #aliasForm button { font: inherit; margin: 8px 4px 0 0; }
+        #deviceRows small { display: block; overflow-wrap: anywhere; }
     </style>
     <script defer src="dashboard.js"></script>
 </head>
@@ -94,6 +97,17 @@
             <tbody id="deviceRows"></tbody>
         </table></div>
     </section>
+    <dialog id="aliasDialog" aria-labelledby="aliasTitle" class="surface">
+        <form id="aliasForm">
+            <h2 id="aliasTitle" data-text="editName"></h2>
+            <p class="note" id="originalDeviceName"></p>
+            <label><span data-text="device"></span> <input id="aliasInput" maxlength="120" required></label>
+            <p id="aliasStatus" class="note" role="status"></p>
+            <button type="submit" data-text="saveName"></button>
+            <button id="resetAlias" type="button" data-text="resetName"></button>
+            <button id="cancelAlias" type="button" data-text="cancelName"></button>
+        </form>
+    </dialog>
     <section id="rooms" data-page hidden>
         <h2 data-text="rooms"></h2><div id="roomCards" class="grid"></div>
     </section>

@@ -2,6 +2,8 @@
 
 const translations = {
     en: {
+        editName: 'Edit device name', saveName: 'Save', resetName: 'Restore original name', cancelName: 'Cancel',
+        aliasError: 'Could not save the device name. Check your instance configuration permissions.',
         overview: 'Overview', devices: 'Devices', rooms: 'Rooms', statistics: 'Consumption statistics',
         prices: 'Electricity prices', contract: 'Electricity contract', updates: 'Updates', device: 'Device',
         room: 'Room', power: 'Current power', meter: 'Meter reading', source: 'Source', market: 'Market price',
@@ -43,6 +45,8 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        editName: 'Gerätenamen bearbeiten', saveName: 'Speichern', resetName: 'Originalnamen wiederherstellen', cancelName: 'Abbrechen',
+        aliasError: 'Der Gerätename konnte nicht gespeichert werden. Prüfe deine Berechtigung für die Instanzkonfiguration.',
         overview: 'Übersicht', devices: 'Geräte', rooms: 'Räume', statistics: 'Verbrauchsstatistik',
         prices: 'Strompreise', contract: 'Stromvertrag', updates: 'Updates', device: 'Gerät', room: 'Raum',
         power: 'Aktuelle Leistung', meter: 'Zählerstand', source: 'Quelle', market: 'Börsenpreis',
@@ -161,7 +165,12 @@ function cards(target, entries) {
 function rows(target, records, empty, columns) {
     const result = records.map(record => {
         const row = node('tr');
-        row.append(...record.map(value => node('td', value)));
+        row.append(...record.map(value => {
+            const cell = node('td');
+            if (value instanceof Node) cell.append(value);
+            else cell.textContent = value ?? '';
+            return cell;
+        }));
         return row;
     });
     if (!result.length) {
@@ -225,12 +234,13 @@ function render() {
         return tile;
     }));
     rows('deviceRows', (data.devices || []).map(device => [
-        device.name || device.id, device.room || words.unassigned, format(device.powerW, 'W'),
+        deviceLabel(device), device.room || words.unassigned, powerLabel(device),
         format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
     ]), words.noDevices, 5);
     cards('roomCards', (data.rooms || []).map(room => [
         room.name === 'Ohne Raum' ? words.unassigned : room.name || words.unassigned,
-        format(room.powerW, 'W'), room.devices + ' · ' + words.devices,
+        format(room.powerW, 'W'), (data.devices || []).filter(device => device.room === room.name).map(device => device.name || device.id).join(', ') ||
+            room.devices + ' · ' + words.devices,
     ]));
     if (!data.rooms?.length) el('roomCards').append(node('p', words.noDevices));
     rows('priceRows', (data.prices || []).filter(price => price.end_timestamp > Date.now()).map(price => [
@@ -260,6 +270,64 @@ let stateId;
 let connected = false;
 let subscribed = false;
 let lastAccessToken;
+
+const aliasDialog = el('aliasDialog');
+const aliasForm = el('aliasForm');
+const aliasInput = el('aliasInput');
+const aliasStatus = el('aliasStatus');
+let editingAlias;
+
+function deviceLabel(device) {
+    const label = node('span', device.name || device.id);
+    if (adminTab && connected && device.aliasKey) {
+        const edit = node('button', '✎');
+        edit.type = 'button';
+        edit.title = words.editName;
+        edit.setAttribute('aria-label', words.editName + ' · ' + label.textContent);
+        edit.addEventListener('click', () => {
+            editingAlias = { device, instance: instanceSelect.value };
+            aliasInput.value = device.name || '';
+            el('originalDeviceName').textContent = device.originalName || device.id;
+            aliasStatus.textContent = '';
+            aliasDialog.showModal();
+            aliasInput.select();
+        });
+        label.append(' ', edit);
+    }
+    return label;
+}
+
+function powerLabel(device) {
+    const label = node('span', format(device.powerW, 'W'));
+    if (device.powerId) label.append(node('small', [device.powerId, device.powerUnit].filter(Boolean).join(' · ')));
+    return label;
+}
+
+async function saveAlias(value) {
+    if (!editingAlias || !adminTab || !connected || editingAlias.instance !== instanceSelect.value) return;
+    const { device, instance } = editingAlias;
+    const buttons = [...aliasForm.querySelectorAll('button')];
+    for (const button of buttons) button.disabled = true;
+    aliasStatus.textContent = '';
+    try {
+        await contractRpc('extendObject', 'system.adapter.energy-manager.' + instance, {
+            native: { deviceAliases: { [device.aliasKey]: value } },
+        });
+        aliasDialog.close();
+        read();
+    } catch {
+        aliasStatus.textContent = words.aliasError;
+    } finally {
+        for (const button of buttons) button.disabled = false;
+    }
+}
+
+aliasForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (aliasInput.value.trim()) void saveAlias(aliasInput.value.trim());
+});
+el('resetAlias').addEventListener('click', () => void saveAlias(''));
+el('cancelAlias').addEventListener('click', () => aliasDialog.close());
 
 const contractForm = el('contractForm');
 const contractFields = contractForm.querySelector('fieldset');
@@ -400,6 +468,7 @@ function read() {
 }
 
 function selectInstance() {
+    if (aliasDialog.open) aliasDialog.close();
     if (subscribed) socket.emit('unsubscribe', stateId);
     stateId = 'energy-manager.' + instanceSelect.value + '.snapshot';
     subscribed = false;

@@ -1,5 +1,10 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.4 – 2026-11-24
+
+- DE: Gerätenamen im Admin speichern. Die Geräteliste zeigt Leistungsdatenpunkte und Einheiten an und bevorzugt aktuelle Messwerte.
+- EN: Store device aliases in Admin. The device list shows power state IDs and units and prefers live measurements.
+
 ## 0.3.0-beta.3 – 2026-11-24
 
 ### Deutsch
