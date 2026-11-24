@@ -1,0 +1,34 @@
+{
+  "common": {
+    "name": "energy-manager",
+    "version": "0.1.0",
+    "titleLang": {
+      "de": "Energy Manager",
+      "en": "Energy Manager"
+    },
+    "desc": {
+      "de": "Lokale Energieüberwachung",
+      "en": "Local energy monitoring"
+    },
+    "authors": [
+      "hotwin"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "type": "energy",
+    "enabled": true,
+    "materialize": true,
+    "connectionType": "local",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    }
+  },
+  "native": {
+    "markupCt": 0,
+    "vatPercent": 19,
+    "tariffConfigured": false
+  },
+  "instanceObjects": []
+}
