@@ -42,13 +42,16 @@ class EnergyManager extends utils.Adapter {
   try{if(!this.prices||Date.now()-this.priceTime>900000){const r=await fetch('https://api.awattar.de/v1/marketdata',{signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('HTTP '+r.status);this.prices=(await r.json()).data;this.priceTime=Date.now();}prices=this.prices;}catch(e){this.log.warn('aWATTar: '+e.message);}
   const now=Date.now(), current=prices?.find(p=>p.start_timestamp<=now&&now<p.end_timestamp);
   const marketCt=current?current.marketprice/10:null;
-  const tariffCt=this.config.tariffConfigured&&marketCt!==null?(marketCt+Number(this.config.markupCt))*(1+Number(this.config.vatPercent)/100):null;
+  const extraCt=['markupCt','electricityTaxCt','networkCt','concessionCt','leviesCt'].reduce((sum,k)=>sum+Number(this.config[k]||0),0);
+  const fixedMonthlyGross=(Number(this.config.baseMonthly||0)+Number(this.config.meterAnnual||0)/12)*(1+Number(this.config.vatPercent)/100);
+  const contract={extraCt,fixedMonthlyGross,advanceMonthly:Number(this.config.advanceMonthly||0),start:this.config.contractStart||null,configured:!!this.config.tariffConfigured};
+  const tariffCt=this.config.tariffConfigured&&marketCt!==null?(marketCt+extraCt)*(1+Number(this.config.vatPercent)/100):null;
   const totalPower=devices.reduce((s,d)=>s+(d.exclude?0:d.powerW||0),0);
   const ledger=accumulate(this.ledger,devices,now,tariffCt);
   await this.setStateAsync('consumption',JSON.stringify(ledger),true);
   this.ledger=ledger;
   await this.setStateAsync('totalPower',totalPower,true);
-  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days}),true);
+  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days,contract}),true);
  }
 }
 if(require.main===module)new EnergyManager();else module.exports=options=>new EnergyManager(options);
