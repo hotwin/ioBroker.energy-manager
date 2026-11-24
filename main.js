@@ -59,6 +59,14 @@ class EnergyManager extends utils.Adapter {
   const ledger=accumulate(this.ledger,devices,now,tariffCt);
   await this.setStateAsync('consumption',JSON.stringify(ledger),true);
   this.ledger=ledger;
+  const today=ledger.days[ledger.day];
+  for(const [id,name,value] of [
+   ['displayPower','Aktuelle Leistung',totalPower>=1000?(totalPower/1000).toFixed(2)+' kW':totalPower.toFixed(1)+' W'],
+   ['displayToday','Verbrauch heute',today.kWh.toFixed(3)+' kWh'],
+   ['displayMarket','Börsenpreis',marketCt===null?'Nicht verfügbar':marketCt.toFixed(2)+' ct/kWh'],
+   ['displayTariff','Vertragstarif',tariffCt===null?'Nicht konfiguriert':tariffCt.toFixed(2)+' ct/kWh'],
+   ['displayCost','Erfasste Teilkosten',today.pricedKWh>0?today.costEUR.toFixed(2)+' EUR':'Nicht verfügbar']
+  ]){await this.setObjectNotExistsAsync(id,{type:'state',common:{name,type:'string',role:'text',read:true,write:false},native:{}});await this.setStateAsync(id,value,true);}
   await this.setStateAsync('totalPower',totalPower,true);
   await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days,contract,rooms}),true);
  }
