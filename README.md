@@ -1,5 +1,7 @@
 # ioBroker Energy Manager
 
+**Deutsch** | [English](README.en.md)
+
 Lokales Energiemanagement für ioBroker mit Shelly und dynamischen Stromtarifen.
 
 **Status: 0.1.0 – in Entwicklung. Noch nicht installationsbereit oder auf ioBroker getestet.**
