@@ -10,6 +10,7 @@ test('Strommessung accepts states and channels across vendors and groups room as
         'enum.functions.meter': { common: { name: { de: 'Strommessung' }, members: ['zigbee.0.socket', 'mqtt.0.socket.total'] } },
         'enum.rooms.office': { common: { name: 'Office', members: ['zigbee.0.socket.power'] } },
         'zigbee.0.socket': { type: 'device', common: { name: 'Socket' } },
+        'zigbee.0.socket.maxPower': state('W'),
         'zigbee.0.socket.power': state('kW'),
         'zigbee.0.socket.total': state('Wh'),
         'zigbee.0.socket.today': state('kWh'),
@@ -28,6 +29,7 @@ test('Strommessung accepts states and channels across vendors and groups room as
     const devices = await readDevices(adapter);
     assert.equal(devices.length, 2);
     assert.equal(devices[0].energyKWh, 1500);
+    assert.equal(devices[1].powerId, 'zigbee.0.socket.power');
     assert.equal(devices[1].powerW, 1250);
     assert.equal(devices[1].energyKWh, 1.5);
     assert.equal(devices[1].room, 'Office');

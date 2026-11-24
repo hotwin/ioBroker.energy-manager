@@ -62,6 +62,10 @@
         th, td:not(:first-child) { white-space: nowrap; }
         td:first-child { min-width: 130px; overflow-wrap: anywhere; }
         .stats-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        dialog { color: inherit; border: 1px solid var(--line); border-radius: 14px; max-width: calc(100% - 24px); }
+        dialog input { display: block; width: 100%; margin: 8px 0 12px; font: inherit; }
+        dialog button, .rename-device { font: inherit; cursor: pointer; }
+        .rename-device { margin-inline-start: 8px; }
         select { padding: 6px; font: inherit; max-width: 100%; }
         #statsBars { display: grid; gap: 5px; max-height: 520px; overflow: auto; }
         .stat-row { display: grid; grid-template-columns: 85px minmax(20px, 1fr) 95px; gap: 6px; align-items: center; }
@@ -88,6 +92,16 @@
             <thead><tr><th data-text="device"></th><th data-text="room"></th><th data-text="power"></th><th data-text="meter"></th><th data-text="source"></th></tr></thead>
             <tbody id="deviceRows"></tbody>
         </table></div>
+        <dialog id="renameDialog">
+            <form id="renameForm">
+                <label><span data-text="renameDevice"></span><input id="renameName" maxlength="120" autofocus></label>
+                <p class="note" data-text="renameHint"></p>
+                <p id="renameStatus" class="note" role="status"></p>
+                <button type="submit" data-text="saveName"></button>
+                <button type="button" id="cancelRename" data-text="cancelRename"></button>
+            </form>
+        </dialog>
+        <p id="deviceStatus" class="note" role="status"></p>
     </section>
     <section id="rooms" data-page hidden>
         <h2 data-text="rooms"></h2><div id="roomCards" class="grid"></div>
