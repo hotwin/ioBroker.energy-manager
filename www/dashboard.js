@@ -2,6 +2,13 @@
 
 const translations = {
     en: {
+        energyFlow: 'Energy flow', capturedEnergy: 'Recorded energy', yesterday: 'Yesterday',
+        hourlyUsage: 'Hourly consumption', weeklyCosts: 'Daily costs · last 7 days',
+        priceHistory: 'Electricity price history',
+        priceChartLegend: 'Blue · spot price. Green · gross energy rate. ct/kWh.',
+        flowDetail: 'Rooms and devices', chartsNoData: 'No measurements for this period.',
+        flowCoverage: 'Device history is available from the start of recording in this version.',
+        missingMeasurement: 'No measurement', missingPrice: 'No cost recorded',
         editName: 'Edit device name', saveName: 'Save', resetName: 'Restore original name', cancelName: 'Cancel',
         aliasError: 'Could not save the device name. Check your instance configuration permissions.',
         overview: 'Overview', devices: 'Devices', rooms: 'Rooms', statistics: 'Consumption statistics',
@@ -45,6 +52,13 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        energyFlow: 'Energiefluss', capturedEnergy: 'Erfasste Energie', yesterday: 'Gestern',
+        hourlyUsage: 'Stundenverbrauch', weeklyCosts: 'Tageskosten · letzte 7 Tage',
+        priceHistory: 'Strompreisverlauf',
+        priceChartLegend: 'Blau · Börsenpreis. Grün · Brutto-Arbeitspreis. ct/kWh.',
+        flowDetail: 'Räume und Geräte', chartsNoData: 'Für diesen Zeitraum liegen keine Messwerte vor.',
+        flowCoverage: 'Die Gerätehistorie beginnt mit der Aufzeichnung in dieser Version.',
+        missingMeasurement: 'Kein Messwert', missingPrice: 'Keine Kosten erfasst',
         editName: 'Gerätenamen bearbeiten', saveName: 'Speichern', resetName: 'Originalnamen wiederherstellen', cancelName: 'Abbrechen',
         aliasError: 'Der Gerätename konnte nicht gespeichert werden. Prüfe deine Berechtigung für die Instanzkonfiguration.',
         overview: 'Übersicht', devices: 'Geräte', rooms: 'Räume', statistics: 'Verbrauchsstatistik',
@@ -94,6 +108,8 @@ const params = new URLSearchParams(location.search);
 const adminTab = location.pathname.endsWith('/tab.html');
 const pages = ['overview', 'devices', 'rooms', 'statistics', 'prices', 'contract', 'updates'];
 const periods = ['today', 'seven', 'month', 'quarter', 'year'];
+const flowPeriods = ['today', 'yesterday', 'seven', 'month', 'year'];
+const hourMs = 3600000;
 let language = 'en';
 let words = translations.en;
 let snapshot;
@@ -149,6 +165,9 @@ function translate() {
     const period = el('period').value || 'today';
     el('period').replaceChildren(...periods.map(key => new Option(words[key], key)));
     el('period').value = period;
+    const flowPeriod = el('flowPeriod').value || 'today';
+    el('flowPeriod').replaceChildren(...flowPeriods.map(key => new Option(words[key], key)));
+    el('flowPeriod').value = flowPeriod;
     selectPage();
     render();
 }
@@ -183,17 +202,22 @@ function rows(target, records, empty, columns) {
     el(target).replaceChildren(...result);
 }
 
-function renderStats() {
-    const today = dayKey(Date.now());
-    const start = new Date(today + 'T12:00:00Z');
-    switch (el('period').value) {
+function periodBounds(period, now) {
+    const end = new Date(dayKey(now) + 'T12:00:00Z');
+    if (period === 'yesterday') end.setUTCDate(end.getUTCDate() - 1);
+    const start = new Date(end);
+    switch (period) {
         case 'seven': start.setUTCDate(start.getUTCDate() - 6); break;
         case 'month': start.setUTCDate(1); break;
         case 'quarter': start.setUTCMonth(Math.floor(start.getUTCMonth() / 3) * 3, 1); break;
         case 'year': start.setUTCMonth(0, 1); break;
     }
-    const from = start.toISOString().slice(0, 10);
-    const days = Object.entries(snapshot?.daily || {}).filter(([key]) => key >= from && key <= today).sort();
+    return [start.toISOString().slice(0, 10), end.toISOString().slice(0, 10)];
+}
+
+function renderStats() {
+    const [from, through] = periodBounds(el('period').value, Date.now());
+    const days = Object.entries(snapshot?.daily || {}).filter(([key]) => key >= from && key <= through).sort();
     const total = key => days.reduce((sum, [, day]) => sum + (day[key] || 0), 0);
     const priced = total('pricedKWh');
     el('statsTotal').textContent = days.length ? [
@@ -210,6 +234,180 @@ function renderStats() {
         row.append(node('small', key), progress, node('small', format(day.kWh, 'kWh', 3)));
         return row;
     }));
+}
+
+
+function renderFlow(from, through) {
+    const target = el('flowChart');
+    const names = new Map((snapshot?.devices || []).map(device => [device.aliasKey || device.id, device.name]));
+    const rooms = new Map();
+    for (const [day, records] of Object.entries(snapshot?.deviceDays || {})) {
+        if (day < from || day > through) continue;
+        for (const [id, record] of Object.entries(records)) {
+            if (!Number.isFinite(record.kWh) || record.kWh <= 0) continue;
+            const devices = rooms.get(record.room) || new Map();
+            const device = devices.get(id) || { name: names.get(id) || record.name, kWh: 0 };
+            device.kWh += record.kWh;
+            devices.set(id, device);
+            rooms.set(record.room, devices);
+        }
+    }
+    const groups = [...rooms].map(([name, devices]) => {
+        const entries = [...devices.values()].sort((a, b) => b.kWh - a.kWh);
+        return { name: name || words.unassigned, devices: entries, kWh: entries.reduce((sum, item) => sum + item.kWh, 0) };
+    }).sort((a, b) => b.kWh - a.kWh);
+    const total = groups.reduce((sum, room) => sum + room.kWh, 0);
+    if (!total) {
+        target.replaceChildren(node('p', words.chartsNoData), node('p', words.flowCoverage, 'note'));
+        return;
+    }
+
+    const describe = item => item.name + ' · ' + format(item.kWh, 'kWh', 3) + ' · ' + format(item.kWh / total * 100, '%', 1);
+    const canvas = node('canvas');
+    canvas.width = 900;
+    canvas.height = Math.max(180, 44 + groups.reduce((sum, room) => sum + room.devices.length * 30, 0));
+    canvas.setAttribute('aria-hidden', 'true');
+    const ctx = canvas.getContext('2d');
+    const deviceCount = groups.reduce((sum, room) => sum + room.devices.length, 0);
+    const scale = (canvas.height - 54 - deviceCount * 16) / total;
+    ctx.font = '13px system-ui';
+    ctx.textBaseline = 'middle';
+    const ribbon = (x1, y1, x2, y2, height, color) => {
+        const mid = (x1 + x2) / 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.bezierCurveTo(mid, y1, mid, y2, x2, y2);
+        ctx.lineTo(x2, y2 + height);
+        ctx.bezierCurveTo(mid, y2 + height, mid, y1 + height, x1, y1 + height);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+    };
+    const palette = ['#08796e', '#4169a7', '#925e25', '#83538d'];
+    ctx.fillStyle = '#183135';
+    ctx.fillText(words.capturedEnergy + ' · ' + format(total, 'kWh', 3), 12, 15, 245);
+    ctx.fillRect(15, 40, 10, total * scale);
+    const detail = node('details', null, 'flow-detail');
+    const list = node('ul');
+    detail.append(node('summary', words.flowDetail), list);
+    let sourceY = 40;
+    let roomY = 40;
+    let deviceY = 40;
+    groups.forEach((room, index) => {
+        const height = room.kWh * scale;
+        const color = palette[index % palette.length];
+        const roomLabelY = roomY + height / 2 + 6;
+        ribbon(25, sourceY, 300, roomY, height, color + '40');
+        ctx.fillStyle = color;
+        ctx.fillRect(300, roomY, 10, height);
+        const item = node('li', describe(room));
+        const children = node('ul');
+        item.append(children);
+        list.append(item);
+        let nextRoomY = roomY;
+        for (const device of room.devices) {
+            const width = device.kWh * scale;
+            ribbon(310, nextRoomY, 575, deviceY, width, color + '55');
+            ctx.fillStyle = color;
+            ctx.fillRect(575, deviceY, 10, width);
+            ctx.fillStyle = '#183135';
+            ctx.fillText(describe(device), 594, deviceY + 8, 296);
+            children.append(node('li', describe(device)));
+            nextRoomY += width;
+            deviceY += 16 + width;
+        }
+        ctx.fillStyle = '#183135';
+        ctx.fillText(describe(room), 320, Math.min(canvas.height - 10, roomLabelY), 245);
+        sourceY += height;
+        roomY = deviceY;
+    });
+    const wrapper = node('div', null, 'flow-surface');
+    wrapper.append(canvas);
+    target.replaceChildren(wrapper, detail, node('p', words.flowCoverage, 'note'));
+}
+
+function renderHistoryBars(id, points, unit, missing) {
+    const peak = Math.max(0.001, ...points.map(([, value]) => Math.abs(value ?? 0)));
+    el(id).replaceChildren(...points.map(([label, value]) => {
+        const row = node('div', null, 'history-row');
+        const middle = Number.isFinite(value) ? node('progress') : node('small', missing);
+        if (Number.isFinite(value)) {
+            middle.max = peak;
+            middle.value = Math.abs(value);
+            middle.setAttribute('aria-label', label + ' · ' + format(value, unit, 3));
+        }
+        row.append(node('small', label), middle, node('small', format(value, unit, 3)));
+        return row;
+    }));
+}
+
+function renderPriceHistory(now) {
+    const canvas = el('priceChart');
+    const status = el('priceHistoryStatus');
+    const start = now - 24 * hourMs;
+    const points = (snapshot?.priceHistory || []).filter(item => item.end_timestamp > start && item.start_timestamp < now);
+    canvas.hidden = !points.length;
+    status.textContent = points.length ? dateTime(start) + ' – ' + dateTime(now) : words.chartsNoData;
+    if (!points.length) return;
+    canvas.setAttribute('aria-label', words.priceHistory + '. ' + words.priceChartLegend + ' ' + status.textContent);
+    const ctx = canvas.getContext('2d');
+    const values = points.flatMap(item => [item.marketprice / 10, item.tariffCt]).filter(Number.isFinite);
+    const low = Math.min(0, ...values);
+    const high = Math.max(low + 1, ...values);
+    const x = time => 60 + (time - start) / (now - start) * (canvas.width - 75);
+    const y = rate => canvas.height - 20 - (rate - low) / (high - low) * (canvas.height - 40);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '14px system-ui';
+    for (let step = 0; step <= 4; step++) {
+        const rate = low + (high - low) * step / 4;
+        ctx.strokeStyle = '#d6e5e3';
+        ctx.beginPath();
+        ctx.moveTo(60, y(rate));
+        ctx.lineTo(canvas.width - 15, y(rate));
+        ctx.stroke();
+        ctx.fillStyle = '#183135';
+        ctx.fillText(rate.toFixed(1), 4, y(rate) + 4);
+    }
+    for (const [color, value] of [['#4169a7', item => item.marketprice / 10], ['#08796e', item => item.tariffCt]]) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        let previous;
+        for (const item of [...points].sort((a, b) => a.start_timestamp - b.start_timestamp)) {
+            const rate = value(item);
+            if (!Number.isFinite(rate)) continue;
+            const left = x(Math.max(start, item.start_timestamp));
+            if (previous === item.start_timestamp) ctx.lineTo(left, y(rate));
+            else ctx.moveTo(left, y(rate));
+            ctx.lineTo(x(Math.min(now, item.end_timestamp)), y(rate));
+            previous = item.end_timestamp;
+        }
+        ctx.stroke();
+    }
+}
+
+function renderOverviewCharts() {
+    const now = Date.now();
+    const period = el('flowPeriod').value;
+    renderFlow(...periodBounds(period, now));
+    const hourDay = periodBounds(period === 'yesterday' ? 'yesterday' : 'today', now)[1];
+    const utcMidday = Date.parse(hourDay + 'T12:00:00Z');
+    const formatHour = new Intl.DateTimeFormat(language, {
+        timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
+    });
+    const hours = Array.from({ length: 28 }, (_, index) => utcMidday + (index - 14) * hourMs)
+        .filter(time => time <= now && dayKey(time) === hourDay)
+        .map(time => [formatHour.format(time), snapshot?.hourly?.[time]]);
+    const [weekStart] = periodBounds('seven', now);
+    const formatDay = new Intl.DateTimeFormat(language, { weekday: 'short', month: 'numeric', day: 'numeric', timeZone: 'UTC' });
+    const costs = Array.from({ length: 7 }, (_, index) => {
+        const date = new Date(Date.parse(weekStart + 'T12:00:00Z') + index * 86400000);
+        const day = snapshot?.daily?.[date.toISOString().slice(0, 10)];
+        return [formatDay.format(date), day?.pricedKWh > 0 ? day.costEUR : null];
+    });
+    renderHistoryBars('hourChart', hours, 'kWh', words.missingMeasurement);
+    renderHistoryBars('costChart', costs, '€', words.missingPrice);
+    renderPriceHistory(now);
 }
 
 function render() {
@@ -259,7 +457,10 @@ function render() {
     ]);
     el('installed').textContent = words.installed + ' · ' + (data.version || '–');
     renderStats();
+    renderOverviewCharts();
 }
+
+el('flowPeriod').addEventListener('change', renderOverviewCharts);
 
 const instanceSelect = el('instance');
 const given = params.get('instance') ?? location.search.slice(1);

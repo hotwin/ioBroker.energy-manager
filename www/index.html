@@ -76,6 +76,16 @@
         #aliasDialog { max-width: min(90vw, 520px); }
         #aliasForm button { font: inherit; margin: 8px 4px 0 0; }
         #deviceRows small { display: block; overflow-wrap: anywhere; }
+        .overview-chart, .chart-grid { margin-top: 16px; }
+        .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
+        .flow-surface { overflow: auto; }
+        .flow-surface canvas { width: 100%; min-width: 620px; display: block; }
+        #priceChart { width: 100%; display: block; }
+        #priceChart[hidden] { display: none; }
+        .flow-detail summary { cursor: pointer; }
+        .history-row { display: grid; grid-template-columns: 7.5em minmax(20px, 1fr) 6.5em; gap: 8px; align-items: center; }
+        .history-row progress { width: 100%; accent-color: var(--teal); }
+        .history-row small:last-child { text-align: end; }
     </style>
     <script defer src="dashboard.js"></script>
 </head>
@@ -89,6 +99,23 @@
     <section id="overview" data-page>
         <h2 data-text="overview"></h2><div id="summary" class="tile-grid"></div>
         <p class="note" data-text="coverage"></p>
+        <div class="surface overview-chart">
+            <div class="stats-header">
+                <h2 data-text="energyFlow"></h2>
+                <label><span data-text="period"></span> <select id="flowPeriod"></select></label>
+            </div>
+            <div id="flowChart"></div>
+        </div>
+        <div class="chart-grid">
+            <div class="surface"><h2 data-text="hourlyUsage"></h2><div id="hourChart"></div></div>
+            <div class="surface"><h2 data-text="weeklyCosts"></h2><div id="costChart"></div></div>
+        </div>
+        <div class="surface overview-chart">
+            <h2 data-text="priceHistory"></h2>
+            <p class="note" data-text="priceChartLegend"></p>
+            <canvas id="priceChart" width="900" height="220" role="img"></canvas>
+            <p id="priceHistoryStatus" class="note"></p>
+        </div>
     </section>
     <section id="devices" data-page hidden>
         <h2 data-text="devices"></h2><p class="note" data-text="deviceHint"></p>

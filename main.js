@@ -101,11 +101,11 @@ class EnergyManager extends utils.Adapter {
         const priceDay = new Intl.DateTimeFormat('sv-SE', {
             timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
         });
-        const prices = (this.prices || []).filter(item => item.end_timestamp > now).map(item => ({
+        const prices = (this.prices || []).map(item => ({
             ...item,
             tariffCt: calculateTariff(this.config, item.marketprice / 10, priceDay.format(item.start_timestamp)).tariffCt,
         }));
-        const current = prices.find(item => item.start_timestamp <= now);
+        const current = prices.find(item => item.start_timestamp <= now && item.end_timestamp > now);
         const marketCt = current ? current.marketprice / 10 : null;
         const { contract, tariffCt } = calculateTariff(this.config, marketCt, accumulate.localDay(now));
         const rooms = new Map();
@@ -120,6 +120,13 @@ class EnergyManager extends utils.Adapter {
             rooms.set(device.room, room);
         }
         const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', current?.start_timestamp ?? null);
+        const priceHistory = new Map(Object.entries(this.ledger?.priceHistory || {}));
+        for (const item of prices) {
+            const key = String(item.start_timestamp);
+            if (item.end_timestamp > now || !priceHistory.has(key)) priceHistory.set(key, item);
+        }
+        const cutoff = now - 7 * 86400000;
+        ledger.priceHistory = Object.fromEntries([...priceHistory].filter(([, item]) => item.end_timestamp > cutoff));
         await this.setStateAsync('consumption', JSON.stringify(ledger), true);
         this.ledger = ledger;
         const today = ledger.days[ledger.day];
@@ -131,8 +138,10 @@ class EnergyManager extends utils.Adapter {
             displayTariff: show(tariffCt, 'ct/kWh'),
             displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
             totalPower,
-            snapshot: JSON.stringify({ ts: now, version, devices, totalPower, marketCt, tariffCt, prices,
-                daily: ledger.days, contract, rooms: [...rooms.values()] }),
+            snapshot: JSON.stringify({ ts: now, version, devices, totalPower, marketCt, tariffCt,
+                prices: prices.filter(item => item.end_timestamp > now),
+                daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
+                priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
     }
