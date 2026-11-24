@@ -23,7 +23,7 @@
     "dataSource": "poll",
     "adminUI": {
       "config": "json",
-      "tab": "html"
+      "tab": "json"
     },
     "wwwDontUpload": false,
     "localLink": "%web_protocol%://%ip%:%web_port%/energy-manager/index.html",
@@ -43,7 +43,8 @@
         "en": "Energy Manager"
       },
       "singleton": true,
-      "icon": "energy.svg"
+      "icon": "energy.svg",
+      "link": "jsonTab.json"
     }
   },
   "native": {
