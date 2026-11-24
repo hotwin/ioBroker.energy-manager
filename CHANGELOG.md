@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Helles responsives Dashboard mit überarbeiteten Kacheln, Navigation, Tabellen und Preisübersicht; visuelle Prüfung offen.
+- EN: Refreshed responsive light dashboard, cards, navigation, tables and price overview; visual review pending.
 - DE: Automatische Leistungsanzeige in kW ab 1.000 W in Web und Admin.
 - EN: Automatically display power in kW from 1,000 W in web and Admin.
 - DE: Admin unterstützt auch Socket-Client-Objekte mit io.connect statt ausschließlich Funktionsaufruf.
