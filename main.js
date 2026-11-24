@@ -12,6 +12,8 @@ class EnergyManager extends utils.Adapter {
  }
  async collect(){
   const objects=await this.getForeignObjectsAsync('shelly.*','state');
+  const enums=await this.getForeignObjectsAsync('enum.*','enum');
+  const energyMembers=Object.entries(enums||{}).filter(([id,o])=>{const n=o.common?.name;return /strommessung|energiemessung|stromverbrauch|energy measurement/i.test(id+' '+(typeof n==='string'?n:JSON.stringify(n||{})));}).flatMap(([,o])=>o.common.members||[]);
   const devices=[];
   const manual=Array.isArray(this.config.sources)?this.config.sources:[];
   const used=new Set();
@@ -24,6 +26,32 @@ class EnergyManager extends utils.Adapter {
    if(powerW===null&&energyKWh===null)continue;
    used.add(id);if(source.powerId)used.add(source.powerId);if(source.energyId)used.add(source.energyId);
    devices.push({id,name:source.name||id,room:source.room||'',powerW,energyKWh,exclude:!!source.exclude,ts:p?.ts||e?.ts});
+  }
+  const candidates=new Map();
+  for(const member of new Set(energyMembers)){
+   const direct=await this.getForeignObjectAsync(member);
+   const states=direct?.type==='state'?{[member]:direct}:await this.getForeignObjectsAsync(member+'.*','state');
+   for(const [id,o] of Object.entries(states||{})){
+    const unit=o.common?.unit,role=o.common?.role||'';
+    if(!['W','kW','Wh','kWh'].includes(unit)||o.common?.type!=='number')continue;
+    if(!/power|energy|consumption/i.test(role+' '+id))continue;
+    const base=id.slice(0,id.lastIndexOf('.'));
+    const c=candidates.get(base)||{};
+    if(unit==='W'||unit==='kW'){if(!c.power)c.power={id,unit};}
+    else if(!c.energy)c.energy={id,unit};
+    candidates.set(base,c);
+   }
+  }
+  for(const [base,c] of candidates){
+   if([c.power?.id,c.energy?.id].some(id=>id&&used.has(id)))continue;
+   const p=c.power?await this.getForeignStateAsync(c.power.id):null;
+   const e=c.energy?await this.getForeignStateAsync(c.energy.id):null;
+   const powerW=Number.isFinite(p?.val)?p.val*(c.power.unit==='kW'?1000:1):null;
+   const energyKWh=Number.isFinite(e?.val)?e.val/(c.energy.unit==='Wh'?1000:1):null;
+   if(powerW===null&&energyKWh===null)continue;
+   const obj=await this.getForeignObjectAsync(base);const n=obj?.common?.name;
+   devices.push({id:base,name:(typeof n==='string'?n:n?.de||n?.en)||base,powerW,energyKWh,ts:p?.ts||e?.ts,source:'enum'});
+   for(const id of [c.power?.id,c.energy?.id])if(id)used.add(id);
   }
   for(const [id,obj] of Object.entries(objects||{})){
    if(this.config.autoShelly===false||used.has(id)||used.has(id.slice(0,-6)+'.Energy'))continue;
@@ -38,7 +66,6 @@ class EnergyManager extends utils.Adapter {
    const label=o=>typeof o?.common?.name==='string'?o.common.name:o?.common?.name?.de||o?.common?.name?.en;
    devices.push({id:base,name:[label(parent),label(channel)].filter(Boolean).join(' / ')||base,powerW:p.val,energyKWh:e&&typeof e.val==='number'?(eo?.common?.unit==='Wh'?e.val/1000:eo?.common?.unit==='kWh'?e.val:null):null,ts:p.ts});
   }
-  const enums=await this.getForeignObjectsAsync('enum.*','enum');
   const label=o=>typeof o.common.name==='string'?o.common.name:o.common.name?.de||o.common.name?.en||o._id;
   for(const d of devices){
    const matches=prefix=>Object.entries(enums||{}).filter(([id,o])=>id.startsWith(prefix)&&Array.isArray(o.common.members)&&o.common.members.some(member=>d.id===member||d.id.startsWith(member+'.')||d.id+'.Power'===member||d.id+'.Energy'===member)).map(([id,o])=>({id,name:label(o)}));
