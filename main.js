@@ -1,14 +1,17 @@
 const accumulate = require('./lib/consumption');
 const utils = require('@iobroker/adapter-core');
 class EnergyManager extends utils.Adapter {
- constructor(options={}) { super({...options,name:'energy-manager'}); this.on('ready',()=>this.start()); this.on('unload',cb=>{clearInterval(this.timer);cb();}); }
+ constructor(options={}) { super({...options,name:'energy-manager'}); this.on('ready',()=>this.start()); this.on('unload',cb=>{if(this.timer)this.clearInterval(this.timer);cb();}); }
  async start(){
+  await this.setObjectNotExistsAsync('info',{type:'channel',common:{name:'Adapter information'},native:{}});
+  await this.setObjectNotExistsAsync('info.connection',{type:'state',common:{name:'Local source access',type:'boolean',role:'indicator.connected',read:true,write:false},native:{}});
+  await this.setStateAsync('info.connection',true,true);
   await this.setObjectNotExistsAsync('snapshot',{type:'state',common:{name:'Energy snapshot',type:'string',role:'json',read:true,write:false},native:{}});
   await this.setObjectNotExistsAsync('totalPower',{type:'state',common:{name:'Measured power',type:'number',role:'value.power',unit:'W',read:true,write:false},native:{}});
   await this.setObjectNotExistsAsync('consumption',{type:'state',common:{name:'Daily consumption ledger',type:'string',role:'json',read:true,write:false},native:{}});
   try{this.ledger=JSON.parse((await this.getStateAsync('consumption'))?.val||'null');}catch{this.ledger=null;}
   const poll=async()=>{if(this.busy)return;this.busy=true;try{await this.collect();}catch(e){this.log.warn(String(e));}finally{this.busy=false;}};
-  this.timer=setInterval(poll,60000);await poll();
+  this.timer=this.setInterval(poll,60000);await poll();
  }
  async collect(){
   const objects=await this.getForeignObjectsAsync('shelly.*','state');
