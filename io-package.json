@@ -47,9 +47,10 @@
         "en": "Energy Manager"
       },
       "singleton": true,
-      "icon": "energy.svg",
+      "icon": "energy-manager.png",
       "link": "jsonTab.json"
-    }
+    },
+    "icon": "energy-manager.png"
   },
   "native": {
     "markupCt": 0,
