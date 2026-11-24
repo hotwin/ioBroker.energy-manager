@@ -14,6 +14,62 @@
       "type": "number",
       "label": "Mehrwertsteuer (%)",
       "min": 0
+    },
+    "autoShelly": {
+      "type": "checkbox",
+      "label": {
+        "de": "Shelly automatisch erkennen",
+        "en": "Automatically discover Shelly"
+      }
+    },
+    "sources": {
+      "type": "table",
+      "label": {
+        "de": "Manuelle Energiequellen",
+        "en": "Manual energy sources"
+      },
+      "items": [
+        {
+          "type": "text",
+          "attr": "name",
+          "title": "Name"
+        },
+        {
+          "type": "text",
+          "attr": "room",
+          "title": "Raum / Room"
+        },
+        {
+          "type": "objectId",
+          "attr": "powerId",
+          "title": "Leistung / Power (W)"
+        },
+        {
+          "type": "objectId",
+          "attr": "energyId",
+          "title": "Energie / Energy"
+        },
+        {
+          "type": "select",
+          "attr": "unit",
+          "title": "Unit",
+          "options": [
+            {
+              "label": "Wh",
+              "value": "Wh"
+            },
+            {
+              "label": "kWh",
+              "value": "kWh"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "attr": "exclude",
+          "title": "Exclude from total"
+        }
+      ]
     }
   }
 }
