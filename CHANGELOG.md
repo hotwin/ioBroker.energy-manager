@@ -1,5 +1,9 @@
 # Changelog / Änderungsprotokoll
 
+## 0.2.1 – 2026-11-24
+- DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Praxistest ausstehend.
+- EN: Explicit WebSocket transport avoids HTTP polling when WebSockets are forced. Practical test pending.
+
 ## 0.2.0 – 2026-11-24
 - DE: Experimentelle Socket.IO-Live-Anbindung ersetzt REST-Abfrage. Weboberfläche erreichbar; Verbindung meldet `xhr poll error` bei erzwungenen WebSockets.
 - EN: Experimental Socket.IO live connection replaces REST polling. Dashboard loads; connection reports `xhr poll error` with forced WebSockets.
