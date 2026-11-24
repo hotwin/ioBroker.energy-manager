@@ -38,6 +38,15 @@ class EnergyManager extends utils.Adapter {
    const label=o=>typeof o?.common?.name==='string'?o.common.name:o?.common?.name?.de||o?.common?.name?.en;
    devices.push({id:base,name:[label(parent),label(channel)].filter(Boolean).join(' / ')||base,powerW:p.val,energyKWh:e&&typeof e.val==='number'?(eo?.common?.unit==='Wh'?e.val/1000:eo?.common?.unit==='kWh'?e.val:null):null,ts:p.ts});
   }
+  const enums=await this.getForeignObjectsAsync('enum.*','enum');
+  const label=o=>typeof o.common.name==='string'?o.common.name:o.common.name?.de||o.common.name?.en||o._id;
+  for(const d of devices){
+   const matches=prefix=>Object.entries(enums||{}).filter(([id,o])=>id.startsWith(prefix)&&Array.isArray(o.common.members)&&o.common.members.some(member=>d.id===member||d.id.startsWith(member+'.')||d.id+'.Power'===member||d.id+'.Energy'===member)).map(([id,o])=>({id,name:label(o)}));
+   const rooms=matches('enum.rooms.');
+   d.room=d.room||rooms[0]?.name||'';
+   d.functions=matches('enum.functions.').map(x=>x.name);
+  }
+  const rooms=Object.values(devices.reduce((acc,d)=>{const name=d.room||'Ohne Raum';const r=acc[name]||(acc[name]={name,powerW:0,devices:0});if(!d.exclude)r.powerW+=d.powerW||0;r.devices++;return acc;},Object.create(null)));
   let prices=null;
   try{if(!this.prices||Date.now()-this.priceTime>900000){const r=await fetch('https://api.awattar.de/v1/marketdata',{signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('HTTP '+r.status);this.prices=(await r.json()).data;this.priceTime=Date.now();}prices=this.prices;}catch(e){this.log.warn('aWATTar: '+e.message);}
   const now=Date.now(), current=prices?.find(p=>p.start_timestamp<=now&&now<p.end_timestamp);
@@ -51,7 +60,7 @@ class EnergyManager extends utils.Adapter {
   await this.setStateAsync('consumption',JSON.stringify(ledger),true);
   this.ledger=ledger;
   await this.setStateAsync('totalPower',totalPower,true);
-  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days,contract}),true);
+  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days,contract,rooms}),true);
  }
 }
 if(require.main===module)new EnergyManager();else module.exports=options=>new EnergyManager(options);
