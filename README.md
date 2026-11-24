@@ -19,10 +19,6 @@ The adapter stores its local history in the `consumption` state and publishes th
 
 ## Changelog
 
-### 0.3.0-beta.7 (2026-11-24)
-
-- Simplified device name editing and moved technical data out of the current power column.
-
 See the [bilingual changelog](CHANGELOG.md) for the full release history.
 
 ## License

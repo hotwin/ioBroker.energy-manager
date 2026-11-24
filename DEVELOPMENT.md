@@ -30,10 +30,19 @@ Repository Checker 5.24.3 completed against `f599957`. Its CLI returned `OK` but
 
 ## First npm beta from GitHub Actions
 
-The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after both validation jobs succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
+The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The workflow is available on the default branch. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after both validation jobs succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
 
-1. After approving the workflow for the default branch, create the GitHub Actions environment `npm-beta`. Allow deployments from the development branch and store a short-lived granular npm token as the environment secret `NPM_TOKEN`. The token must permit creating the unscoped package and have Bypass 2FA enabled. Keep the token in GitHub Secrets.
+1. Create the GitHub Actions environment `npm-beta`. Allow deployments from the development branch and store a short-lived granular npm token as the environment secret `NPM_TOKEN`. The token must permit creating the unscoped package and have Bypass 2FA enabled. Keep the token in GitHub Secrets.
 2. Under **Actions → Test and Release → Run workflow**, select the development branch. First run with the publish checkbox cleared to exercise validation only. Verify the version and select the publish checkbox only when ready to release.
 3. Confirm the published version with `npm view iobroker.energy-manager@beta version`. Revoke the bootstrap token after use. Subsequent releases can use npm Trusted Publishing after configuring an OIDC workflow and its npm package settings.
 
-This workflow prepares a GitHub Actions path. Developer Portal detection and automated version, changelog and Git tag creation still require the ioBroker release script configuration.
+
+## Prepare a beta with the ioBroker release script
+
+The `release` npm script uses the ioBroker Creator plugin configuration (ioBroker, license, manual review). Run it from an up-to-date development branch. The manual npm workflow remains the publication gate. Version tags trigger CI validation without publishing.
+
+1. Add a `## **WORK IN PROGRESS**` section at the top of `CHANGELOG.md` with both German and English entries. Add the localized release summary under `common.news.NEXT` in `io-package.json` so the script can reuse the supplied text without calling a translation service. Commit the release notes.
+2. Run `npm run release prerelease beta -- --dry`. Review the next version and proposed tag. The script updates the npm manifest and lockfile, adapter metadata, and bilingual changelog together during a real release.
+3. When approved, run `npm run release prerelease beta` and review the resulting changes at the manual review prompt. Verify the tagged commit's CI results before requesting publication through the manual workflow above.
+
+The Developer Portal reads the default branch. Its detection can be verified after this configuration is approved for the default branch. Release preparation is scoped to development branches. The portal must support targeting a development branch for execution with this configuration.
