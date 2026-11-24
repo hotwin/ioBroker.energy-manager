@@ -23,7 +23,9 @@
     "dataSource": "poll",
     "adminUI": {
       "config": "json"
-    }
+    },
+    "wwwDontUpload": false,
+    "localLink": "%web_protocol%://%ip%:%web_port%/energy-manager/index.html"
   },
   "native": {
     "markupCt": 0,
