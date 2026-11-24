@@ -4,7 +4,7 @@
 
 Lokales Energiemanagement für ioBroker mit Shelly und dynamischen Stromtarifen.
 
-**Status: 0.1.0 – in Entwicklung. Noch nicht installationsbereit oder auf ioBroker getestet.**
+**Status: 0.2.1 Alpha – Installation, Shelly-Datenerfassung und Live-Dashboard praktisch bestätigt. Version 0.3.0 in Entwicklung.**
 
 ![Dashboard-Designvorschau mit Beispieldaten](docs/dashboard-preview.svg)
 
@@ -14,11 +14,11 @@ Bereits im Quellcode vorhanden:
 - Automatische Suche nach Shelly-Leistungsdatenpunkten und Auslesen von Energiezählern.
 - Abruf der deutschen aWATTar-Börsenstrompreise.
 - Konfigurierbare Tarifaufschläge und Mehrwertsteuer.
-- JSON-Momentaufnahme und Dashboard-Prototyp mit manuellem JSON-Import.
+- Live-Dashboard über WebSocket und JSON-Momentaufnahme.
 
 ## Roadmap
 
-- [ ] Automatische Live-Anbindung des Dashboards.
+- [x] Automatische Live-Anbindung des Dashboards.
 - [ ] Historische Verbrauchs- und Kostenberechnung mit zeitabhängigen Preisen.
 - [ ] Frei konfigurierbare Energiequellen, Namen, Räume und Datenpunkt-Auswahl.
 - [ ] Zigbee2MQTT und weitere Hersteller über beliebige ioBroker-Datenpunkte.
@@ -33,7 +33,7 @@ Geplant: ioBroker mit Shelly-Adapter, Node.js ab 18 sowie Web- und History-Adapt
 
 ## Installation
 
-Noch keine freigegebene Installationsversion. Bitte nicht auf einem produktiven System installieren. Eine geprüfte Anleitung folgt mit der Testfreigabe.
+Alpha-Test: Backup erstellen, in ioBroker unter Adapter die Installation aus eigener URL wählen und https://github.com/hotwin/ioBroker.energy-manager eingeben. Dashboard über den Web-Adapter unter /energy-manager/index.html öffnen. Der main-Branch enthält auch laufende Entwicklung; keine stabile Freigabe.
 
 ## Tarif und Messgenauigkeit
 
@@ -47,3 +47,5 @@ Die Messwerte werden lokal verarbeitet; der Preisabruf benötigt Internetzugang.
 
 - [Entwicklungsstand](docs/STATUS.md)
 - [Energiequellen](docs/ENERGY-SOURCES.md)
+
+- [Changelog / Änderungsprotokoll](CHANGELOG.md)
