@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Automatische Leistungsanzeige in kW ab 1.000 W in Web und Admin.
+- EN: Automatically display power in kW from 1,000 W in web and Admin.
 - DE: Admin unterstützt auch Socket-Client-Objekte mit io.connect statt ausschließlich Funktionsaufruf.
 - EN: Admin supports socket client objects exposing io.connect, not only callable clients.
 - DE: Admin-spezifische Socket.IO-Skriptpfade ergänzt; Weboberfläche unverändert. Praxistest offen.
