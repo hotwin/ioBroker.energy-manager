@@ -1,0 +1,19 @@
+{
+  "type": "panel",
+  "items": {
+    "tariffConfigured": {
+      "type": "checkbox",
+      "label": "Tarifbestandteile geprüft"
+    },
+    "markupCt": {
+      "type": "number",
+      "label": "Zusätzliche Netto-Tarifbestandteile (ct/kWh)",
+      "min": 0
+    },
+    "vatPercent": {
+      "type": "number",
+      "label": "Mehrwertsteuer (%)",
+      "min": 0
+    }
+  }
+}
