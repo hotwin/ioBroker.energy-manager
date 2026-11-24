@@ -28,7 +28,9 @@
   "native": {
     "markupCt": 0,
     "vatPercent": 19,
-    "tariffConfigured": false
+    "tariffConfigured": false,
+    "sources": [],
+    "autoShelly": true
   },
   "instanceObjects": []
 }
