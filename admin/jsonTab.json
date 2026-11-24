@@ -66,6 +66,23 @@
         "en": "Consumption since recording began. Edit contract details in instance configuration."
       },
       "sm": 12
+    },
+    "versionHistory": {
+      "type": "staticText",
+      "label": {
+        "de": "Versionshistorie · Änderungen und Testversionen auf GitHub",
+        "en": "Version history · Changes and test releases on GitHub"
+      },
+      "sm": 12
+    },
+    "releaseLink": {
+      "type": "staticLink",
+      "label": {
+        "de": "GitHub Releases öffnen",
+        "en": "Open GitHub releases"
+      },
+      "href": "https://github.com/hotwin/ioBroker.energy-manager/releases",
+      "sm": 12
     }
   }
 }
