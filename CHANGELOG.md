@@ -1,5 +1,17 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.2 – 2026-11-24
+
+### Deutsch
+
+- Anklickbare Kacheln für Leistung, Verbrauch, Kosten, Börsenpreis und Brutto-Arbeitspreis.
+- Die Preisübersicht zeigt Börsenpreis und den berechneten Brutto-Arbeitspreis je verfügbarem Preisintervall.
+
+### English
+
+- Clickable tiles for power, consumption, costs, market price and gross contract rate.
+- The price view displays the market price and calculated gross contract rate for each available interval.
+
 ## 0.3.0-beta.1 – 2026-11-24
 
 ### Deutsch

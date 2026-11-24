@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "energy-manager",
-    "version": "0.3.0-beta.1",
+    "version": "0.3.0-beta.2",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,6 +25,10 @@
     },
     "wwwDontUpload": false,
     "news": {
+      "0.3.0-beta.2": {
+        "de": "Anklickbare Übersichtskacheln und Brutto-Arbeitspreise für jedes verfügbare Preisintervall.",
+        "en": "Clickable dashboard tiles and gross contract rates for each available price interval."
+      },
       "0.3.0-beta.1": {
         "de": "Responsives Admin-Dashboard, herstellerunabhängige Strommessung, Verbrauchsstatistik und neues Adapter-Icon.",
         "en": "Responsive Admin dashboard, vendor-independent meter discovery, consumption statistics and new adapter icon."

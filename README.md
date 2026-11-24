@@ -19,6 +19,10 @@ The adapter stores its local history in the `consumption` state and publishes th
 
 ## Changelog
 
+### 0.3.0-beta.2 (2026-11-24)
+
+- Added clickable dashboard tiles and gross contract rates per price interval.
+
 ### 0.3.0-beta.1 (2026-11-24)
 
 - Responsive Admin dashboard with device, room, consumption, price and tariff views.
