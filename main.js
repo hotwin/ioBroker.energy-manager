@@ -10,7 +10,20 @@ class EnergyManager extends utils.Adapter {
  async collect(){
   const objects=await this.getForeignObjectsAsync('shelly.*','state');
   const devices=[];
+  const manual=Array.isArray(this.config.sources)?this.config.sources:[];
+  const used=new Set();
+  for(const source of manual){
+   const id=source.powerId||source.energyId;if(!id||used.has(id))continue;
+   const p=source.powerId?await this.getForeignStateAsync(source.powerId):null;
+   const e=source.energyId?await this.getForeignStateAsync(source.energyId):null;
+   const powerW=typeof p?.val==='number'&&Number.isFinite(p.val)?p.val:null;
+   const energyKWh=typeof e?.val==='number'&&Number.isFinite(e.val)?(source.unit==='Wh'?e.val/1000:source.unit==='kWh'?e.val:null):null;
+   if(powerW===null&&energyKWh===null)continue;
+   used.add(id);if(source.powerId)used.add(source.powerId);if(source.energyId)used.add(source.energyId);
+   devices.push({id,name:source.name||id,room:source.room||'',powerW,energyKWh,exclude:!!source.exclude,ts:p?.ts||e?.ts});
+  }
   for(const [id,obj] of Object.entries(objects||{})){
+   if(this.config.autoShelly===false||used.has(id)||used.has(id.slice(0,-6)+'.Energy'))continue;
    if(!id.endsWith('.Power')||obj.common.unit!=='W')continue;
    const base=id.slice(0,-6);
    const p=await this.getForeignStateAsync(id);
@@ -24,7 +37,7 @@ class EnergyManager extends utils.Adapter {
   const now=Date.now(), current=prices?.find(p=>p.start_timestamp<=now&&now<p.end_timestamp);
   const marketCt=current?current.marketprice/10:null;
   const tariffCt=this.config.tariffConfigured&&marketCt!==null?(marketCt+Number(this.config.markupCt))*(1+Number(this.config.vatPercent)/100):null;
-  const totalPower=devices.reduce((s,d)=>s+d.powerW,0);
+  const totalPower=devices.reduce((s,d)=>s+(d.exclude?0:d.powerW||0),0);
   await this.setStateAsync('totalPower',totalPower,true);
   await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices}),true);
  }
