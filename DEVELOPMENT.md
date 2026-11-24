@@ -18,3 +18,12 @@ Reviewed `45e1ec9` (0.3.0-beta.6) against the [ioBroker repository requirements]
 - The workflow currently validates the package on both supported Node.js versions. A comparison with a freshly generated Creator scaffold and its exact workflow template is still pending. Historical use of Creator has not been established.
 - Official repochecker 5.24.3 was invoked against the development branch. Initialization failed with E0000/E9999 after a proxy timeout on the GitHub repository API. A successful checker run and resolution of any resulting findings remain pending.
 - npm publication and granting the ioBroker organization package ownership require the corresponding account authorization.
+
+### Repository Checker follow-up
+
+Repository Checker 5.24.3 completed against `f599957`. Its CLI returned `OK` but still listed 25 errors, so this is not a clean repository check.
+
+- Package metadata: redundant Mocha dependency (E0063), nine missing metadata and Admin translation locales (E1027, E1034, E1054, E5010), and more than seven release-news entries (E1032).
+- GitHub Actions: align concurrency, job dependencies, deployment and the Node.js/OS test matrix with the current template (E3009, E3012, E3014, E3025, E3027). The checker could not retrieve the job logs for run 45495429792.
+- Release and repository settings: npm package missing (E2000), beta.6 tag missing (E3032), author and copyright email metadata missing (E4048, E4050, E4051), and repository topics missing (E8002).
+- The inline README changelog now includes beta.6 (commit `af06c72`, addressing W6030). The separate changelog still triggers W6017 and W6032; consolidate the layout before the final repository check.
