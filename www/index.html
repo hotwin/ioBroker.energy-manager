@@ -22,6 +22,40 @@
         article, .surface { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
         article p, small, #status, .note { color: var(--muted); }
         .value { display: block; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 25px; overflow-wrap: anywhere; }
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr));
+            gap: 10px;
+        }
+        .overview-tile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 84px;
+            padding: 12px;
+            color: var(--ink);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            text-decoration: none;
+        }
+        .overview-tile:hover { border-color: var(--teal); background: #f9fdfd; }
+        .tile-icon {
+            display: grid;
+            place-items: center;
+            flex: 0 0 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: #086b91;
+            background: #e0f2fa;
+            font-size: 23px;
+            font-weight: 700;
+        }
+        .overview-tile:nth-child(3) .tile-icon,
+        .overview-tile:nth-child(5) .tile-icon { color: #08695d; background: #dff1ed; }
+        .tile-content { min-width: 0; }
+        .tile-label { display: block; color: var(--muted); font-size: 13px; line-height: 1.3; }
+        .tile-value { display: block; margin-top: 3px; font-size: 19px; font-variant-numeric: tabular-nums; }
         .scroll { overflow: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { border-bottom: 1px solid var(--line); padding: 10px; }
@@ -45,7 +79,7 @@
     </header>
     <nav id="navigation" aria-label="Energy Manager"></nav>
     <section id="overview" data-page>
-        <h2 data-text="overview"></h2><div id="summary" class="grid"></div>
+        <h2 data-text="overview"></h2><div id="summary" class="tile-grid"></div>
         <p class="note" data-text="coverage"></p>
     </section>
     <section id="devices" data-page hidden>
@@ -68,7 +102,7 @@
     <section id="prices" data-page hidden>
         <h2 data-text="prices"></h2><p class="note" data-text="priceHint"></p>
         <div class="surface scroll"><table>
-            <thead><tr><th data-text="start"></th><th data-text="end"></th><th data-text="market"></th></tr></thead>
+            <thead><tr><th data-text="start"></th><th data-text="end"></th><th data-text="market"></th><th data-text="tariff"></th></tr></thead>
             <tbody id="priceRows"></tbody>
         </table></div>
     </section>

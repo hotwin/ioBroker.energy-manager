@@ -5,13 +5,13 @@ const translations = {
         overview: 'Overview', devices: 'Devices', rooms: 'Rooms', statistics: 'Consumption statistics',
         prices: 'Electricity prices', contract: 'Electricity contract', updates: 'Updates', device: 'Device',
         room: 'Room', power: 'Current power', meter: 'Meter reading', source: 'Source', market: 'Market price',
-        tariff: 'Contract rate', today: 'Today', seven: 'Last 7 days', month: 'This month', quarter: 'This quarter',
+        tariff: 'Gross contract rate', today: 'Today', seven: 'Last 7 days', month: 'This month', quarter: 'This quarter',
         year: 'This year', period: 'Period', start: 'Start', end: 'End', todayEnergy: 'Consumption today',
         todayCost: 'Recorded variable cost today', unassigned: 'Unassigned', noDevices: 'No meters discovered.',
         noPrices: 'No price data available.', noHistory: 'No consumption recorded for this period.',
         coverage: 'Totals cover the selected measurement points. Exclude overlapping meters in the instance settings.',
         deviceHint: 'Add a meter, channel or device to the Strommessung enum, or configure it manually.',
-        priceHint: 'aWATTar day-ahead prices for Germany, before taxes and surcharges. Times shown in Europe/Berlin.',
+        priceHint: 'aWATTar day-ahead prices for Germany, before taxes and surcharges. The gross rate uses your configured contract components. Times shown in Europe/Berlin.',
         costHint: 'Variable costs cover consumption with an attributable tariff. Monthly charges are shown under Electricity contract.',
         contractHint: 'Edit the tariff components in the Energy Manager instance settings.',
         fixed: 'Monthly fixed charge (gross)', extra: 'Surcharges (net)', advance: 'Monthly advance',
@@ -25,13 +25,13 @@ const translations = {
         overview: 'Übersicht', devices: 'Geräte', rooms: 'Räume', statistics: 'Verbrauchsstatistik',
         prices: 'Strompreise', contract: 'Stromvertrag', updates: 'Updates', device: 'Gerät', room: 'Raum',
         power: 'Aktuelle Leistung', meter: 'Zählerstand', source: 'Quelle', market: 'Börsenpreis',
-        tariff: 'Vertragstarif', today: 'Heute', seven: 'Letzte 7 Tage', month: 'Dieser Monat', quarter: 'Dieses Quartal',
+        tariff: 'Brutto-Arbeitspreis', today: 'Heute', seven: 'Letzte 7 Tage', month: 'Dieser Monat', quarter: 'Dieses Quartal',
         year: 'Dieses Jahr', period: 'Zeitraum', start: 'Beginn', end: 'Ende', todayEnergy: 'Verbrauch heute',
         todayCost: 'Erfasste variable Kosten heute', unassigned: 'Ohne Raum', noDevices: 'Keine Messgeräte gefunden.',
         noPrices: 'Keine Strompreise verfügbar.', noHistory: 'In diesem Zeitraum wurde kein Verbrauch erfasst.',
         coverage: 'Die Summe umfasst die ausgewählten Messpunkte. Überlappende Zähler lassen sich in der Instanzkonfiguration ausschließen.',
         deviceHint: 'Füge einen Zähler, Kanal oder ein Gerät zur Aufzählung Strommessung hinzu oder hinterlege es manuell.',
-        priceHint: 'aWATTar-Spotmarktpreise für Deutschland vor Steuern und Aufschlägen. Uhrzeit in Europe/Berlin.',
+        priceHint: 'aWATTar-Spotmarktpreise für Deutschland vor Steuern und Aufschlägen. Der Bruttopreis basiert auf deinen hinterlegten Vertragsbestandteilen. Uhrzeit in Europe/Berlin.',
         costHint: 'Die variablen Kosten umfassen Verbrauch mit zuordenbarem Tarif. Monatliche Fixkosten stehen unter Stromvertrag.',
         contractHint: 'Die Tarifbestandteile lassen sich in der Instanzkonfiguration bearbeiten.',
         fixed: 'Monatliche Fixkosten (brutto)', extra: 'Aufschläge (netto)', advance: 'Monatlicher Abschlag',
@@ -165,11 +165,23 @@ function render() {
     const data = snapshot || {};
     const today = data.daily?.[dayKey(Date.now())];
     updateStatus();
-    cards('summary', [
-        [words.power, format(data.totalPower, 'W')], [words.todayEnergy, format(today?.kWh, 'kWh', 3)],
-        [words.market, format(data.marketCt, 'ct/kWh')], [words.tariff, format(data.tariffCt, 'ct/kWh')],
-        [words.todayCost, format(today?.pricedKWh > 0 ? today.costEUR : null, '€')],
-    ]);
+    const tiles = [
+        ['ϟ', 'power', format(data.totalPower, 'W'), 'devices'],
+        ['↗', 'todayEnergy', format(today?.kWh, 'kWh', 3), 'statistics'],
+        ['€', 'todayCost', format(today?.pricedKWh > 0 ? today.costEUR : null, '€'), 'statistics'],
+        ['⇅', 'market', format(data.marketCt, 'ct/kWh'), 'prices'],
+        ['≋', 'tariff', format(data.tariffCt, 'ct/kWh'), 'prices'],
+    ];
+    el('summary').replaceChildren(...tiles.map(([symbol, label, value, page]) => {
+        const tile = node('a', null, 'overview-tile');
+        tile.href = '#' + page;
+        const icon = node('span', symbol, 'tile-icon');
+        icon.setAttribute('aria-hidden', 'true');
+        const content = node('span', null, 'tile-content');
+        content.append(node('span', words[label], 'tile-label'), node('strong', value, 'tile-value'));
+        tile.append(icon, content);
+        return tile;
+    }));
     rows('deviceRows', (data.devices || []).map(device => [
         device.name || device.id, device.room || words.unassigned, format(device.powerW, 'W'),
         format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
@@ -181,7 +193,8 @@ function render() {
     if (!data.rooms?.length) el('roomCards').append(node('p', words.noDevices));
     rows('priceRows', (data.prices || []).filter(price => price.end_timestamp > Date.now()).map(price => [
         dateTime(price.start_timestamp), dateTime(price.end_timestamp), format(price.marketprice / 10, 'ct/kWh'),
-    ]), words.noPrices, 3);
+        format(price.tariffCt, 'ct/kWh'),
+    ]), words.noPrices, 4);
     const contract = data.contract || {};
     cards('contractCards', [
         [words.fixed, format(contract.configured ? contract.fixedMonthlyGross : null, '€')],

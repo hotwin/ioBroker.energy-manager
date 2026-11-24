@@ -98,7 +98,13 @@ class EnergyManager extends utils.Adapter {
         const devices = await readDevices(this);
         if (this.stopping) return;
         const now = Date.now();
-        const prices = (this.prices || []).filter(item => item.end_timestamp > now);
+        const priceDay = new Intl.DateTimeFormat('sv-SE', {
+            timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
+        });
+        const prices = (this.prices || []).filter(item => item.end_timestamp > now).map(item => ({
+            ...item,
+            tariffCt: calculateTariff(this.config, item.marketprice / 10, priceDay.format(item.start_timestamp)).tariffCt,
+        }));
         const current = prices.find(item => item.start_timestamp <= now);
         const marketCt = current ? current.marketprice / 10 : null;
         const { contract, tariffCt } = calculateTariff(this.config, marketCt, accumulate.localDay(now));
