@@ -1,6 +1,8 @@
 # Changelog / Änderungsprotokoll
 
 ## Unreleased / In Entwicklung
+- DE: Statistik mit Zeitraumwahl bis 365 Tage und Tagesbalken; ungetestet.
+- EN: Statistics with period selection up to 365 days and daily bars; untested.
 - DE: Persistente Tagesverbrauchserfassung aus Zählerdifferenzen; Messlücken, Rücksetzungen und Tageswechsel werden konservativ ausgelassen. Teilkosten nur bei bekanntem unverändertem Tarif. Noch ungetestet.
 - EN: Persistent daily meter delta aggregation; gaps, resets and day boundaries are conservatively skipped. Partial costs only for known unchanged tariffs. Not yet tested.
 - DE: Responsive Navigation und ioBroker-Gerätenamen ergänzt; noch ungetestet.
