@@ -119,6 +119,11 @@
         .room-device-list li > span:first-child { overflow-wrap: anywhere; }
         .room-device-list small { display: block; }
         .room-device-power { white-space: nowrap; font-variant-numeric: tabular-nums; }
+        .header-actions, .project-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+        .github-button { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; background: var(--paper); color: var(--ink); font-weight: 600; text-decoration: none; }
+        .github-button:hover { border-color: var(--teal); color: var(--teal); }
+        .project-footer { border-top: 1px solid var(--line); margin-top: 24px; padding: 16px 0; color: var(--muted); font-size: 13px; text-align: center; }
+        .project-footer .project-links { justify-content: center; margin-top: 8px; }
     </style>
     <script defer src="dashboard.js?v=0.3.0-beta.14"></script>
 </head>
@@ -126,7 +131,10 @@
 <main>
     <header>
         <div><h1>Energy Manager</h1><p id="status" role="status"></p></div>
-        <label>ioBroker <select id="instance" aria-label="ioBroker instance"></select></label>
+        <div class="header-actions">
+            <label>ioBroker <select id="instance" aria-label="ioBroker instance"></select></label>
+            <a class="github-button" href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
     </header>
     <nav id="navigation" aria-label="Energy Manager"></nav>
     <section id="overview" data-page>
@@ -253,9 +261,21 @@
     <section id="updates" data-page hidden>
         <h2 data-text="updates"></h2>
         <div class="surface"><p id="installed"></p>
-            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/releases" target="_blank" rel="noopener noreferrer" data-text="releases"></a>
+            <div class="project-links">
+                <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/releases" target="_blank" rel="noopener noreferrer" data-text="releases"></a>
+                <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer" data-text="projectChangelog"></a>
+                <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues" target="_blank" rel="noopener noreferrer" data-text="projectIssues"></a>
+            </div>
         </div>
     </section>
+    <footer class="project-footer">
+        <p><span data-text="projectResponsible"></span> <strong>Böttcher Services</strong></p>
+        <div class="project-links">
+            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues" target="_blank" rel="noopener noreferrer" data-text="projectIssues"></a>
+            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/releases" target="_blank" rel="noopener noreferrer" data-text="projectReleases"></a>
+        </div>
+    </footer>
 </main>
 </body>
 </html>

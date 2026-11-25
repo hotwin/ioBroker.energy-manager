@@ -1,5 +1,9 @@
 # ioBroker Energy Manager
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
+
+**Responsible: Böttcher Services**
+
 [![npm](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/beta)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 
 **Current published beta: 0.3.0-beta.8 (25 November 2026)**

@@ -1,5 +1,9 @@
 # ioBroker Energy Manager
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
+
+**Verantwortlich: Böttcher Services**
+
 **Aktuell veröffentlichte Beta: 0.3.0-beta.8 (25.11.2026)**
 
 Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker. Er verbindet Messdaten verschiedener Hersteller mit Raumübersichten und dynamischen Börsenpreisen von [aWATTar](https://www.awattar.de/).
