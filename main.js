@@ -96,7 +96,10 @@ class EnergyManager extends utils.Adapter {
     async collect() {
         await this.refreshPrices();
         if (this.stopping) return;
-        const devices = await readDevices(this);
+        const [devices, houseMeter] = await Promise.all([
+            readDevices(this),
+            readDevices.readHouseMeter(this),
+        ]);
         if (this.stopping) return;
         const now = Date.now();
         const priceDay = new Intl.DateTimeFormat('sv-SE', {
@@ -139,7 +142,7 @@ class EnergyManager extends utils.Adapter {
             displayTariff: show(tariffCt, 'ct/kWh'),
             displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
             totalPower,
-            snapshot: JSON.stringify({ ts: now, version, devices, totalPower, marketCt, tariffCt,
+            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, totalPower, marketCt, tariffCt,
                 prices: prices.filter(item => item.end_timestamp > now),
                 insights: energyInsights(ledger, prices, now),
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,

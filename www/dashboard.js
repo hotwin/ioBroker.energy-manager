@@ -2,6 +2,7 @@
 
 const translations = {
     en: {
+        housePower: 'House meter · current power', houseEnergy: 'House meter · meter reading',
         insightsTitle: 'Energy insights',
         insightsWaiting: 'The comparison needs a reading from yesterday and at least three of the seven preceding days.',
         insightsPriceMissing: 'No upcoming interval with a calculated gross rate in the next 24 hours.',
@@ -62,6 +63,7 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        housePower: 'Hausstromzähler · aktuelle Leistung', houseEnergy: 'Hausstromzähler · Zählerstand',
         insightsTitle: 'Stromverbrauch im Blick',
         insightsWaiting: 'Für den Vergleich fehlen Messwerte von gestern oder von mindestens drei der sieben Tage davor.',
         insightsPriceMissing: 'Für die nächsten 24 Stunden ist kein kommendes Intervall mit berechnetem Brutto-Arbeitspreis verfügbar.',
@@ -505,14 +507,17 @@ function render() {
     updateStatus();
     const tiles = [
         ['ϟ', 'power', format(data.totalPower, 'W'), 'devices'],
+        ...(data.houseMeter?.powerW !== undefined ? [['ϟ', 'housePower', format(data.houseMeter.powerW, 'W')]] : []),
+        ...(data.houseMeter?.energyKWh !== undefined
+            ? [['↗', 'houseEnergy', format(data.houseMeter.energyKWh, 'kWh', 3)]] : []),
         ['↗', 'todayEnergy', format(today?.kWh, 'kWh', 3), 'statistics'],
         ['€', 'todayCost', format(today?.pricedKWh > 0 ? today.costEUR : null, '€'), 'statistics'],
         ['⇅', 'market', format(data.marketCt, 'ct/kWh'), 'prices'],
         ['≋', 'tariff', format(data.tariffCt, 'ct/kWh'), 'prices'],
     ];
     el('summary').replaceChildren(...tiles.map(([symbol, label, value, page]) => {
-        const tile = node('a', null, 'overview-tile');
-        tile.href = '#' + page;
+        const tile = node(page ? 'a' : 'div', null, 'overview-tile');
+        if (page) tile.href = '#' + page;
         const icon = node('span', symbol, 'tile-icon');
         icon.setAttribute('aria-hidden', 'true');
         const content = node('span', null, 'tile-content');

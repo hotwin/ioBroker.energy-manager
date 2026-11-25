@@ -3,6 +3,8 @@
   "markupCt": "Weitere Netto-Aufschläge, ohne separat erfasste Beträge (ct/kWh)",
   "vatPercent": "Mehrwertsteuer (%)",
   "autoShelly": "Shelly automatisch erkennen",
+  "housePowerId": "Hausstromzähler: aktuelle Leistung (W oder kW)",
+  "houseEnergyId": "Hausstromzähler: Zählerstand (Wh oder kWh)",
   "sources": "Manuelle Energiequellen",
   "baseMonthly": "Grundgebühr netto (€/Monat)",
   "meterAnnual": "Messstellenbetrieb zusätzlich netto (€/Jahr)",

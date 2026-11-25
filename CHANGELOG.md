@@ -1,5 +1,10 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.10 – 2026-11-25
+
+- DE: Datenpunkte für Zählerstand und aktuelle Leistung des Hausstromzählers lassen sich einzeln in der Instanzkonfiguration auswählen und erscheinen in der Übersicht.
+- EN: Select the house meter's reading and current power independently in the instance settings to display them in the overview.
+
 ## 0.3.0-beta.9 – 2026-11-25
 
 - DE: Lokale Verbrauchsauswertung mit Vergleich zum Durchschnitt erfasster Vortage und günstigstem verfügbaren Tarifintervall der nächsten 24 Stunden.
