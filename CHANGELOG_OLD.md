@@ -1,5 +1,10 @@
 # Changelog / Änderungsprotokoll
 
+## 0.4.0-beta.1 – 2026-11-25
+
+- DE: Neue Kostenseite mit erfassten variablen Kosten, Monats-/Jahreshochrechnung, Abschlagsvergleich, Budget, alternativem Arbeitspreis, Geräteverbrauchsvergleich und Tagesdaten-CSV. Prognosen benötigen ausreichende Historie und zeigen die Preisabdeckung. Budget und Vergleichspreis werden lokal im Browser gespeichert.
+- EN: Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
+
 ## 0.3.0-beta.14 – 2026-11-25
 
 - DE: Helles und dunkles Dashboard mit automatischer Theme-Erkennung, schlankem Header ohne Auswahlfelder, angepassten Diagrammen und vier Registern in der Instanzkonfiguration.
