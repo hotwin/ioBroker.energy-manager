@@ -18,6 +18,38 @@ Local energy monitoring and electricity cost analysis for ioBroker, with a respo
 - Editable tariff components, VAT, aWATTar HOURLY percentage surcharge and optional gross energy price limits. Fixed charges and advance payments are shown separately.
 - German and English interface; optional Web adapter dashboard.
 
+## Screenshots – 0.3.0-beta.12
+
+Screenshots from a running beta.12 instance. Personal details have been partially anonymized; the displayed tariff values are still under investigation (#23).
+
+### Overview and room/device energy distribution
+
+![Overview and room/device energy distribution](docs/screenshots/v0.3.0-beta.12/uebersicht.png)
+
+### Devices grouped by room
+
+![Devices grouped by room](docs/screenshots/v0.3.0-beta.12/geraete.png)
+
+### Room cards and live power
+
+![Room cards and live power](docs/screenshots/v0.3.0-beta.12/raeume.png)
+
+### Consumption statistics
+
+![Consumption statistics](docs/screenshots/v0.3.0-beta.12/verbrauchsstatistik.png)
+
+### Electricity price intervals
+
+![Electricity price intervals](docs/screenshots/v0.3.0-beta.12/strompreise.png)
+
+### Contract configuration
+
+![Contract configuration](docs/screenshots/v0.3.0-beta.12/stromvertrag.png)
+
+### Hourly consumption, daily costs and price history
+
+![Hourly consumption, daily costs and price history](docs/screenshots/v0.3.0-beta.12/diagramme.png)
+
 ## Installation
 
 Requires Node.js 22+, ioBroker Admin 7.6.20+ and js-controller 6.0.11+. Measurement states must be supplied by installed device adapters.

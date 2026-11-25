@@ -15,6 +15,38 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 - Bearbeitbare Vertragsdaten, Brutto-Arbeitspreis, Mehrwertsteuer, aWATTar HOURLY-Aufschlag und optionale Preisgrenzen.
 - Responsives deutsch- und englischsprachiges Dashboard im Admin und optional über den Web-Adapter.
 
+## Screenshots – 0.3.0-beta.12
+
+Aufnahmen einer laufenden Beta-12-Instanz. Persönliche Angaben wurden teilweise anonymisiert; die angezeigten Tarifwerte sind noch Gegenstand der Fehlerprüfung (#23).
+
+### Übersicht und Energieverteilung nach Räumen und Geräten
+
+![Übersicht und Energieverteilung nach Räumen und Geräten](docs/screenshots/v0.3.0-beta.12/uebersicht.png)
+
+### Geräte nach Räumen gruppiert
+
+![Geräte nach Räumen gruppiert](docs/screenshots/v0.3.0-beta.12/geraete.png)
+
+### Raumkarten mit aktueller Leistung
+
+![Raumkarten mit aktueller Leistung](docs/screenshots/v0.3.0-beta.12/raeume.png)
+
+### Verbrauchsstatistik
+
+![Verbrauchsstatistik](docs/screenshots/v0.3.0-beta.12/verbrauchsstatistik.png)
+
+### Strompreisintervalle
+
+![Strompreisintervalle](docs/screenshots/v0.3.0-beta.12/strompreise.png)
+
+### Stromvertragskonfiguration
+
+![Stromvertragskonfiguration](docs/screenshots/v0.3.0-beta.12/stromvertrag.png)
+
+### Stundenverbrauch, Tageskosten und Strompreisverlauf
+
+![Stundenverbrauch, Tageskosten und Strompreisverlauf](docs/screenshots/v0.3.0-beta.12/diagramme.png)
+
 ## Installation
 
 Voraussetzungen: Node.js ab 22, Admin ab 7.6.20, js-controller ab 6.0.11 sowie vorhandene Messdatenpunkte.
