@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.3.0-beta.13",
+    "version": "0.3.0-beta.14",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -28,6 +28,10 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
+      "0.3.0-beta.14": {
+        "de": "Aktuelle Strompreise mit Gültigkeitszeitraum. Die Übersicht unterscheidet fehlende Messwerte, Zählerstände und nicht zugeordnete Leistung.",
+        "en": "Current electricity prices show their validity window. The overview distinguishes missing measurements, meter readings and unassigned power."
+      },
       "0.3.0-beta.13": {
         "de": "Getrennte Statusdatenpunkte für lokale Messwerte und aWATTar-Preise. Bei API-Fehlern wartet der Adapter länger bis zum nächsten Versuch.",
         "en": "Separate status states for local collection and aWATTar prices. Retry delays increase after API failures."
@@ -130,6 +134,7 @@
     "sources": [],
     "housePowerId": "",
     "houseEnergyId": "",
+    "compareHousePower": false,
     "autoShelly": true,
     "baseMonthly": null,
     "meterAnnual": null,

@@ -51,6 +51,11 @@
       "xs": 12,
       "sm": 6
     },
+    "compareHousePower": {
+      "type": "checkbox",
+      "label": "compareHousePower",
+      "xs": 12
+    },
     "sources": {
       "type": "table",
       "label": "sources",

@@ -12,6 +12,8 @@ Der Adapter speichert Verbrauch anhand fortlaufender Zählerstände. Rücksetzun
 
 Schließe überlappende Haupt- oder Unterzähler in den manuellen Energiequellen aus, damit die Summen sie nur einmal enthalten. Geräte mit uneindeutiger Datenpunktstruktur lassen sich ebenfalls manuell zuordnen. Der Adapter behält bis zu 400 Tageswerte in ioBroker.
 
+Wähle für den Hauptzähler separate Leistungs- (W oder kW) und Zählerstandsdatenpunkte (Wh oder kWh). Die Übersicht unterscheidet einen fehlenden Zählerstand von einem ungültigen Messwert. Aktiviere „Nicht zugeordnete Leistung anzeigen“ nur, wenn alle einbezogenen Leistungsmessstellen hinter dem Hauptzähler liegen und sich nicht überschneiden. Die Differenz wird nur bei gültigen, maximal 60 Sekunden alten Leistungsmessungen mit höchstens 30 Sekunden Zeitabstand und ohne doppelte Datenpunkte (einschließlich ioBroker-Aliasen) angezeigt.
+
 `info.connection` zeigt, ob die letzte lokale Erfassungsrunde erfolgreich war. `info.awattarAvailable` zeigt, ob ein aWATTar-Spotpreis für das laufende Intervall vorliegt. Bei einer API-Störung kann ein zwischengespeicherter Preis bis zum Ende seines Intervalls weiter verfügbar sein. Nach Fehlern wartet der Adapter zwischen einer und 15 Minuten bis zum nächsten Abruf.
 
 ### Daten aus einer alten Instanz übernehmen

@@ -21,7 +21,14 @@ tests.integration(path.join(__dirname, '..'), {
                 const harness = getHarness();
                 const power = 'zigbee2mqtt.0.test.power';
                 const energy = 'zigbee2mqtt.0.test.energy';
-                for (const [id, unit, value] of [[power, 'W', 1325], [energy, 'kWh', 42]]) {
+                const mainPower = 'smartmeter.0.main.power';
+                const mainEnergy = 'smartmeter.0.main.energy';
+                await harness.changeAdapterConfig('hotwin-energy-manager', { native: {
+                    housePowerId: mainPower, houseEnergyId: mainEnergy, compareHousePower: true,
+                } });
+                for (const [id, unit, value] of [
+                    [power, 'W', 1325], [energy, 'kWh', 42], [mainPower, 'kW', 2.89], [mainEnergy, 'Wh', 15000],
+                ]) {
                     await harness.objects.setObjectAsync(id, {
                         type: 'state', common: { name: id, type: 'number', role: 'value', unit, read: true, write: false }, native: {},
                     });
@@ -45,6 +52,8 @@ tests.integration(path.join(__dirname, '..'), {
                 assert.equal(snapshot.totalPower, 1325);
                 assert.equal(snapshot.devices[0].energyKWh, 42);
                 assert.equal(snapshot.devices[0].source, 'enum');
+                assert.equal(snapshot.houseMeter.energyKWh, 15);
+                assert.equal(snapshot.houseMeter.unassignedW, 1565);
                 assert.deepEqual(snapshot.insights.comparison, {
                     yesterday: Object.keys(days)[0], kWh: 6, average: 2, difference: 4, trend: 'high', days: 3,
                 });
@@ -203,6 +212,10 @@ tests.integration(path.join(__dirname, '..'), {
                             assert.deepEqual(saved.sources, original.sources);
                             assert.equal(snapshot.contract.extraCt, 9.55);
                             assert.equal(snapshot.marketCt, 10);
+                            assert.deepEqual(snapshot.currentPrice, {
+                                start_timestamp: now - 3600000, end_timestamp: now + 3600000,
+                            });
+                            assert.equal(snapshot.tariffCt, snapshot.prices[0].tariffCt);
                             const expected = (10 + 10 * 0.03 + 9.55) * 1.19;
                             assert.ok(Math.abs(snapshot.tariffCt - expected) < 1e-10);
 

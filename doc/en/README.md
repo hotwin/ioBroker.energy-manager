@@ -12,6 +12,8 @@ The adapter records energy from cumulative meter differences. Counter resets, lo
 
 Exclude overlapping sub-meters or main meters in the manually configured sources to avoid double counting. Devices with ambiguous state layouts can be assigned manually. The adapter keeps up to 400 daily records in ioBroker.
 
+Select separate main-meter states for power (W or kW) and a cumulative reading (Wh or kWh). The overview distinguishes an unconfigured meter reading from an invalid one. Enable “Show unassigned power” only when all included power meters are downstream of the main meter and do not overlap. The difference requires valid power readings no more than 60 seconds old and no more than 30 seconds apart, with no duplicate states (including ioBroker aliases).
+
 `info.connection` indicates whether the last local collection cycle succeeded. `info.awattarAvailable` indicates whether an aWATTar spot price is available for the current interval. During an API outage, a cached price can remain available until its interval ends. Failed requests are retried after a delay of between one and 15 minutes.
 
 ### Import from a legacy instance
