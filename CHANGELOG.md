@@ -2,6 +2,9 @@
 
 ## 0.3.0-beta.14 – 2026-11-25
 
+- DE: Vertragsformular erklärt ausdrücklich, dass optionale Energiepreisgrenzen ohne vertragliche Begrenzung leer bleiben müssen; 0 ist eine wirksame Preisgrenze. Regressionstest für den Praxistest #23.
+- EN: The contract form explicitly distinguishes empty optional energy price limits from a real zero-price limit. Regression test for field report #23.
+
 - DE: Aktueller Börsen- und Brutto-Arbeitspreis zeigen ihr gemeinsames Gültigkeitsintervall. Abgelaufene Werte werden bis zur nächsten passenden Messung ausgeblendet.
 - EN: The current spot and gross contract prices display their shared validity window. Expired values are hidden until a matching snapshot arrives.
 - DE: Kompaktere Übersicht mit Zählerdiagnose, optionaler nicht zugeordneter Leistung und eigenen Gerätenamen mit separaten technischen Details. Fehlende Verbrauchswerte erscheinen nicht als null Kilowattstunden.
