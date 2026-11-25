@@ -18,6 +18,9 @@
 - DE: Die Adapter-Metadaten begrenzen die Kurzmeldungen auf sieben Versionen. Zählerfelder sind für alle Admin-Bildschirmgrößen konfiguriert.
 - EN: Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
 
+- DE: Die Instanzkonfiguration, Adapterbeschreibung und Versionsmeldungen stehen in neun weiteren Sprachen bereit.
+- EN: Instance settings, adapter metadata and release summaries are available in nine additional languages.
+
 ## 0.3.0-beta.13 – 2026-11-25
 
 - DE: Die lokale Messwerterfassung und die Verfügbarkeit eines aktuellen aWATTar-Preises haben getrennte Statusdatenpunkte. Nach API-Fehlern verlängert sich der Wiederholungsabstand auf bis zu 15 Minuten.

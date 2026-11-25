@@ -4,11 +4,29 @@
     "version": "0.3.0-beta.14",
     "titleLang": {
       "de": "Energy Manager",
-      "en": "Energy Manager"
+      "en": "Energy Manager",
+      "es": "Gestor de energía",
+      "fr": "Gestionnaire d’énergie",
+      "it": "Gestore dell’energia",
+      "nl": "Energiebeheer",
+      "pl": "Menedżer energii",
+      "pt": "Gestor de energia",
+      "ru": "Менеджер энергии",
+      "uk": "Менеджер енергії",
+      "zh-cn": "能源管理器"
     },
     "desc": {
       "de": "Lokale Energieüberwachung",
-      "en": "Local energy monitoring"
+      "en": "Local energy monitoring",
+      "es": "Supervisión local de la energía",
+      "fr": "Suivi local de l’énergie",
+      "it": "Monitoraggio locale dell’energia",
+      "nl": "Lokale energiemonitoring",
+      "pl": "Lokalne monitorowanie energii",
+      "pt": "Monitorização local da energia",
+      "ru": "Локальный мониторинг энергопотребления",
+      "uk": "Локальний моніторинг енергоспоживання",
+      "zh-cn": "本地能源监测"
     },
     "authors": [
       "hotwin"
@@ -30,31 +48,94 @@
     "news": {
       "0.3.0-beta.14": {
         "de": "Aktuelle Strompreise mit Gültigkeitszeitraum. Die Übersicht unterscheidet fehlende Messwerte, Zählerstände und nicht zugeordnete Leistung.",
-        "en": "Current electricity prices show their validity window. The overview distinguishes missing measurements, meter readings and unassigned power."
+        "en": "Current electricity prices show their validity window. The overview distinguishes missing measurements, meter readings and unassigned power.",
+        "es": "Los precios actuales muestran su período de validez y la vista general distingue las lecturas ausentes.",
+        "fr": "Les prix actuels affichent leur période de validité et la vue d’ensemble signale les mesures manquantes.",
+        "it": "I prezzi attuali indicano il periodo di validità e la panoramica distingue le misure mancanti.",
+        "nl": "Actuele stroomprijzen tonen hun geldigheidsperiode en ontbrekende metingen zijn herkenbaar.",
+        "pl": "Bieżące ceny pokazują okres obowiązywania, a widok ogólny wyróżnia brakujące odczyty.",
+        "pt": "Os preços atuais mostram o período de validade e a vista geral distingue as leituras em falta.",
+        "ru": "Для текущих цен отображается срок действия, а пропущенные измерения выделены в обзоре.",
+        "uk": "Поточні ціни показують період дії, а в огляді позначені відсутні вимірювання.",
+        "zh-cn": "当前电价显示有效时段，概览单独标记缺失的测量值。"
       },
       "0.3.0-beta.13": {
         "de": "Getrennte Statusdatenpunkte für lokale Messwerte und aWATTar-Preise. Bei API-Fehlern wartet der Adapter länger bis zum nächsten Versuch.",
-        "en": "Separate status states for local collection and aWATTar prices. Retry delays increase after API failures."
+        "en": "Separate status states for local collection and aWATTar prices. Retry delays increase after API failures.",
+        "es": "Estados separados para los datos locales y los precios de aWATTar, con esperas más largas tras fallos de la API.",
+        "fr": "États distincts pour les mesures locales et les prix aWATTar, avec des délais plus longs après les erreurs de l’API.",
+        "it": "Stati distinti per misure locali e prezzi aWATTar, con attese più lunghe dopo gli errori dell’API.",
+        "nl": "Aparte statussen voor lokale metingen en aWATTar-prijzen, met langere wachttijden na API-fouten.",
+        "pl": "Oddzielne stany dla pomiarów lokalnych i cen aWATTar oraz dłuższe przerwy po błędach API.",
+        "pt": "Estados separados para medições locais e preços aWATTar. Novas tentativas após falhas da API têm intervalos maiores.",
+        "ru": "Отдельные состояния для локальных измерений и цен aWATTar. После ошибок API интервалы повтора увеличиваются.",
+        "uk": "Окремі стани для локальних вимірювань і цін aWATTar та довші інтервали повтору після помилок API.",
+        "zh-cn": "本地监测与 aWATTar 电价状态分开显示，API 失败后延长重试间隔。"
       },
       "0.3.0-beta.12": {
         "de": "Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.",
-        "en": "Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard."
+        "en": "Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.",
+        "es": "Dispositivos agrupados por habitación y acceso rápido al panel web.",
+        "fr": "Appareils regroupés par pièce et accès rapide au tableau de bord web.",
+        "it": "Dispositivi raggruppati per stanza e accesso rapido al pannello web.",
+        "nl": "Apparaten per ruimte en snelle toegang tot het webdashboard.",
+        "pl": "Urządzenia według pomieszczeń i szybki dostęp do panelu WWW.",
+        "pt": "Dispositivos agrupados por divisão e acesso rápido ao painel web.",
+        "ru": "Устройства сгруппированы по комнатам, доступна быстрая ссылка на веб-панель.",
+        "uk": "Пристрої згруповано за кімнатами, доступне швидке посилання на вебпанель.",
+        "zh-cn": "设备按房间分组，可快速打开网页仪表板。"
       },
       "0.3.0-beta.11": {
         "de": "Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.",
-        "en": "The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices."
+        "en": "The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.",
+        "es": "La vista general separa el contador principal, los dispositivos y los precios.",
+        "fr": "La vue d’ensemble sépare le compteur principal, les appareils et les prix.",
+        "it": "La panoramica separa contatore principale, dispositivi e prezzi.",
+        "nl": "Het overzicht scheidt hoofdmeter, apparaten en prijzen.",
+        "pl": "Widok ogólny oddziela licznik główny, urządzenia i ceny.",
+        "pt": "A vista geral separa o contador principal, os dispositivos e os preços.",
+        "ru": "Главный счётчик, устройства и цены выделены в отдельные блоки.",
+        "uk": "Окремі блоки для основного лічильника, пристроїв і цін.",
+        "zh-cn": "概览分别显示总电表、设备和电价。"
       },
       "0.3.0-beta.10": {
         "de": "Hausstromzähler mit frei wählbaren Datenpunkten für Leistung und Zählerstand.",
-        "en": "House electricity meter with selectable data points for power and meter reading."
+        "en": "House electricity meter with selectable data points for power and meter reading.",
+        "es": "Selección independiente de la potencia y la lectura del contador principal.",
+        "fr": "Choix séparé de la puissance et de l’index du compteur principal.",
+        "it": "Scelta separata di potenza e lettura del contatore principale.",
+        "nl": "Vermogen en meterstand van de hoofdmeter zijn afzonderlijk instelbaar.",
+        "pl": "Niezależny wybór mocy i odczytu licznika głównego.",
+        "pt": "Seleção independente da potência e da leitura do contador principal.",
+        "ru": "Мощность и показание главного счётчика выбираются отдельно.",
+        "uk": "Потужність і показання основного лічильника вибираються окремо.",
+        "zh-cn": "可单独选择总电表的功率和读数数据点。"
       },
       "0.3.0-beta.9": {
         "de": "Optionale Migration von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf.",
-        "en": "Opt-in migration of settings, tariff, device aliases and consumption history."
+        "en": "Opt-in migration of settings, tariff, device aliases and consumption history.",
+        "es": "Migración opcional de ajustes, tarifa, alias e historial con vista previa y copia de seguridad.",
+        "fr": "Migration facultative des réglages, du tarif, des alias et de l’historique, avec aperçu et sauvegarde.",
+        "it": "Migrazione facoltativa di impostazioni, tariffa, alias e storico con anteprima e backup.",
+        "nl": "Optionele overdracht van instellingen, tarief, aliassen en geschiedenis met voorbeeld en back-up.",
+        "pl": "Opcjonalna migracja ustawień, taryfy, aliasów i historii z podglądem i kopią zapasową.",
+        "pt": "Migração opcional de definições, tarifa, aliases e histórico com pré-visualização e cópia de segurança.",
+        "ru": "Необязательный перенос настроек, тарифа, псевдонимов и истории с предварительным просмотром и резервной копией.",
+        "uk": "Необов’язкове перенесення налаштувань, тарифу, псевдонімів та історії з попереднім переглядом і резервною копією.",
+        "zh-cn": "可选迁移设置、电价、设备别名和历史记录，支持预览和备份。"
       },
       "0.3.0-beta.8": {
         "en": "Configure the standard ioBroker release script.",
-        "de": "Das standardmäßige ioBroker-Release-Script eingerichtet."
+        "de": "Das standardmäßige ioBroker-Release-Script eingerichtet.",
+        "es": "Configuración del script de publicación estándar de ioBroker.",
+        "fr": "Configuration du script de publication standard d’ioBroker.",
+        "it": "Configurazione dello script di pubblicazione standard di ioBroker.",
+        "nl": "Het standaard publicatiescript van ioBroker is geconfigureerd.",
+        "pl": "Skonfigurowano standardowy skrypt publikacji ioBroker.",
+        "pt": "Configuração do script de publicação padrão do ioBroker.",
+        "ru": "Настроен стандартный скрипт публикации ioBroker.",
+        "uk": "Налаштовано стандартний скрипт публікації ioBroker.",
+        "zh-cn": "配置了标准的 ioBroker 发布脚本。"
       }
     },
     "adminTab": {
