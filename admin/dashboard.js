@@ -221,7 +221,7 @@ function rows(target, records, empty, columns) {
         row.append(cell);
         result.push(row);
     }
-    el(target).replaceChildren(...result);
+    target.replaceChildren(...result);
 }
 
 function periodBounds(period, now) {
@@ -432,6 +432,37 @@ function renderOverviewCharts() {
     renderPriceHistory(now);
 }
 
+function renderDevices(devices) {
+    const target = el('deviceGroups');
+    const previous = new Map([...target.querySelectorAll('details')].map(group => [group.dataset.room, group]));
+    const focusedRoom = document.activeElement?.closest('#deviceGroups details')?.dataset.room;
+    const rooms = new Map();
+    for (const device of devices) {
+        const room = device.room || '';
+        if (!rooms.has(room)) rooms.set(room, []);
+        rooms.get(room).push(device);
+    }
+    const names = [...rooms.keys()].sort((a, b) => Number(!a) - Number(!b) || a.localeCompare(b, language));
+    const groups = names.map(room => {
+        const group = el('deviceGroupTemplate').content.firstElementChild.cloneNode(true);
+        const members = rooms.get(room);
+        group.dataset.room = room;
+        group.open = previous.get(room)?.open ?? names.length === 1;
+        group.querySelector('summary').append(node('strong', room || words.unassigned),
+            node('small', words.roomDevices(members.length)));
+        for (const header of group.querySelectorAll('[data-text]')) {
+            header.textContent = words[header.dataset.text];
+        }
+        rows(group.querySelector('tbody'), members.map(device => [
+            deviceLabel(device), format(device.powerW, 'W'), format(device.energyKWh, 'kWh', 3),
+            [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
+        ]), words.noDevices, 4);
+        return group;
+    });
+    target.replaceChildren(...(groups.length ? groups : [node('p', words.noDevices, 'surface')]));
+    groups.find(group => group.dataset.room === focusedRoom)?.querySelector('summary').focus({ preventScroll: true });
+}
+
 function renderRooms(rooms, devices) {
     const target = el('roomCards');
     const details = [...target.querySelectorAll('details')];
@@ -529,12 +560,9 @@ function render() {
         ['market', format(data.marketCt, 'ct/kWh'), 'prices'],
         ['tariff', format(data.tariffCt, 'ct/kWh'), 'prices'],
     ]);
-    rows('deviceRows', (data.devices || []).map(device => [
-        deviceLabel(device), device.room || words.unassigned, format(device.powerW, 'W'),
-        format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
-    ]), words.noDevices, 5);
+    renderDevices(data.devices || []);
     renderRooms(data.rooms || [], data.devices || []);
-    rows('priceRows', (data.prices || []).filter(price => price.end_timestamp > Date.now()).map(price => [
+    rows(el('priceRows'), (data.prices || []).filter(price => price.end_timestamp > Date.now()).map(price => [
         dateTime(price.start_timestamp), dateTime(price.end_timestamp), format(price.marketprice / 10, 'ct/kWh'),
         format(price.tariffCt, 'ct/kWh'),
     ]), words.noPrices, 4);

@@ -73,7 +73,11 @@
         .alias-actions button { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); cursor: pointer; }
         .alias-actions button[type="submit"] { background: var(--teal); color: white; }
         .alias-actions button:disabled { opacity: .55; cursor: wait; }
-        #deviceRows small { display: block; overflow-wrap: anywhere; }
+        #deviceGroups { display: grid; gap: 10px; }
+        .device-group summary { cursor: pointer; }
+        .device-group summary small { margin-inline-start: 10px; }
+        .device-group[open] summary { margin-bottom: 10px; }
+        .device-group td small { display: block; overflow-wrap: anywhere; }
         .overview-chart, .chart-grid { margin-top: 16px; }
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
         .flow-surface { overflow: auto; }
@@ -116,7 +120,7 @@
         .room-device-list small { display: block; }
         .room-device-power { white-space: nowrap; font-variant-numeric: tabular-nums; }
     </style>
-    <script defer src="dashboard.js?v=0.3.0-beta.11"></script>
+    <script defer src="dashboard.js?v=0.3.0-beta.12"></script>
 </head>
 <body>
 <main>
@@ -168,10 +172,16 @@
     <section id="devices" data-page hidden>
         <h2 data-text="devices"></h2><p class="note" data-text="deviceHint"></p>
         <p class="note" data-text="coverage"></p>
-        <div class="surface scroll"><table>
-            <thead><tr><th data-text="device"></th><th data-text="room"></th><th data-text="power"></th><th data-text="meter"></th><th data-text="source"></th></tr></thead>
-            <tbody id="deviceRows"></tbody>
-        </table></div>
+        <div id="deviceGroups"></div>
+        <template id="deviceGroupTemplate">
+            <details class="surface device-group">
+                <summary></summary>
+                <div class="scroll"><table>
+                    <thead><tr><th data-text="device"></th><th data-text="power"></th><th data-text="meter"></th><th data-text="source"></th></tr></thead>
+                    <tbody></tbody>
+                </table></div>
+            </details>
+        </template>
     </section>
     <dialog id="aliasDialog" aria-labelledby="aliasTitle" class="surface">
         <form id="aliasForm">
