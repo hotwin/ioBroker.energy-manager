@@ -83,41 +83,16 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ### 0.3.0-beta.3 – 2026-11-24
 
-#### Deutsch
-
-- Vertragsdaten im ioBroker Admin bearbeiten und dauerhaft in der Instanz speichern.
-- Brutto-Arbeitspreis anhand der gewählten Formel berechnen. aWATTar HOURLY unterstützt den prozentualen Aufschlag auf den Betrag des Börsenpreises und optionale Bruttopreisgrenzen für die Energie.
-- Fehlende Vertragsbeträge, einen späteren Vertragsstart und fehlende aktuelle Börsenpreise im Dashboard anzeigen.
-
-#### English
-
 - Edit contract details in ioBroker Admin and persist them in the instance configuration.
 - Calculate gross rates with the selected formula. aWATTar HOURLY supports a percentage surcharge on the absolute spot price and optional gross energy price limits.
 - Explain missing contract inputs, future start dates and unavailable market prices in the dashboard.
 
 ### 0.3.0-beta.2 – 2026-11-24
 
-#### Deutsch
-
-- Anklickbare Kacheln für Leistung, Verbrauch, Kosten, Börsenpreis und Brutto-Arbeitspreis.
-- Die Preisübersicht zeigt Börsenpreis und den berechneten Brutto-Arbeitspreis je verfügbarem Preisintervall.
-
-#### English
-
 - Clickable tiles for power, consumption, costs, market price and gross contract rate.
 - The price view displays the market price and calculated gross contract rate for each available interval.
 
 ### 0.3.0-beta.1 – 2026-11-24
-
-#### Deutsch
-
-- Responsives Dashboard im ioBroker Admin mit Übersicht, Geräten, Räumen, Verbrauchsstatistik, Preisen, Vertrag und Updates.
-- Geräteerkennung über die Aufzählung Strommessung, mit manueller Zuordnung und optionaler Shelly-Erkennung.
-- Neues PNG-Icon sowie deutsche und englische Texte im Dashboard und in der Konfiguration.
-- Auswertungen für sieben Tage, Monat, Quartal und Jahr. Tarifgrenzen und Fixkosten werden separat behandelt.
-- ESLint, ioBroker-Paketprüfung sowie Integrations- und Compact-Mode-Tests in der abgesicherten GitHub-Workflow-Matrix.
-
-#### English
 
 - Responsive ioBroker Admin dashboard covering overview, devices, rooms, statistics, prices, contract and updates.
 - Energy measurement enum discovery across vendors, with manual mappings and optional Shelly discovery.

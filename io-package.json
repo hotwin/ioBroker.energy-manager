@@ -56,7 +56,7 @@
         "pl": "Bieżące ceny pokazują okres obowiązywania, a widok ogólny wyróżnia brakujące odczyty.",
         "pt": "Os preços atuais mostram o período de validade e a vista geral distingue as leituras em falta.",
         "ru": "Для текущих цен отображается срок действия, а пропущенные измерения выделены в обзоре.",
-        "uk": "Поточні ціни показують період дії, а в огляді позначені відсутні вимірювання.",
+        "uk": "Поточні ціни на електроенергію показують період дії. В огляді окремо позначено відсутні вимірювання, показання лічильників і нерозподілену потужність.",
         "zh-cn": "当前电价显示有效时段，概览单独标记缺失的测量值。"
       },
       "0.3.0-beta.13": {
@@ -88,15 +88,15 @@
       "0.3.0-beta.11": {
         "de": "Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.",
         "en": "The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.",
-        "es": "La vista general separa el contador principal, los dispositivos y los precios.",
-        "fr": "La vue d’ensemble sépare le compteur principal, les appareils et les prix.",
-        "it": "La panoramica separa contatore principale, dispositivi e prezzi.",
-        "nl": "Het overzicht scheidt hoofdmeter, apparaten en prijzen.",
-        "pl": "Widok ogólny oddziela licznik główny, urządzenia i ceny.",
-        "pt": "A vista geral separa o contador principal, os dispositivos e os preços.",
-        "ru": "Главный счётчик, устройства и цены выделены в отдельные блоки.",
-        "uk": "Окремі блоки для основного лічильника, пристроїв і цін.",
-        "zh-cn": "概览分别显示总电表、设备和电价。"
+        "es": "La vista general agrupa las métricas del contador principal, los dispositivos supervisados y los precios de la electricidad. El aviso sobre contadores solapados se movió a Dispositivos.",
+        "fr": "La vue d’ensemble regroupe le compteur principal, les appareils suivis et les prix de l’électricité. Le message sur les compteurs qui se chevauchent a été déplacé vers la rubrique Appareils.",
+        "it": "La panoramica raggruppa il contatore principale, i dispositivi monitorati e i prezzi dell’elettricità. L’avviso sui contatori sovrapposti è ora nella sezione Dispositivi.",
+        "nl": "Het overzicht groepeert de hoofdmeter, de gemonitorde apparaten en de elektriciteitsprijzen. De melding over overlappende meters staat nu bij Apparaten.",
+        "pl": "Widok ogólny grupuje licznik główny, monitorowane urządzenia i ceny energii elektrycznej. Uwaga o nakładających się pomiarach znajduje się w sekcji Urządzenia.",
+        "pt": "A vista geral agrupa o contador principal, os dispositivos monitorizados e os preços da eletricidade. O aviso sobre contadores sobrepostos foi movido para Dispositivos.",
+        "ru": "В обзоре отдельно сгруппированы главный счётчик, контролируемые устройства и цены на электроэнергию. Примечание о дублирующих измерениях перенесено в раздел «Устройства».",
+        "uk": "В огляді окремо згруповано основний лічильник, пристрої під наглядом і ціни на електроенергію. Примітку про дублювання вимірювань перенесено до розділу «Пристрої».",
+        "zh-cn": "概览将总电表、受监测设备和电价分组显示。关于计量范围重叠的提示已移至设备页面。"
       },
       "0.3.0-beta.10": {
         "de": "Hausstromzähler mit frei wählbaren Datenpunkten für Leistung und Zählerstand.",
