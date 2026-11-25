@@ -2,6 +2,9 @@
 
 ## 0.3.0-beta.14 – 2026-11-25
 
+- DE: Migrations-CLI setzt den Exit-Status, statt den Prozess erzwungen zu beenden (Repository Checker E5050).
+- EN: Migration CLI sets its exit status instead of forcibly terminating the process (Repository Checker E5050).
+
 - DE: npm-Veröffentlichung auf Trusted Publishing (OIDC) vorbereitet; Repository-Links an den neuen Namen angepasst.
 - EN: Prepare npm publication via Trusted Publishing (OIDC) and update repository links to the new name.
 

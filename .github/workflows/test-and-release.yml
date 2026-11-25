@@ -74,7 +74,7 @@ jobs:
   repository-check:
     if: >-
       (github.event_name == 'workflow_dispatch' && (inputs.check_repository || inputs.publish_beta)) ||
-      (github.event_name == 'push' && (github.ref == 'refs/heads/develop/repository-checker-24' || github.ref == 'refs/heads/develop/release-gate-bootstrap-24'))
+      (github.event_name == 'push' && (github.ref == 'refs/heads/develop/repository-checker-24' || github.ref == 'refs/heads/develop/release-gate-bootstrap-24' || github.ref == 'refs/heads/develop/npm-trusted-publishing'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
