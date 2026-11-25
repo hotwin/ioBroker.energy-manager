@@ -2,6 +2,9 @@
 
 ## 0.3.0-beta.14 – 2026-11-25
 
+- DE: npm-Veröffentlichung auf Trusted Publishing (OIDC) vorbereitet; Repository-Links an den neuen Namen angepasst.
+- EN: Prepare npm publication via Trusted Publishing (OIDC) and update repository links to the new name.
+
 - DE: Vertragsformular erklärt ausdrücklich, dass optionale Energiepreisgrenzen ohne vertragliche Begrenzung leer bleiben müssen; 0 ist eine wirksame Preisgrenze. Regressionstest für den Praxistest #23.
 - EN: The contract form explicitly distinguishes empty optional energy price limits from a real zero-price limit. Regression test for field report #23.
 

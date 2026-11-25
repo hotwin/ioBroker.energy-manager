@@ -102,17 +102,20 @@ jobs:
         run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
 
   publish-beta:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish_beta && github.ref == 'refs/heads/develop/0.3.0-beta.1'
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_beta && github.ref == 'refs/heads/main'
     needs: [check-and-lint, adapter-tests, repository-check]
     runs-on: ubuntu-latest
     environment: npm-beta
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
       - name: Verify package name and beta version
         run: |
@@ -125,7 +128,8 @@ jobs:
             throw new Error('Expected matching Energy Manager beta package metadata.');
           }
           NODE
-      - name: Publish to npm under the beta tag
+      - name: Verify npm supports trusted publishing
+        run: |
+          node -e "const [major, minor, patch] = process.argv[1].split('.').map(Number); if (major < 11 || (major === 11 && (minor < 5 || (minor === 5 && patch < 1)))) process.exit(1)" "$(npm --version)"
+      - name: Publish to npm under the beta tag using OIDC
         run: npm publish --tag beta
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

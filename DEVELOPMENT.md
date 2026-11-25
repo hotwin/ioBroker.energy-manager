@@ -28,14 +28,11 @@ Repository Checker 5.24.3 completed against `f599957`. Its CLI returned `OK` but
 - Release and repository settings: npm package missing (E2000), beta.6 tag missing (E3032), author and copyright email metadata missing (E4048, E4050, E4051), and repository topics missing (E8002).
 - The inline README changelog now includes beta.6 (commit `af06c72`, addressing W6030). The separate changelog still triggers W6017 and W6032; consolidate the layout before the final repository check.
 
-## First npm beta from GitHub Actions
+## npm Trusted Publishing
 
-The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The workflow is available on the default branch. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after lint, package validation, both adapter test matrix jobs and the official Repository Checker succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
+Configure the npm package `iobroker.hotwin-energy-manager` with GitHub Actions, owner `hotwin`, repository `ioBroker.hotwin-energy-manager`, workflow `test-and-release.yml` and environment `npm-beta`. The publishing job uses a GitHub-hosted runner, Node.js 24, npm 11.5.1 or newer, and job-scoped `id-token: write`. No npm write token is needed. Restrict deployment access in the `npm-beta` environment to the default branch and authorized maintainers. The package repository URL must match the renamed repository exactly.
 
-1. Create the GitHub Actions environment `npm-beta`. Allow deployments from the development branch and store a short-lived granular npm token as the environment secret `NPM_TOKEN`. The token must permit creating the unscoped package and have Bypass 2FA enabled. Keep the token in GitHub Secrets.
-2. Under **Actions → Test and Release → Run workflow**, select the development branch. First run with the publish checkbox cleared to exercise validation only. Verify the version and select the publish checkbox only when ready to release.
-3. Confirm the published version with `npm view iobroker.hotwin-energy-manager@beta version`. Revoke the bootstrap token after use. Subsequent releases can use npm Trusted Publishing after configuring an OIDC workflow and its npm package settings.
-
+After this workflow is merged into main and the release candidate is approved, manually run validation, review the official checker findings and test results, and explicitly request beta publication from main. The publishing job requires all tests and the repository checker to succeed. Verify the resulting npm version and archive the matching release assets. Remove obsolete credentials only after successful migration; never publish a new version solely to test authorization.
 
 ## Prepare a beta with the ioBroker release script
 
