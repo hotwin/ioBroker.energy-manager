@@ -40,8 +40,8 @@
 - EN: The adapter test matrix now includes Node.js 26.
 - DE: Die deutsche Anleitung und die begleitende Dokumentation liegen im ioBroker-Dokumentationsordner.
 - EN: The German guide and supporting documentation use the ioBroker documentation directory.
-- DE: Nach einem abgebrochenen GitHub-Archivschritt kann der Release-Lauf mit dem verifizierten npm-Paket fortfahren.
-- EN: Release runs can resume GitHub archival using the verified npm package.
+- DE: Offizieller ioBroker-Release-Workflow mit Trusted Publishing; veröffentlichte GitHub-Releases bleiben unverändert.
+- EN: Official ioBroker release workflow with Trusted Publishing; published GitHub releases remain unchanged.
 - DE: Die Freigabeprüfung dokumentiert den fehlenden npm-Eintrag der bevorstehenden Version als Vorab-Befund.
 - EN: The release gate records the upcoming version’s absence from npm as a prepublication finding.
 

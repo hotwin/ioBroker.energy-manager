@@ -1,7 +1,7 @@
 # ioBroker Energy Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
-[![npm beta](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/beta?label=npm%20beta)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+[![npm next](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/next?label=npm%20next)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hotwin-energy-manager?label=downloads)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Test and Release (main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
@@ -41,7 +41,7 @@ Consumption is calculated from cumulative meter differences after recording begi
 
 ## Development and roadmap
 
-GitHub Actions checks lint, package metadata, dashboard synchronization, unit tests, integration and Compact Mode on Node.js 22/24. The beta.8 npm publish job succeeded. The official release script is configured in the development branch.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 
 - [Main branch integration / Developer Portal](https://github.com/hotwin/ioBroker.hotwin-energy-manager/pull/12)
 - [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
@@ -66,7 +66,7 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 - A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
 - The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 - The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
-- Resume GitHub archival if the verified package is already published under the npm beta tag.
+- Use the official ioBroker test-and-release workflow and Trusted Publishing; published GitHub releases remain unchanged.
 - Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
 - Instance settings, adapter metadata and release summaries are available in nine additional languages.
 - The adapter test matrix now includes Node.js 26.
