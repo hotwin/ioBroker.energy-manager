@@ -55,34 +55,6 @@
       "0.3.0-beta.8": {
         "en": "Configure the standard ioBroker release script.",
         "de": "Das standardmäßige ioBroker-Release-Script eingerichtet."
-      },
-      "0.3.0-beta.7": {
-        "de": "Übersichtlicher Dialog für Gerätenamen und aufgeräumte Leistungsanzeige.",
-        "en": "Clearer device rename dialog and a clean power column."
-      },
-      "0.3.0-beta.6": {
-        "de": "Übersichtlichere Raumkarten mit aufklappbaren Gerätelisten.",
-        "en": "Clearer room cards with expandable device lists."
-      },
-      "0.3.0-beta.5": {
-        "de": "Energiefluss und Verlaufsdiagramme direkt auf der Startseite.",
-        "en": "Energy flow and historical charts on the dashboard overview."
-      },
-      "0.3.0-beta.4": {
-        "de": "Bearbeitbare Gerätenamen und nachvollziehbare Leistungsdatenpunkte.",
-        "en": "Editable device names and transparent power data sources."
-      },
-      "0.3.0-beta.3": {
-        "de": "Bearbeitbarer Stromvertrag und Brutto-Arbeitspreis mit aWATTar-HOURLY-Formel.",
-        "en": "Editable electricity contract and gross rate with the aWATTar HOURLY formula."
-      },
-      "0.3.0-beta.2": {
-        "de": "Anklickbare Übersichtskacheln und Brutto-Arbeitspreise für jedes verfügbare Preisintervall.",
-        "en": "Clickable dashboard tiles and gross contract rates for each available price interval."
-      },
-      "0.3.0-beta.1": {
-        "de": "Responsives Admin-Dashboard, herstellerunabhängige Strommessung, Verbrauchsstatistik und neues Adapter-Icon.",
-        "en": "Responsive Admin dashboard, vendor-independent meter discovery, consumption statistics and new adapter icon."
       }
     },
     "adminTab": {
@@ -95,7 +67,7 @@
     },
     "icon": "energy-manager.png",
     "compact": true,
-    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/refs/heads/develop/0.3.0-beta.1/admin/energy-manager.png",
+    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/main/admin/energy-manager.png",
     "readme": "https://github.com/hotwin/ioBroker.energy-manager#readme",
     "globalDependencies": [
       {

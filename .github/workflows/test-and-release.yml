@@ -50,6 +50,7 @@ jobs:
         run: npm pack --dry-run
 
   adapter-tests:
+    needs: check-and-lint
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -71,7 +72,9 @@ jobs:
         run: npm run test:integration
 
   repository-check:
-    if: github.event_name == 'workflow_dispatch' && (inputs.check_repository || inputs.publish_beta)
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.check_repository || inputs.publish_beta)) ||
+      (github.event_name == 'push' && (github.ref == 'refs/heads/develop/repository-checker-24' || github.ref == 'refs/heads/develop/release-gate-bootstrap-24'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:

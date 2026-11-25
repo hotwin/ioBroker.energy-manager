@@ -40,3 +40,15 @@ test('unknown inputs are distinguishable from zero and unsupported formulas', ()
     assert.equal(calculate({}, null).contract.status, 'noMarket');
     assert.equal(calculate({ tariffConfigured: false }).contract.status, 'inactive');
 });
+
+test('blank optional energy limits differ from explicit zero limits (field report #23)', () => {
+    const config = { tariffConfigured: true, tariffFormula: 'awattarHourly', marketMarkupPercent: 0,
+        vatPercent: 19, markupCt: 0, networkCt: 7.46, electricityTaxCt: 2.05,
+        concessionCt: 2.39, leviesCt: 2.95 };
+    const rate = (min, max, spot) => calculateTariff({ ...config, energyMinGrossCt: min,
+        energyMaxGrossCt: max }, spot, '2026-11-25').tariffCt;
+    assert.ok(Math.abs(rate(null, null, 29.57) - 52.8598) < 1e-10);
+    assert.equal(rate('', '', 29.57), rate(null, null, 29.57));
+    assert.ok(Math.abs(rate(0, 0, 29.57) - 17.6715) < 1e-10);
+    assert.ok(rate(null, null, -10) < rate(0, null, -10));
+});
