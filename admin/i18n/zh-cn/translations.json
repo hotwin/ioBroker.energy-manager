@@ -20,5 +20,9 @@
   "source_powerId": "功率状态（W 或 kW）",
   "source_energyId": "电能表状态",
   "source_unit": "电能表单位",
-  "source_exclude": "不计入合计"
+  "source_exclude": "不计入合计",
+  "settings_measurement": "测量与总电表",
+  "settings_devices": "设备与数据点",
+  "settings_tariff": "电价方案",
+  "settings_fixedCosts": "固定费用与预付款"
 }

@@ -20,5 +20,9 @@
   "source_powerId": "Leistungsdatenpunkt (W oder kW)",
   "source_energyId": "Energiedatenpunkt",
   "source_unit": "Einheit des Energiezählers",
-  "source_exclude": "Von Summen ausschließen"
+  "source_exclude": "Von Summen ausschließen",
+  "settings_measurement": "Messung & Hauptzähler",
+  "settings_devices": "Geräte & Datenpunkte",
+  "settings_tariff": "Stromtarif",
+  "settings_fixedCosts": "Fixkosten & Abschläge"
 }

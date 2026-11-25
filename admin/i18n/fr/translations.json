@@ -20,5 +20,9 @@
   "source_powerId": "État de puissance (W ou kW)",
   "source_energyId": "État du compteur d’énergie",
   "source_unit": "Unité du compteur d’énergie",
-  "source_exclude": "Exclure des totaux"
+  "source_exclude": "Exclure des totaux",
+  "settings_measurement": "Mesures et compteur principal",
+  "settings_devices": "Appareils et points de données",
+  "settings_tariff": "Tarif électrique",
+  "settings_fixedCosts": "Frais fixes et acomptes"
 }

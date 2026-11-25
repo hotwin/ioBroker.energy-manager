@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/hotwin/ioBroker.hotwin-energy-manager)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues)
 
-**Responsible: Böttcher Services** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
+**Responsible: [Böttcher Services](https://hotgame.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
 **Current published beta: 0.3.0-beta.8 (25 November 2026)**
 
@@ -56,6 +56,8 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 ## Changelog
 
 ### 0.3.0-beta.14 (development)
+
+- Refresh dashboard design with automatic light/dark selection, theme-aware charts and a streamlined header with automatic instance selection. Organize native instance configuration into four tabs.
 
 - Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
 - Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.

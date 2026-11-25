@@ -124,16 +124,94 @@
         .github-button:hover { border-color: var(--teal); color: var(--teal); }
         .project-footer { border-top: 1px solid var(--line); margin-top: 24px; padding: 16px 0; color: var(--muted); font-size: 13px; text-align: center; }
         .project-footer .project-links { justify-content: center; margin-top: 8px; }
+        /* Light, compact application layout. The same stylesheet serves Admin and Web. */
+        :root { --ink: #243244; --muted: #526276; --teal: #006d8b; --line: #dbe3ec; --paper: #fff; }
+        body { background: #f5f7fa; }
+        main { max-width: 1480px; padding: clamp(12px, 2.4vw, 30px); }
+        header { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 0 2px 8px #24324408; }
+        h1 { font-size: clamp(24px, 4vw, 32px); letter-spacing: -.035em; }
+        h2 { font-size: 20px; letter-spacing: -.02em; }
+        #status { font-size: 13px; margin-top: 4px; }
+        nav { gap: 5px; padding: 6px; overflow-x: auto; flex-wrap: nowrap; }
+        nav a { flex: 0 0 auto; color: var(--muted); white-space: nowrap; padding: 10px 14px; }
+        nav a:hover { background: #f0f5f9; color: var(--ink); }
+        nav a[aria-current] { background: #e2f1f7; color: #005b76; }
+        article, .surface { border-radius: 16px; padding: 18px; box-shadow: 0 2px 8px #24324406; }
+        .summary-grid { gap: 14px; }
+        .summary-panel { padding: 16px; flex-basis: 290px; }
+        .summary-panel h3 { display: flex; align-items: center; gap: 9px; }
+        .summary-panel h3::before { content: ''; width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: #007da1; }
+        #meterSummary h3::before { background: #007da1; }
+        .summary-panel:nth-child(2) h3::before { background: #33865e; }
+        .summary-panel:nth-child(3) h3::before { background: #b76b13; }
+        .summary-metrics { gap: 8px; grid-template-columns: repeat(auto-fit, minmax(min(125px, 100%), 1fr)); }
+        .summary-metric { background: #f5f7fa; border-radius: 10px; padding: 10px 12px; }
+        a.summary-metric:hover { background: #eaf4f8; }
+        .tile-value { font-size: clamp(18px, 2.1vw, 24px); }
+        .room-icon { color: #005b76; background: #e2f1f7; }
+        .room-card summary { color: #005b76; }
+        .room-card { box-shadow: 0 2px 8px #24324408; }
+        th { color: var(--muted); font-size: 12px; background: #f5f7fa; }
+        select, .contract-fields input, .contract-fields select { border: 1px solid #a9b8c8; border-radius: 9px; background: var(--paper); color: var(--ink); }
+        #contractForm button[type="submit"] { border: 0; border-radius: 9px; background: var(--teal); color: white; font-weight: 600; cursor: pointer; }
+        #contractForm button:disabled { opacity: .6; cursor: default; }
+        .project-footer { margin-top: 24px; }
+        @media (max-width: 600px) {
+            header { padding: 14px; }
+            .header-actions { width: 100%; justify-content: space-between; }
+            nav a { padding: 9px 12px; }
+            article, .surface { padding: 13px; }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            a.summary-metric, nav a, .github-button { transition: background-color .15s, color .15s; }
+        }
+        :root { --chart-blue: #4169a7; --chart-green: #08796e; --chart-amber: #925e25; --chart-purple: #83538d; }
+        :root[data-theme="dark"] { color-scheme: dark; --ink: #edf2f8; --muted: #b5c3d4; --teal: #70d2ed; --line: #405064; --paper: #202b39; --chart-blue: #8ab5ff; --chart-green: #66d7b3; --chart-amber: #f1be78; --chart-purple: #d9a5ed; }
+        :root[data-theme="dark"] body { background: #141c27; }
+        :root[data-theme="dark"] nav a:hover, :root[data-theme="dark"] a.summary-metric:hover, :root[data-theme="dark"] .device-edit:hover { background: #35485c; color: var(--ink); }
+        :root[data-theme="dark"] nav a[aria-current], :root[data-theme="dark"] .room-icon { background: #24475c; color: #a1e6fa; }
+        :root[data-theme="dark"] .room-card summary { color: var(--teal); }
+        :root[data-theme="dark"] .summary-metric, :root[data-theme="dark"] th { background: #293748; }
+        :root[data-theme="dark"] select, :root[data-theme="dark"] input { border-color: #63768c; }
+        :root[data-theme="dark"] #contractForm button[type="submit"], :root[data-theme="dark"] .alias-actions button[type="submit"] { color: #102331; }
+        :root[data-theme="dark"] dialog { background: var(--paper); border-color: var(--line); border-radius: 14px; }
+        :root[data-theme="dark"] #aliasInput { background: #293748; color: var(--ink); }
+        :root[data-theme="dark"] .room-card, :root[data-theme="dark"] .surface, :root[data-theme="dark"] header { box-shadow: none; }
+        .theme-control { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+        .app-header { min-height: 88px; padding: 18px 22px; gap: 14px; }
+        .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+        .brand-icon { flex: 0 0 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; color: #005b76; background: #e2f1f7; }
+        .brand-copy { min-width: 0; }
+        .brand-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+        .app-header h1 { line-height: 1.2; }
+        .app-header .header-actions { justify-content: flex-end; }
+        .app-header #status { margin: 0; font-size: 12px; overflow-wrap: anywhere; }
+        #status[data-state="ready"]::before, #status[data-state="offline"]::before, #status[data-state="waiting"]::before, #status[data-state="stale"]::before, #status[data-state="connectionError"]::before, #status[data-state="socketError"]::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-inline-end: 7px; background: #b7791f; }
+        #status[data-state="ready"]::before { background: #238453; }
+        #status[data-state="offline"]::before, #status[data-state="connectionError"]::before, #status[data-state="socketError"]::before { background: #c34b4b; }
+        :root[data-theme="dark"] .brand-icon { background: #24475c; color: #a1e6fa; }
+        @media (max-width: 600px) {
+            .app-header { padding: 14px; }
+            .brand-icon { flex-basis: 44px; height: 44px; }
+            .app-header .header-actions { width: 100%; justify-content: space-between; }
+        }
+        .brand-icon img { width: 92%; height: 92%; object-fit: contain; }
     </style>
     <script defer src="dashboard.js?v=0.3.0-beta.14"></script>
 </head>
 <body>
 <main>
-    <header>
-        <div><h1>Energy Manager</h1><p id="status" role="status"></p></div>
+    <header class="app-header">
+        <div class="brand">
+            <span class="brand-icon" aria-hidden="true"><img src="energy-manager.png" alt="" width="48" height="48"></span>
+            <div class="brand-copy">
+                <h1>Energy Manager</h1>
+                <p class="brand-subtitle" data-text="headerSubtitle">Energy monitoring &amp; electricity costs</p>
+            </div>
+        </div>
         <div class="header-actions">
-            <label>ioBroker <select id="instance" aria-label="ioBroker instance"></select></label>
-            <a class="github-button" href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <p id="status" role="status"></p>
+            <a class="github-button" href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
         </div>
     </header>
     <nav id="navigation" aria-label="Energy Manager"></nav>
@@ -269,7 +347,7 @@
         </div>
     </section>
     <footer class="project-footer">
-        <p><span data-text="projectResponsible"></span> <strong>Böttcher Services</strong></p>
+        <p><span data-text="projectResponsible"></span> <strong><a href="https://hotgame.duckdns.org/" target="_blank" rel="noopener noreferrer">Böttcher Services</a></strong></p>
         <div class="project-links">
             <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues" target="_blank" rel="noopener noreferrer" data-text="projectIssues"></a>

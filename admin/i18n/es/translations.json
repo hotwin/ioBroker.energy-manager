@@ -20,5 +20,9 @@
   "source_powerId": "Estado de potencia (W o kW)",
   "source_energyId": "Estado del contador de energía",
   "source_unit": "Unidad del contador de energía",
-  "source_exclude": "Excluir de los totales"
+  "source_exclude": "Excluir de los totales",
+  "settings_measurement": "Medición y contador principal",
+  "settings_devices": "Dispositivos y puntos de datos",
+  "settings_tariff": "Tarifa eléctrica",
+  "settings_fixedCosts": "Costes fijos y anticipos"
 }

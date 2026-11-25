@@ -20,5 +20,9 @@
   "source_powerId": "Стан потужності (Вт або кВт)",
   "source_energyId": "Стан лічильника енергії",
   "source_unit": "Одиниця лічильника енергії",
-  "source_exclude": "Виключити з підсумків"
+  "source_exclude": "Виключити з підсумків",
+  "settings_measurement": "Вимірювання та головний лічильник",
+  "settings_devices": "Пристрої та точки даних",
+  "settings_tariff": "Тариф на електроенергію",
+  "settings_fixedCosts": "Постійні витрати та аванси"
 }

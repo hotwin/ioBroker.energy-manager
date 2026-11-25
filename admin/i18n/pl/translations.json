@@ -20,5 +20,9 @@
   "source_powerId": "Stan mocy (W lub kW)",
   "source_energyId": "Stan licznika energii",
   "source_unit": "Jednostka licznika energii",
-  "source_exclude": "Wyklucz z sum"
+  "source_exclude": "Wyklucz z sum",
+  "settings_measurement": "Pomiary i licznik główny",
+  "settings_devices": "Urządzenia i punkty danych",
+  "settings_tariff": "Taryfa energii",
+  "settings_fixedCosts": "Koszty stałe i zaliczki"
 }
