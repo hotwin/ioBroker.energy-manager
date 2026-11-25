@@ -12,6 +12,18 @@
 - DE: Der offizielle ioBroker Repository Checker prüft den konkreten Release-Commit und muss vor der npm-Veröffentlichung erfolgreich sein.
 - EN: The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 
+- DE: Die Freigabeprüfung bestätigt auch die geprüfte Paketkennung und protokolliert eng begrenzte Ausnahmen für die Erstaufnahme.
+- EN: The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+
+- DE: Die Adapter-Metadaten begrenzen die Kurzmeldungen auf sieben Versionen. Zählerfelder sind für alle Admin-Bildschirmgrößen konfiguriert.
+- EN: Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
+
+- DE: Die Instanzkonfiguration, Adapterbeschreibung und Versionsmeldungen stehen in neun weiteren Sprachen bereit.
+- EN: Instance settings, adapter metadata and release summaries are available in nine additional languages.
+
+- DE: Die Adapter-Tests laufen zusätzlich auf Node.js 26.
+- EN: The adapter test matrix now includes Node.js 26.
+
 ## 0.3.0-beta.13 – 2026-11-25
 
 - DE: Die lokale Messwerterfassung und die Verfügbarkeit eines aktuellen aWATTar-Preises haben getrennte Statusdatenpunkte. Nach API-Fehlern verlängert sich der Wiederholungsabstand auf bis zu 15 Minuten.

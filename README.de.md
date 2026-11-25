@@ -44,11 +44,11 @@ Schließe überlappende Haupt- oder Unterzähler in den manuellen Energiequellen
 
 Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Adapter soll langfristig gepflegt und anhand von Rückmeldungen weiterentwickelt werden.
 
-- [Datenmigration](https://github.com/hotwin/ioBroker.energy-manager/issues/11): geplant, alte Instanz bitte behalten und Daten sichern.
-- [Aufnahme in ioBroker Latest](https://github.com/hotwin/ioBroker.energy-manager/issues/10): in Vorbereitung.
-- [Main und Developer Portal](https://github.com/hotwin/ioBroker.energy-manager/pull/12): Zusammenführung noch nicht abgeschlossen.
+- [Datenmigration](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/11): geplant, alte Instanz bitte behalten und Daten sichern.
+- [Aufnahme in ioBroker Latest](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10): in Vorbereitung.
+- [Main und Developer Portal](https://github.com/hotwin/ioBroker.hotwin-energy-manager/pull/12): Zusammenführung noch nicht abgeschlossen.
 
-Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
+Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
 ## Changelog / Versionsverlauf
 
