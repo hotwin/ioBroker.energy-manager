@@ -1,5 +1,7 @@
 {
-  "tariffConfigured": "Tarifbestandteile geprüft",
+  "aiEnabled": "KI-Verbrauchsanalyse mit Ollama aktivieren",
+  "aiUrl": "Ollama-Server (URL mit Port)",
+  "aiModel": "Installierter Ollama-Modellname",  "tariffConfigured": "Tarifbestandteile geprüft",
   "markupCt": "Weitere Netto-Aufschläge, ohne separat erfasste Beträge (ct/kWh)",
   "vatPercent": "Mehrwertsteuer (%)",
   "autoShelly": "Shelly automatisch erkennen",

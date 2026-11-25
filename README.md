@@ -46,10 +46,16 @@ GitHub Actions checks lint, package metadata, dashboard synchronization, unit te
 
 This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
 
+## AI energy analysis with Ollama
+
+Enable the analysis in the instance settings and enter an Ollama server URL reachable from ioBroker and the name of an installed model. At most once per hour, the adapter sends summarized daily consumption and available gross tariff intervals to that server. The overview shows the German-language result and its timestamp. The feature is disabled by default.
+
 ## Changelog / Release history
 
 ### 0.3.0-beta.9 – 2026-11-25
 
+- DE: Optionale KI-Stromanalyse mit Ollama für erfassten Tagesverbrauch und verfügbare Tarifintervalle.
+- EN: Optional Ollama analysis of recorded daily consumption and available gross tariff intervals.
 - DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
 - EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
 

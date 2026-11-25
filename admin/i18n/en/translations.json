@@ -1,5 +1,7 @@
 {
-  "tariffConfigured": "Tariff components verified",
+  "aiEnabled": "Enable AI consumption analysis with Ollama",
+  "aiUrl": "Ollama server URL (including port)",
+  "aiModel": "Installed Ollama model name",  "tariffConfigured": "Tariff components verified",
   "markupCt": "Other net surcharges excluding separately entered amounts (ct/kWh)",
   "vatPercent": "VAT (%)",
   "autoShelly": "Automatically discover Shelly",

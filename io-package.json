@@ -105,6 +105,9 @@
     ]
   },
   "native": {
+    "aiEnabled": false,
+    "aiUrl": "http://127.0.0.1:11434",
+    "aiModel": "",
     "markupCt": null,
     "vatPercent": null,
     "tariffConfigured": false,

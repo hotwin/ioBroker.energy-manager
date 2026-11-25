@@ -2,6 +2,8 @@
 
 ## 0.3.0-beta.9 – 2026-11-25
 
+- DE: Optionale KI-Stromanalyse mit Ollama für erfassten Tagesverbrauch und verfügbare Tarifintervalle.
+- EN: Optional Ollama analysis of recorded daily consumption and available gross tariff intervals.
 - DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
 - EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
 
