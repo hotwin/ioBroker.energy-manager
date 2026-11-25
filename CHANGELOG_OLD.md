@@ -26,6 +26,8 @@
 
 - The adapter test matrix now includes Node.js 26.
 - The German guide and supporting documentation use the ioBroker documentation directory.
+- Release runs can resume GitHub archival using the verified npm package.
+- The release gate records the upcoming version’s absence from npm as a prepublication finding.
 
 ## 0.3.0-beta.13 – 2026-11-25
 

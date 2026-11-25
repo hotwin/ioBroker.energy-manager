@@ -43,3 +43,14 @@ test('defers only documented admission findings for the checked adapter', () => 
     assert.deepEqual(reviewReport(observed, { ...candidate, admissionIssue: '' }).deferred, []);
     assert.deepEqual(reviewReport({ ...observed, checks: [] }, candidate).deferred, []);
 });
+
+test('defers W2004 only for this exact candidate with verified npm absence', () => {
+    const version = '0.3.0-beta.14';
+    const candidateWarning = `[W2004] Version "${version}" listed at common.news at io-package.json does not exist at NPM and will be ignored at repository listing. Please remove from news section.`;
+    const otherWarning = candidateWarning.replace(version, '0.3.0-beta.13');
+    const observed = { ...report, warnings: [candidateWarning, otherWarning] };
+    const candidate = { sha, packageName, adapterName, version, candidateMissing: true };
+    assert.deepEqual(reviewReport(observed, candidate).deferred, [candidateWarning]);
+    assert.deepEqual(reviewReport(observed, { ...candidate, candidateMissing: false }).deferred, []);
+    assert.deepEqual(reviewReport({ ...observed, checks: [] }, candidate).deferred, []);
+});
