@@ -15,6 +15,31 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 - Bearbeitbare Vertragsdaten, Brutto-Arbeitspreis, Mehrwertsteuer, aWATTar HOURLY-Aufschlag und optionale Preisgrenzen.
 - Responsives deutsch- und englischsprachiges Dashboard im Admin und optional über den Web-Adapter.
 
+## Dashboard-Screenshots
+
+Das Admin-Dashboard der veröffentlichten Beta 8 mit fiktiven Mess- und Vertragsdaten.
+
+![Übersicht mit Live-Leistung, Strompreisen, Sankey und Verlaufsdiagrammen](docs/screenshots/0.3.0-beta.8/overview.webp)
+
+<details>
+<summary>Geräte, Räume, Statistik, Strompreise, Stromvertrag, Updates und mobile Übersicht</summary>
+
+![Geräte mit Leistung, Zählerständen und Datenquellen](docs/screenshots/0.3.0-beta.8/devices.webp)
+
+![Raumkarten mit aufgeklappter Geräteliste für die Küche](docs/screenshots/0.3.0-beta.8/rooms.webp)
+
+![Erfasster Verbrauch und variable Kosten für sieben Tage](docs/screenshots/0.3.0-beta.8/statistics.webp)
+
+![Kommende Börsen- und Brutto-Arbeitspreise je Intervall](docs/screenshots/0.3.0-beta.8/prices.webp)
+
+![Bearbeitbarer Beispiel-Stromvertrag mit monatlichen Fixkosten](docs/screenshots/0.3.0-beta.8/contract.webp)
+
+![Update-Seite mit installierter Beta 8 und Link zu GitHub Releases](docs/screenshots/0.3.0-beta.8/updates.webp)
+
+![Mobile Dashboard-Übersicht bei 390 Pixeln Breite](docs/screenshots/0.3.0-beta.8/mobile.webp)
+
+</details>
+
 ## Installation
 
 Voraussetzungen: Node.js ab 22, Admin ab 7.6.20, js-controller ab 6.0.11 sowie vorhandene Messdatenpunkte.
