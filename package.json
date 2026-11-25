@@ -21,7 +21,7 @@
     "check:dashboard": "node scripts/sync-dashboard.js --check",
     "release": "release-script"
   },
-  "author": "hotwin",
+  "author": "hotwin <hotwin@gmx.net>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hotwin/ioBroker.hotwin-energy-manager.git"

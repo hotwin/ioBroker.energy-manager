@@ -29,7 +29,7 @@
       "zh-cn": "本地能源监测"
     },
     "authors": [
-      "hotwin"
+      "hotwin <hotwin@gmx.net>"
     ],
     "platform": "Javascript/Node.js",
     "mode": "daemon",

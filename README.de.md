@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/hotwin/ioBroker.hotwin-energy-manager)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues)
 
-**Verantwortlich: Böttcher Services**
+**Verantwortlich: Böttcher Services** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
 **Aktuell veröffentlichte Beta: 0.3.0-beta.8 (25.11.2026)**
 
@@ -152,4 +152,4 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Lizenz
 
-MIT – Copyright (c) 2026 hotwin. Siehe [LICENSE](LICENSE).
+MIT – Copyright (c) 2026 hotwin <hotwin@gmx.net>. Siehe [LICENSE](LICENSE).
