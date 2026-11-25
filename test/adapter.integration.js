@@ -26,14 +26,14 @@ tests.integration(path.join(__dirname, '..'), {
                     type: 'enum', common: { name: 'Strommessung', members: ['zigbee2mqtt.0.test'] }, native: {},
                 });
                 await harness.startAdapterAndWait(true);
-                const state = await harness.states.getStateAsync('energy-manager.0.snapshot');
+                const state = await harness.states.getStateAsync('hotwin-energy-manager.0.snapshot');
                 const snapshot = JSON.parse(state.val);
                 assert.equal(state.ack, true);
                 assert.equal(snapshot.totalPower, 1325);
                 assert.equal(snapshot.devices[0].energyKWh, 42);
                 assert.equal(snapshot.devices[0].source, 'enum');
                 await harness.stopAdapter();
-                assert.equal((await harness.states.getStateAsync('energy-manager.0.info.connection')).val, false);
+                assert.equal((await harness.states.getStateAsync('hotwin-energy-manager.0.info.connection')).val, false);
             });
         });
         suite('Compact mode', getHarness => {
@@ -41,9 +41,9 @@ tests.integration(path.join(__dirname, '..'), {
                 this.timeout(45000);
                 const harness = getHarness();
                 const { states } = harness;
-                const createAdapter = require(path.join(os.tmpdir(), 'test-iobroker.energy-manager',
-                    'node_modules', 'iobroker.energy-manager'));
-                const instance = 'energy-manager.0';
+                const createAdapter = require(path.join(os.tmpdir(), 'test-iobroker.hotwin-energy-manager',
+                    'node_modules', 'iobroker.hotwin-energy-manager'));
+                const instance = 'hotwin-energy-manager.0';
                 async function waitForConnection() {
                     const end = Date.now() + 12000;
                     while (Date.now() < end) {
@@ -55,7 +55,7 @@ tests.integration(path.join(__dirname, '..'), {
                 const { native: original } = await harness.getAdapterConfig();
                 for (let run = 0; run < 2; run++) {
                     if (run === 1) {
-                        await harness.changeAdapterConfig('energy-manager', { native: {
+                        await harness.changeAdapterConfig('hotwin-energy-manager', { native: {
                             provider: 'aWATTar', tariffName: 'HOURLY', tariffConfigured: true,
                             networkCt: 9.25, electricityTaxCt: 0, concessionCt: 0, leviesCt: 0,
                             markupCt: 0.3, vatPercent: 19, tariffFormula: 'awattarHourly', marketMarkupPercent: 3,

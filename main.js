@@ -20,7 +20,7 @@ const states = {
 
 class EnergyManager extends utils.Adapter {
     constructor(options = {}) {
-        super({ ...options, name: 'energy-manager' });
+        super({ ...options, name: 'hotwin-energy-manager' });
         this.on('ready', () => {
             this.pending = this.start().catch(error => this.log.error(String(error)));
         });

@@ -2,6 +2,8 @@
 
 ## 0.3.0-beta.8 – 2026-11-24
 
+- DE: Adapterkennung auf `hotwin-energy-manager` geändert, um den npm-Namenskonflikt zu lösen.
+- EN: Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
 - DE: Offizielles ioBroker-Release-Script für Versionsabgleich, Changelog und Git-Tags eingerichtet.
 - EN: Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
 

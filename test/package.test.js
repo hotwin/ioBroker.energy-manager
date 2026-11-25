@@ -7,8 +7,8 @@ const root = path.join(__dirname, '..');
 const pkg = require('../package.json');
 const io = require('../io-package.json');
 test('package metadata and versions match', () => {
- assert.equal(pkg.name, 'iobroker.energy-manager');
- assert.equal(io.common.name, 'energy-manager');
+ assert.equal(pkg.name, 'iobroker.hotwin-energy-manager');
+ assert.equal(io.common.name, 'hotwin-energy-manager');
  assert.equal(pkg.version, io.common.version);
  assert.equal(pkg.license, io.common.licenseInformation.license);
 });
