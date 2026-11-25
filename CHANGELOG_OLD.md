@@ -37,6 +37,8 @@
 - EN: The adapter test matrix now includes Node.js 26.
 - DE: Nach einem abgebrochenen GitHub-Archivschritt kann der Release-Lauf mit dem verifizierten npm-Paket fortfahren.
 - EN: Release runs can resume GitHub archival using the verified npm package.
+- DE: Die Freigabeprüfung dokumentiert den fehlenden npm-Eintrag der bevorstehenden Version als Vorab-Befund.
+- EN: The release gate records the upcoming version’s absence from npm as a prepublication finding.
 
 ## 0.3.0-beta.13 – 2026-11-25
 
