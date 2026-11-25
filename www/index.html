@@ -129,7 +129,7 @@
         .room-device-list small { display: block; }
         .room-device-power { white-space: nowrap; font-variant-numeric: tabular-nums; }
     </style>
-    <script defer src="dashboard.js?v=0.3.0-beta.7"></script>
+    <script defer src="dashboard.js?v=0.3.0-beta.9-insights"></script>
 </head>
 <body>
 <main>
@@ -141,6 +141,11 @@
     <section id="overview" data-page>
         <h2 data-text="overview"></h2><div id="summary" class="tile-grid"></div>
         <p class="note" data-text="coverage"></p>
+        <div id="energyInsights" class="surface overview-chart" hidden>
+            <h2 data-text="insightsTitle"></h2>
+            <p id="insightsComparison"></p>
+            <p id="insightsPrice"></p>
+        </div>
         <div class="surface overview-chart">
             <div class="stats-header">
                 <h2 data-text="energyFlow"></h2>

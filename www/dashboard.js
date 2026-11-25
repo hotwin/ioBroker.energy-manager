@@ -2,6 +2,13 @@
 
 const translations = {
     en: {
+        insightsTitle: 'Energy insights',
+        insightsWaiting: 'The comparison needs a reading from yesterday and at least three of the seven preceding days.',
+        insightsPriceMissing: 'No upcoming interval with a calculated gross rate in the next 24 hours.',
+        insightsTrend: { high: 'Unusually high', low: 'Unusually low', usual: 'Within the usual range' },
+        insightsCompare: (day, usage, average, count, trend) =>
+            `${trend}. Recorded on ${day}: ${usage}. Average of ${count} prior days with readings: ${average}.`,
+        insightsRate: (from, to, rate) => `Lowest available gross rate in the next 24 hours: ${rate} (${from} to ${to}).`,
         roomDevices: count => count === 1 ? '1 device' : count + ' devices',
         roomPower: 'Current draw', roomNoReading: 'No power reading',
         roomExcluded: 'Excluded from total',
@@ -55,6 +62,13 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        insightsTitle: 'Stromverbrauch im Blick',
+        insightsWaiting: 'Für den Vergleich fehlen Messwerte von gestern oder von mindestens drei der sieben Tage davor.',
+        insightsPriceMissing: 'Für die nächsten 24 Stunden ist kein kommendes Intervall mit berechnetem Brutto-Arbeitspreis verfügbar.',
+        insightsTrend: { high: 'Ungewöhnlich hoch', low: 'Ungewöhnlich niedrig', usual: 'Im üblichen Bereich' },
+        insightsCompare: (day, usage, average, count, trend) =>
+            `${trend}. Am ${day} erfasst: ${usage}. Durchschnitt aus ${count} Vortagen mit Messwerten: ${average}.`,
+        insightsRate: (from, to, rate) => `Günstigster verfügbarer Brutto-Arbeitspreis der nächsten 24 Stunden: ${rate} (${from} bis ${to}).`,
         roomDevices: count => count === 1 ? '1 Gerät' : count + ' Geräte',
         roomPower: 'Aktuelle Leistung', roomNoReading: 'Kein Leistungswert',
         roomExcluded: 'Nicht in der Summe',
@@ -471,8 +485,22 @@ function renderRooms(rooms, devices) {
     focus?.focus({ preventScroll: true });
 }
 
+function renderInsights(insights) {
+    el('energyInsights').hidden = !insights;
+    if (!insights) return;
+    const { comparison, cheapest } = insights;
+    el('insightsComparison').textContent = comparison
+        ? words.insightsCompare(comparison.yesterday, format(comparison.kWh, 'kWh'),
+            format(comparison.average, 'kWh'), comparison.days, words.insightsTrend[comparison.trend])
+        : words.insightsWaiting;
+    el('insightsPrice').textContent = cheapest
+        ? words.insightsRate(dateTime(cheapest.from), dateTime(cheapest.to), format(cheapest.rate, 'ct/kWh'))
+        : words.insightsPriceMissing;
+}
+
 function render() {
     const data = snapshot || {};
+    renderInsights(data.insights);
     const today = data.daily?.[dayKey(Date.now())];
     updateStatus();
     const tiles = [

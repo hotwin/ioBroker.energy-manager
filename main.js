@@ -3,6 +3,7 @@
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
+const energyInsights = require('./lib/energy-insights');
 const calculateTariff = require('./lib/tariff');
 const { version } = require('./package.json');
 
@@ -140,6 +141,7 @@ class EnergyManager extends utils.Adapter {
             totalPower,
             snapshot: JSON.stringify({ ts: now, version, devices, totalPower, marketCt, tariffCt,
                 prices: prices.filter(item => item.end_timestamp > now),
+                insights: energyInsights(ledger, prices, now),
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };

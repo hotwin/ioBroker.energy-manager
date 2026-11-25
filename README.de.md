@@ -54,6 +54,7 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.energ
 
 ### 0.3.0-beta.9 – 2026-11-25
 
+- DE: Lokale Verbrauchsauswertung mit Vergleich zum Durchschnitt erfasster Vortage und günstigstem verfügbaren Tarifintervall der nächsten 24 Stunden.
 - Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
 
 ### 0.3.0-beta.8 – 2026-11-24
