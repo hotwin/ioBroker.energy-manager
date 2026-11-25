@@ -66,6 +66,7 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 - A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
 - The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 - The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+- Resume GitHub archival if the verified package is already published under the npm beta tag.
 - Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
 - Instance settings, adapter metadata and release summaries are available in nine additional languages.
 - The adapter test matrix now includes Node.js 26.

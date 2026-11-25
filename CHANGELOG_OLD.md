@@ -35,6 +35,8 @@
 
 - DE: Die Adapter-Tests laufen zusätzlich auf Node.js 26.
 - EN: The adapter test matrix now includes Node.js 26.
+- DE: Nach einem abgebrochenen GitHub-Archivschritt kann der Release-Lauf mit dem verifizierten npm-Paket fortfahren.
+- EN: Release runs can resume GitHub archival using the verified npm package.
 
 ## 0.3.0-beta.13 – 2026-11-25
 

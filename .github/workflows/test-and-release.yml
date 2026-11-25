@@ -148,7 +148,13 @@ jobs:
           node -e "const fs=require('node:fs'); const v=require('./package.json').version; const s=fs.readFileSync('CHANGELOG_OLD.md','utf8'); const start=s.indexOf('## '+v+' '); if(start<0) throw Error('Missing release notes'); const rest=s.slice(start); const next=rest.indexOf('\n## ',1); process.stdout.write(next<0?rest:rest.slice(0,next));" > "$RUNNER_TEMP/energy-release/notes.md"
           cd "$RUNNER_TEMP/energy-release"
           sha256sum "iobroker.hotwin-energy-manager-$version.tgz" > SHA256SUMS
+      - name: Check npm for an already published matching archive
+        id: npm-status
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          node scripts/check-published-beta.js "$RUNNER_TEMP/energy-release/iobroker.hotwin-energy-manager-$version.tgz"
       - name: Publish exact archive to npm under the beta tag using OIDC
+        if: steps.npm-status.outputs.published == 'false'
         run: |
           version="$(node -p "require('./package.json').version")"
           npm publish "$RUNNER_TEMP/energy-release/iobroker.hotwin-energy-manager-$version.tgz" --tag beta --provenance
