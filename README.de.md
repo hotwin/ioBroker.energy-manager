@@ -50,15 +50,11 @@ Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Ada
 
 Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
-## KI-Stromanalyse mit Ollama
-
-Aktiviere die Analyse in den Instanzeinstellungen und trage die vom ioBroker-Host erreichbare Ollama-Adresse und den Namen eines dort installierten Modells ein. Der Adapter sendet höchstens einmal pro Stunde zusammengefasste Tagesverbrauchswerte und verfügbare Brutto-Tarifintervalle an den eingetragenen Server. Die Übersicht zeigt die deutschsprachige Auswertung mit Zeitstempel. Standardmäßig ist die Funktion deaktiviert.
-
 ## Changelog / Versionsverlauf
 
 ### 0.3.0-beta.9 – 2026-11-25
 
-- Optionale KI-Stromanalyse mit Ollama für erfassten Tagesverbrauch und verfügbare Tarifintervalle.
+- DE: Lokale Verbrauchsauswertung mit Vergleich zum Durchschnitt erfasster Vortage und günstigstem verfügbaren Tarifintervall der nächsten 24 Stunden.
 - Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
 
 ### 0.3.0-beta.8 – 2026-11-24

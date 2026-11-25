@@ -1,26 +1,6 @@
 {
   "type": "panel",
   "items": {
-    "aiEnabled": {
-      "type": "checkbox",
-      "label": "aiEnabled",
-      "xs": 12,
-      "sm": 4
-    },
-    "aiUrl": {
-      "type": "text",
-      "label": "aiUrl",
-      "hidden": "!data.aiEnabled",
-      "xs": 12,
-      "sm": 4
-    },
-    "aiModel": {
-      "type": "text",
-      "label": "aiModel",
-      "hidden": "!data.aiEnabled",
-      "xs": 12,
-      "sm": 4
-    },
     "tariffConfigured": {
       "type": "checkbox",
       "label": "tariffConfigured",

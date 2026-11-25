@@ -3,7 +3,7 @@
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
-const { summarizeEnergy, analyzeEnergy } = require('./lib/energy-ai');
+const energyInsights = require('./lib/energy-insights');
 const calculateTariff = require('./lib/tariff');
 const { version } = require('./package.json');
 
@@ -67,8 +67,6 @@ class EnergyManager extends utils.Adapter {
         this.stopping = true;
         if (this.timer) this.clearTimeout(this.timer);
         this.priceRequest?.abort();
-        this.aiRequest?.abort();
-        await this.aiPending;
         await this.pending;
         await this.setStateAsync('info.connection', false, true).catch(() => {});
     }
@@ -93,28 +91,6 @@ class EnergyManager extends utils.Adapter {
             this.clearTimeout(timeout);
             this.priceRequest = null;
         }
-    }
-
-    refreshEnergyAnalysis(ledger, prices, now) {
-        if (!this.config.aiEnabled || this.stopping || this.aiPending || now < (this.nextAiPoll || 0)) return;
-        const facts = summarizeEnergy(ledger, prices, now);
-        if (facts.yesterday.kWh === null && !facts.cheapestUpcomingGrossRate) {
-            this.aiAnalysis = { status: 'aiNoData' };
-            return;
-        }
-        this.nextAiPoll = now + 3600000;
-        this.aiAnalysis = { ...this.aiAnalysis, status: 'aiLoading' };
-        const request = new AbortController();
-        this.aiRequest = request;
-        const timeout = this.setTimeout(() => request.abort(), 60000);
-        this.aiPending = analyzeEnergy(this.config, facts, request.signal)
-            .then(text => { this.aiAnalysis = { status: 'aiReady', text, ts: Date.now() }; })
-            .catch(() => { this.aiAnalysis = { ...this.aiAnalysis, status: 'aiError' }; })
-            .finally(() => {
-                this.clearTimeout(timeout);
-                this.aiRequest = null;
-                this.aiPending = null;
-            });
     }
 
     async collect() {
@@ -154,7 +130,6 @@ class EnergyManager extends utils.Adapter {
         ledger.priceHistory = Object.fromEntries([...priceHistory].filter(([, item]) => item.end_timestamp > cutoff));
         await this.setStateAsync('consumption', JSON.stringify(ledger), true);
         this.ledger = ledger;
-        this.refreshEnergyAnalysis(ledger, prices, now);
         const today = ledger.days[ledger.day];
         const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
         const display = {
@@ -166,9 +141,9 @@ class EnergyManager extends utils.Adapter {
             totalPower,
             snapshot: JSON.stringify({ ts: now, version, devices, totalPower, marketCt, tariffCt,
                 prices: prices.filter(item => item.end_timestamp > now),
+                insights: energyInsights(ledger, prices, now),
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
-                priceHistory: Object.values(ledger.priceHistory), contract,
-                energyAnalysis: this.config.aiEnabled ? this.aiAnalysis : undefined, rooms: [...rooms.values()] }),
+                priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
     }
