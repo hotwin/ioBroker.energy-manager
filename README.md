@@ -57,7 +57,7 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ### 0.3.0-beta.14 (development)
 
-- Refresh dashboard design with automatic light/dark selection, manual override and theme-aware charts. Organize native instance configuration into four tabs.
+- Refresh dashboard design with automatic light/dark selection, theme-aware charts and a streamlined header with automatic instance selection. Organize native instance configuration into four tabs.
 
 - Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
 - Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.

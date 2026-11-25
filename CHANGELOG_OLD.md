@@ -2,8 +2,8 @@
 
 ## 0.3.0-beta.14 – 2026-11-25
 
-- DE: Helles und dunkles Dashboard mit automatischer Theme-Erkennung, manueller Umschaltung, angepassten Diagrammen und vier Registern in der Instanzkonfiguration.
-- EN: Light and dark dashboard themes with automatic detection, manual override, theme-aware charts and four native configuration tabs.
+- DE: Helles und dunkles Dashboard mit automatischer Theme-Erkennung, schlankem Header ohne Auswahlfelder, angepassten Diagrammen und vier Registern in der Instanzkonfiguration.
+- EN: Light and dark dashboard themes with automatic detection, a streamlined header without selectors, theme-aware charts and four native configuration tabs.
 
 - DE: Offizielle ioBroker-Testaktionen, Betriebssystem-Testmatrix und Dependabot vorbereitet.
 - EN: Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
