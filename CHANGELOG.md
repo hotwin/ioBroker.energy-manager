@@ -1,5 +1,29 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.12 – 2026-11-25
+
+[Installationspaket / Installation package (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz)
+
+- DE: Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.
+- EN: Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
+
+## 0.3.0-beta.11 – 2026-11-25
+
+- DE: Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.
+- EN: The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.
+
+## 0.3.0-beta.10 – 2026-11-25
+
+- DE: Datenpunkte für Zählerstand und aktuelle Leistung des Hausstromzählers lassen sich einzeln in der Instanzkonfiguration auswählen und erscheinen in der Übersicht.
+- EN: Select the house meter's reading and current power independently in the instance settings to display them in the overview.
+
+## 0.3.0-beta.9 – 2026-11-25
+
+- DE: Lokale Verbrauchsauswertung mit Vergleich zum Durchschnitt erfasster Vortage und günstigstem verfügbaren Tarifintervall der nächsten 24 Stunden.
+- EN: Local consumption insights compare yesterday with recorded prior days and highlight the cheapest available tariff interval in the next 24 hours.
+- DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
+- EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
+
 ## Unreleased / In Entwicklung
 - DE: Herstellerübergreifende Messstellenerkennung aus Strommessungs-Aufzählungen vor Shelly-Fallback; noch ungetestet.
 - EN: Vendor-independent discovery from energy measurement enums before Shelly fallback; untested.
