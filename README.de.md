@@ -17,6 +17,8 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 
 ## Funktionen
 
+- Neue Kostenseite mit erfassten variablen Kosten, Monats-/Jahreshochrechnung, Abschlagsvergleich, Budget, alternativem Arbeitspreis, Geräteverbrauchsvergleich und Tagesdaten-CSV. Prognosen benötigen ausreichende Historie und zeigen die Preisabdeckung. Budget und Vergleichspreis werden lokal im Browser gespeichert.
+
 - Herstellerübergreifende Geräteerkennung über Strommessung, manuelle Zuordnung und optionale Shelly-Erkennung.
 - Live-Leistung, Verbrauch, Raumkarten mit aufklappbaren Geräten und bearbeitbare Gerätenamen.
 - Energieflussdiagramm, Stundenverbrauch, Tageskosten und Strompreisverlauf.

@@ -2,6 +2,38 @@
 
 const translations = {
     en: {
+        costs: "Costs",
+        costScope: "Recorded energy from included measurement points only. Actual variable costs exclude unpriced energy and fixed charges.",
+        costProjection: "Cost forecast and advance payments",
+        costSeven: "Variable costs · last 7 days",
+        energySeven: "Energy · last 7 days",
+        costBudget: "Budget and fixed-price comparison",
+        costBudgetInput: "Monthly budget (€)",
+        compareRate: "Alternative gross energy rate (ct/kWh)",
+        budgetHint: "Comparison uses the same priced monthly energy and excludes alternative fixed charges. Inputs are stored only in this browser.",
+        deviceComparison: "Device comparison",
+        deviceEnergy: "Energy (kWh)",
+        costExport: "Export daily data as CSV",
+        costExportHint: "Export all recorded daily totals. Missing values remain empty.",
+        costToday: "Recorded variable cost today",
+        costMonthEnergy: "Recorded energy this month",
+        costMonthVariable: "Recorded variable costs this month",
+        costYearVariable: "Recorded variable costs this year",
+        costFixed: "Current monthly fixed charges",
+        costAdvance: "Current monthly advance",
+        monthForecast: "Estimated full month",
+        yearForecast: "Estimated full year at current rate",
+        monthBalance: "Estimated monthly advance surplus (+) / shortfall (−)",
+        yearBalance: "Estimated annual advance surplus (+) / shortfall (−)",
+        monthEnergyForecast: "Estimated monthly energy",
+        yearEnergyForecast: "Estimated annual energy",
+        forecastHint: "Estimates use recorded days in the last 30 days, excluding today. At least seven recorded days and 95% price coverage are required for cost estimates; recorded days may be incomplete. Assumes current fixed charges and similar usage/prices, not a bill or guarantee.",
+        coverageLabel: "Priced energy this month",
+        sampleLabel: "Recorded sample days",
+        sampleCoverage: "Sample price coverage",
+        budgetBalance: "Budget remaining against forecast",
+        altVariable: "Alternative variable costs on priced energy",
+        altDifference: "Alternative savings (+) / extra cost (−)",
         headerSubtitle: 'Energy monitoring & electricity costs',
         houseMeter: 'Main electricity meter', measuredDevices: 'Monitored devices',
         unassignedPower: 'Unassigned power', meterUnconfigured: 'Select a cumulative Wh or kWh state in the instance settings.',
@@ -72,6 +104,38 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        costs: "Kosten",
+        costScope: "Erfasste Energie der einbezogenen Messstellen. Die variablen Ist-Kosten enthalten weder unbewertete Energie noch Fixkosten.",
+        costProjection: "Kostenprognose und Abschläge",
+        costSeven: "Variable Kosten · letzte 7 Tage",
+        energySeven: "Verbrauch · letzte 7 Tage",
+        costBudget: "Budget und Festpreisvergleich",
+        costBudgetInput: "Monatsbudget (€)",
+        compareRate: "Alternativer Brutto-Arbeitspreis (ct/kWh)",
+        budgetHint: "Vergleich auf Basis derselben bewerteten Monatsenergie, ohne alternative Fixkosten. Eingaben werden nur in diesem Browser gespeichert.",
+        deviceComparison: "Gerätevergleich",
+        deviceEnergy: "Verbrauch (kWh)",
+        costExport: "Tagesdaten als CSV exportieren",
+        costExportHint: "Export aller erfassten Tagessummen. Fehlende Werte bleiben leer.",
+        costToday: "Erfasste variable Kosten heute",
+        costMonthEnergy: "Erfasster Monatsverbrauch",
+        costMonthVariable: "Erfasste variable Monatskosten",
+        costYearVariable: "Erfasste variable Jahreskosten",
+        costFixed: "Aktuelle monatliche Fixkosten",
+        costAdvance: "Aktueller monatlicher Abschlag",
+        monthForecast: "Prognose für vollen Monat",
+        yearForecast: "Jahreshochrechnung zum aktuellen Niveau",
+        monthBalance: "Voraussichtliches Monatsguthaben (+) / Fehlbetrag (−)",
+        yearBalance: "Voraussichtliches Jahresguthaben (+) / Fehlbetrag (−)",
+        monthEnergyForecast: "Prognose Monatsverbrauch",
+        yearEnergyForecast: "Prognose Jahresverbrauch",
+        forecastHint: "Hochrechnung aus erfassten Tagen der letzten 30 Tage, ohne den heutigen Tag. Kostenprognosen benötigen mindestens sieben erfasste Tage und 95 % Preisabdeckung. Auch erfasste Tage können unvollständig sein. Annahme: heutige Fixkosten und ähnlicher Verbrauch/Preis. Keine Abrechnung oder Garantie.",
+        coverageLabel: "Bewertete Monatsenergie",
+        sampleLabel: "Erfasste Tage der Stichprobe",
+        sampleCoverage: "Preisabdeckung der Stichprobe",
+        budgetBalance: "Restbudget gegenüber Prognose",
+        altVariable: "Alternative variable Kosten für bewertete Energie",
+        altDifference: "Alternative Ersparnis (+) / Mehrkosten (−)",
         headerSubtitle: 'Stromverbrauch, Energie und Kosten im Blick',
         houseMeter: 'Hausstromzähler', measuredDevices: 'Erfasste Geräte',
         unassignedPower: 'Nicht zugeordnete Leistung', meterUnconfigured: 'Wähle in den Instanzeinstellungen einen fortlaufenden Zählerstand in Wh oder kWh.',
@@ -146,7 +210,7 @@ const translations = {
 const el = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 const adminTab = location.pathname.endsWith('/tab.html');
-const pages = ['overview', 'devices', 'rooms', 'statistics', 'prices', 'contract', 'updates'];
+const pages = ['overview', 'devices', 'rooms', 'statistics', 'prices', 'costs', 'contract', 'updates'];
 const periods = ['today', 'seven', 'month', 'quarter', 'year'];
 const flowPeriods = ['today', 'yesterday', 'seven', 'month', 'year'];
 const hourMs = 3600000;
@@ -203,6 +267,9 @@ function translate() {
         link.href = '#' + page;
         return link;
     }));
+    const costPeriod = el('costDevicePeriod').value || 'month';
+    el('costDevicePeriod').replaceChildren(...['today', 'seven', 'month', 'year'].map(key => new Option(words[key], key)));
+    el('costDevicePeriod').value = costPeriod;
     const period = el('period').value || 'today';
     el('period').replaceChildren(...periods.map(key => new Option(words[key], key)));
     el('period').value = period;
@@ -605,6 +672,104 @@ function renderLiveOverview(data) {
     if (Number.isFinite(nextChange)) overviewDeadline = setTimeout(() => renderLiveOverview(data), nextChange - now);
 }
 
+function costInput(id) {
+    const input = el(id);
+    return input.value.trim() && Number.isFinite(input.valueAsNumber) && input.valueAsNumber >= 0 && input.validity.valid
+        ? input.valueAsNumber : null;
+}
+
+function renderCostBudget(costs) {
+    const budget = costInput('costBudgetInput');
+    const alternative = costInput('compareRate');
+    const month = costs?.month;
+    const altCost = alternative !== null && month?.pricedKWh > 0 ? alternative * month.pricedKWh / 100 : null;
+    const diff = altCost !== null && Number.isFinite(month?.variableEUR) ? month.variableEUR - altCost : null;
+    cards('costBudgetCards', [
+        [words.budgetBalance, format(budget !== null && Number.isFinite(costs?.monthForecast) ? budget - costs.monthForecast : null, '€')],
+        [words.altVariable, format(altCost, '€')],
+        [words.altDifference, format(diff, '€')],
+    ]);
+}
+
+function renderCostDevices() {
+    const [from, through] = periodBounds(el('costDevicePeriod').value, Date.now());
+    const totals = new Map();
+    const names = new Map((snapshot?.devices || []).map(device => [device.aliasKey || device.id, device.name]));
+    for (const [day, devices] of Object.entries(snapshot?.deviceDays || {})) {
+        if (day < from || day > through) continue;
+        for (const [id, value] of Object.entries(devices)) {
+            if (!Number.isFinite(value.kWh)) continue;
+            const old = totals.get(id);
+            totals.set(id, { name: names.get(id) || value.name || id, kWh: (old?.kWh || 0) + value.kWh });
+        }
+    }
+    rows(el('costDeviceRows'), [...totals.values()].sort((a, b) => b.kWh - a.kWh)
+        .map(item => [item.name, format(item.kWh, 'kWh', 3)]), words.noHistory, 2);
+}
+
+function renderCosts() {
+    const costs = snapshot?.costs;
+    const month = costs?.month;
+    const sample = costs?.sample;
+    cards('costCards', [
+        [words.costToday, format(costs?.today?.costEUR, '€')],
+        [words.costMonthEnergy, format(month?.kWh, 'kWh', 3)],
+        [words.costMonthVariable, format(month?.variableEUR, '€')],
+        [words.costYearVariable, format(costs?.year?.variableEUR, '€')],
+        [words.costFixed, format(costs?.fixedMonthly, '€')],
+        [words.costAdvance, format(costs?.advanceMonthly, '€')],
+    ]);
+    el('costCoverage').textContent = [
+        words.coverageLabel + ': ' + format(Number.isFinite(month?.coverage) ? month.coverage * 100 : null, '%', 1),
+        words.sampleLabel + ': ' + (sample?.days ?? '–'),
+        words.sampleCoverage + ': ' + format(Number.isFinite(sample?.coverage) ? sample.coverage * 100 : null, '%', 1),
+    ].join(' · ');
+    cards('costForecastCards', [
+        [words.monthForecast, format(costs?.monthForecast, '€')],
+        [words.yearForecast, format(costs?.yearForecast, '€')],
+        [words.monthBalance, format(costs?.monthBalance, '€')],
+        [words.yearBalance, format(costs?.annualBalance, '€')],
+        [words.monthEnergyForecast, format(costs?.monthEnergyForecast, 'kWh', 1)],
+        [words.yearEnergyForecast, format(costs?.annualEnergyForecast, 'kWh', 1)],
+    ]);
+    renderHistoryBars('costSevenBars', (costs?.seven || []).map(item => [item.day, item.costEUR]), '€', words.missingPrice);
+    renderHistoryBars('energySevenBars', (costs?.seven || []).map(item => [item.day, item.kWh]), 'kWh', words.missingMeasurement);
+    renderCostBudget(costs);
+    renderCostDevices();
+    el('costExport').disabled = !snapshot || !Object.keys(snapshot.daily || {}).length;
+}
+
+function restoreCostInputs() {
+    for (const id of ['costBudgetInput', 'compareRate']) {
+        el(id).value = '';
+        try { el(id).value = localStorage.getItem('hotwin-energy-manager.' + selectedInstance + '.' + id) || ''; } catch { /* optional storage */ }
+    }
+}
+
+for (const id of ['costBudgetInput', 'compareRate']) {
+    el(id).addEventListener('input', () => {
+        try { localStorage.setItem('hotwin-energy-manager.' + selectedInstance + '.' + id, costInput(id) ?? ''); } catch { /* optional storage */ }
+        renderCostBudget(snapshot?.costs);
+    });
+}
+el('costDevicePeriod').addEventListener('change', renderCostDevices);
+el('costExport').addEventListener('click', () => {
+    const values = Object.keys(snapshot?.daily || {}).sort().filter(day => /^\d{4}-\d{2}-\d{2}$/.test(day)).map(day => {
+        const item = recordedDay(day);
+        const priced = item && Number.isFinite(item.pricedKWh) && item.pricedKWh > 0;
+        return [day, item?.kWh ?? '', priced ? item.pricedKWh : '', priced && Number.isFinite(item.costEUR) ? item.costEUR : ''].join(',');
+    });
+    const blob = new Blob(['date,kWh,pricedKWh,variableEUR\n' + values.join('\n') + '\n'], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = node('a');
+    link.href = url;
+    link.download = 'energy-manager-daily.csv';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
 function render() {
     const data = snapshot || {};
     const today = recordedDay(dayKey(Date.now()));
@@ -632,6 +797,7 @@ function render() {
     ]);
     el('installed').textContent = words.installed + ' · ' + (data.version || '–');
     renderStats();
+    renderCosts();
     renderOverviewCharts();
 }
 
@@ -845,6 +1011,7 @@ function read() {
 }
 
 function selectInstance() {
+    restoreCostInputs();
     el('roomCards').replaceChildren();
     if (aliasDialog.open) aliasDialog.close();
     if (subscribed) socket.emit('unsubscribe', stateId);

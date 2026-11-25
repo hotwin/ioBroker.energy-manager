@@ -55,6 +55,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.4.0-beta.1 (development)
+
+- Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
+
 ### 0.3.0-beta.14 (development)
 
 - Refresh dashboard design with automatic light/dark selection, theme-aware charts and a streamlined header with automatic instance selection. Organize native instance configuration into four tabs.
