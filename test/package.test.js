@@ -19,3 +19,18 @@ test('required adapter metadata exists', () => {
 test('admin config is parseable JSON', () => {
  for (const file of ['jsonConfig.json']) assert.doesNotThrow(() => JSON.parse(fs.readFileSync(path.join(root,'admin',file),'utf8')));
 });
+
+test('native settings tabs preserve unique configuration fields and translated labels', () => {
+ const config = JSON.parse(fs.readFileSync(path.join(root, 'admin', 'jsonConfig.json'), 'utf8'));
+ assert.equal(config.type, 'tabs');
+ const fields = Object.values(config.items).flatMap(panel => {
+  assert.equal(panel.type, 'panel');
+  return Object.keys(panel.items);
+ });
+ assert.equal(new Set(fields).size, fields.length);
+ assert.deepEqual(fields.sort(), ["advanceMonthly","autoShelly","baseMonthly","compareHousePower","concessionCt","contractStart","electricityTaxCt","houseEnergyId","housePowerId","leviesCt","markupCt","meterAnnual","networkCt","sources","tariffConfigured","vatPercent"]);
+ for (const lang of fs.readdirSync(path.join(root, 'admin', 'i18n'))) {
+  const translations = JSON.parse(fs.readFileSync(path.join(root, 'admin', 'i18n', lang, 'translations.json'), 'utf8'));
+  for (const panel of Object.values(config.items)) assert.ok(translations[panel.label], lang + ': ' + panel.label);
+ }
+});
