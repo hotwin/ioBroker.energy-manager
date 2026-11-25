@@ -38,6 +38,8 @@
 
 - DE: Die Adapter-Tests laufen zusätzlich auf Node.js 26.
 - EN: The adapter test matrix now includes Node.js 26.
+- DE: Die deutsche Anleitung und die begleitende Dokumentation liegen im ioBroker-Dokumentationsordner.
+- EN: The German guide and supporting documentation use the ioBroker documentation directory.
 
 ## 0.3.0-beta.13 – 2026-11-25
 

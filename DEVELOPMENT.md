@@ -38,7 +38,7 @@ After this workflow is merged into main and the release candidate is approved, m
 
 The `release` npm script uses the ioBroker Creator plugin configuration (ioBroker, license, manual review). Run it from an up-to-date development branch. The manual npm workflow remains the publication gate. Version tags trigger CI validation without publishing.
 
-1. Add a `## **WORK IN PROGRESS**` section at the top of `README.md` with English entries; maintain the German notes in README.de.md and the bilingual history in CHANGELOG_OLD.md. Add the localized release summary under `common.news.NEXT` in `io-package.json` so the script can reuse the supplied text without calling a translation service. Commit the release notes.
+1. Add a `## **WORK IN PROGRESS**` section at the top of `README.md` with English entries; maintain the German notes in `doc/de/README.md` and the bilingual history in CHANGELOG_OLD.md. Add the localized release summary under `common.news.NEXT` in `io-package.json` so the script can reuse the supplied text without calling a translation service. Commit the release notes.
 2. Run `npm run release prerelease beta -- --dry`. Review the next version and proposed tag. The script updates the npm manifest and lockfile, adapter metadata, and bilingual changelog together during a real release.
 3. When approved, run `npm run release prerelease beta` and review the resulting changes at the manual review prompt. Verify the tagged commit's CI results before requesting publication through the manual workflow above.
 
