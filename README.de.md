@@ -1,4 +1,31 @@
-# Energy Manager einrichten
+# ioBroker Energy Manager
+
+**Aktuell veröffentlichte Beta: 0.3.0-beta.8 (25.11.2026)**
+
+Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker. Er verbindet Messdaten verschiedener Hersteller mit Raumübersichten und dynamischen Börsenpreisen von [aWATTar](https://www.awattar.de/).
+
+[English](README.md) · [Dokumentation](doc/de/README.md) · [Änderungsprotokoll](CHANGELOG.md) · [npm](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+
+## Funktionen
+
+- Herstellerübergreifende Geräteerkennung über Strommessung, manuelle Zuordnung und optionale Shelly-Erkennung.
+- Live-Leistung, Verbrauch, Raumkarten mit aufklappbaren Geräten und bearbeitbare Gerätenamen.
+- Energieflussdiagramm, Stundenverbrauch, Tageskosten und Strompreisverlauf.
+- Statistiken für sieben Tage, Monat, Quartal und Jahr.
+- Bearbeitbare Vertragsdaten, Brutto-Arbeitspreis, Mehrwertsteuer, aWATTar HOURLY-Aufschlag und optionale Preisgrenzen.
+- Responsives deutsch- und englischsprachiges Dashboard im Admin und optional über den Web-Adapter.
+
+## Installation
+
+Voraussetzungen: Node.js ab 22, Admin ab 7.6.20, js-controller ab 6.0.11 sowie vorhandene Messdatenpunkte.
+
+```bash
+iobroker add hotwin-energy-manager@0.3.0-beta.8
+```
+
+Die Beta ist auf npm veröffentlicht, aber noch nicht im offiziellen Latest- oder Stable-Repository.
+
+## Einrichtung
 
 Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür eine neue Instanz an. Bisherige Einstellungen und Verbrauchsdaten bleiben bei der alten Instanz.
 
@@ -11,3 +38,18 @@ Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür ei
 Der Adapter speichert Verbrauch anhand fortlaufender Zählerstände. Rücksetzungen, längere Messlücken und Intervalle über Mitternacht setzen den Ausgangswert neu. Die Aufzeichnung beginnt mit der Installation. Geräte mit reiner Leistungsmessung tragen zur Live-Leistung bei. Bei einem Preisintervall- oder Tarifwechsel zwischen Messungen wird der Verbrauch erfasst und bleibt ohne Kostenbewertung. Die Statistik zeigt erfasste variable Kosten und bewertete Kilowattstunden. Monatliche Fixkosten und Abschläge stehen unter Stromvertrag. Vergleiche den verwendeten aWATTar-Spotmarktpreis für Deutschland mit dem Preisindex deines Anbieters.
 
 Schließe überlappende Haupt- oder Unterzähler in den manuellen Energiequellen aus, damit die Summen sie nur einmal enthalten. Geräte mit uneindeutiger Datenpunktstruktur lassen sich ebenfalls manuell zuordnen. Der Adapter behält bis zu 400 Tageswerte in ioBroker.
+
+
+## Weiterentwicklung
+
+Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Adapter soll langfristig gepflegt und anhand von Rückmeldungen weiterentwickelt werden.
+
+- [Datenmigration](https://github.com/hotwin/ioBroker.energy-manager/issues/11): geplant, alte Instanz bitte behalten und Daten sichern.
+- [Aufnahme in ioBroker Latest](https://github.com/hotwin/ioBroker.energy-manager/issues/10): in Vorbereitung.
+- [Main und Developer Portal](https://github.com/hotwin/ioBroker.energy-manager/pull/12): Zusammenführung noch nicht abgeschlossen.
+
+Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
+
+## Lizenz
+
+MIT – Copyright (c) 2026 hotwin. Siehe [LICENSE](LICENSE).
