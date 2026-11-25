@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: npm-beta
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -116,5 +116,24 @@ jobs:
       - name: Verify npm supports trusted publishing
         run: |
           node -e "const [major, minor, patch] = process.argv[1].split('.').map(Number); if (major < 11 || (major === 11 && (minor < 5 || (minor === 5 && patch < 1)))) process.exit(1)" "$(npm --version)"
-      - name: Publish to npm under the beta tag using OIDC
-        run: npm publish --tag beta
+      - name: Verify immutable version tag and prepare release artifact
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          tag="v$version"
+          git fetch --no-tags origin "refs/tags/$tag:refs/tags/$tag"
+          test "$(git rev-list -n 1 "$tag")" = "$GITHUB_SHA"
+          mkdir -p "$RUNNER_TEMP/energy-release"
+          npm pack --pack-destination "$RUNNER_TEMP/energy-release"
+          node -e "const fs=require('node:fs'); const v=require('./package.json').version; const s=fs.readFileSync('CHANGELOG_OLD.md','utf8'); const start=s.indexOf('## '+v+' '); if(start<0) throw Error('Missing release notes'); const rest=s.slice(start); const next=rest.indexOf('\n## ',1); process.stdout.write(next<0?rest:rest.slice(0,next));" > "$RUNNER_TEMP/energy-release/notes.md"
+          cd "$RUNNER_TEMP/energy-release"
+          sha256sum "iobroker.hotwin-energy-manager-$version.tgz" > SHA256SUMS
+      - name: Publish exact archive to npm under the beta tag using OIDC
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          npm publish "$RUNNER_TEMP/energy-release/iobroker.hotwin-energy-manager-$version.tgz" --tag beta --provenance
+      - name: Archive verified beta on GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          gh release create "v$version" "$RUNNER_TEMP/energy-release/iobroker.hotwin-energy-manager-$version.tgz" "$RUNNER_TEMP/energy-release/SHA256SUMS" --verify-tag --prerelease --title "Energy Manager $version" --notes-file "$RUNNER_TEMP/energy-release/notes.md"
