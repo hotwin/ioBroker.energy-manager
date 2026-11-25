@@ -12,6 +12,8 @@ The adapter records energy from cumulative meter differences. Counter resets, lo
 
 Exclude overlapping sub-meters or main meters in the manually configured sources to avoid double counting. Devices with ambiguous state layouts can be assigned manually. The adapter keeps up to 400 daily records in ioBroker.
 
+`info.connection` indicates whether the last local collection cycle succeeded. `info.awattarAvailable` indicates whether an aWATTar spot price is available for the current interval. During an API outage, a cached price can remain available until its interval ends. Failed requests are retried after a delay of between one and 15 minutes.
+
 ### Import from a legacy instance
 
 Starting with the beta.9 development version, the optional host command copies settings, tariff details, device aliases and recorded consumption from an installed `energy-manager` instance to an installed `hotwin-energy-manager` instance. It copies daily, hourly, device and price history when present. The renamed instance starts with a fresh meter baseline.

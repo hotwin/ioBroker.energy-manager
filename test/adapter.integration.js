@@ -7,6 +7,7 @@ const { execFile } = require('node:child_process');
 const { mkdtemp, readFile, rm, stat } = require('node:fs/promises');
 const { promisify } = require('node:util');
 const { once } = require('node:events');
+const { mock } = require('node:test');
 const { setTimeout: wait } = require('node:timers/promises');
 const { tests } = require('@iobroker/testing');
 const { localDay } = require('../lib/consumption');
@@ -148,7 +149,7 @@ tests.integration(path.join(__dirname, '..'), {
             });
         });
         suite('Compact mode', getHarness => {
-            it('loads saved contract changes after restarting in the same host process', async function () {
+            it('loads saved contracts and reports local and market status independently across restarts', async function () {
                 this.timeout(45000);
                 const harness = getHarness();
                 const { states } = harness;
@@ -172,9 +173,24 @@ tests.integration(path.join(__dirname, '..'), {
                             markupCt: 0.3, vatPercent: 19, tariffFormula: 'awattarHourly', marketMarkupPercent: 3,
                         } });
                     }
+                    const now = Date.now();
+                    let marketAvailable = run === 1;
+                    const market = mock.method(globalThis, 'fetch', async () => {
+                        if (!marketAvailable) return new Response(null, { status: 503 });
+                        return Response.json({ data: [{
+                            start_timestamp: now - 3600000,
+                            end_timestamp: now + 3600000,
+                            marketprice: 100,
+                        }] });
+                    });
                     const adapter = createAdapter({ compact: true, compactInstance: 0 });
                     try {
                         await waitForConnection();
+                        const availability = await states.getStateAsync(instance + '.info.awattarAvailable');
+                        assert.equal(availability.val, marketAvailable);
+                        assert.equal(availability.ack, true);
+                        assert.equal((await harness.objects.getObjectAsync(instance + '.info.awattarAvailable')).common.role,
+                            'indicator');
                         assert.equal((await states.getStateAsync('system.adapter.' + instance + '.compactMode')).val, true);
                         const result = await states.getStateAsync(instance + '.snapshot');
                         const snapshot = JSON.parse(result.val);
@@ -186,20 +202,34 @@ tests.integration(path.join(__dirname, '..'), {
                             assert.equal(saved.networkCt, 9.25);
                             assert.deepEqual(saved.sources, original.sources);
                             assert.equal(snapshot.contract.extraCt, 9.55);
-                            if (snapshot.marketCt !== null) {
-                                const expected = (snapshot.marketCt + Math.abs(snapshot.marketCt) * 0.03 + 9.55) * 1.19;
-                                assert.ok(Math.abs(snapshot.tariffCt - expected) < 1e-10);
-                            } else {
-                                assert.equal(snapshot.contract.status, 'noMarket');
-                                assert.equal(snapshot.tariffCt, null);
+                            assert.equal(snapshot.marketCt, 10);
+                            const expected = (10 + 10 * 0.03 + 9.55) * 1.19;
+                            assert.ok(Math.abs(snapshot.tariffCt - expected) < 1e-10);
+
+                            marketAvailable = false;
+                            for (const nextDelay of [60_000, 120_000, 240_000, 480_000, 900_000, 900_000]) {
+                                adapter.nextPricePoll = 0;
+                                const start = Date.now();
+                                await adapter.refreshPrices();
+                                assert.ok(adapter.nextPricePoll >= start + nextDelay);
+                                assert.ok(adapter.nextPricePoll <= Date.now() + nextDelay);
                             }
+                            await adapter.collect();
+                            assert.equal((await states.getStateAsync(instance + '.info.awattarAvailable')).val, true);
+                            assert.equal(market.mock.callCount(), 7);
+                            marketAvailable = true;
+                            adapter.nextPricePoll = 0;
+                            await adapter.refreshPrices();
+                            assert.equal(adapter.priceRetryDelay, 60_000);
                         }
                     } finally {
+                        market.mock.restore();
                         const exit = once(adapter, 'exit');
                         await adapter.stop();
                         await exit;
                     }
                     assert.equal((await states.getStateAsync(instance + '.info.connection')).val, false);
+                    assert.equal((await states.getStateAsync(instance + '.info.awattarAvailable')).val, false);
                 }
             });
         });

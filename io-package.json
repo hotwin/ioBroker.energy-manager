@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.3.0-beta.12",
+    "version": "0.3.0-beta.13",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -28,6 +28,10 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
+      "0.3.0-beta.13": {
+        "de": "Getrennte Statusdatenpunkte für lokale Messwerte und aWATTar-Preise. Bei API-Fehlern wartet der Adapter länger bis zum nächsten Versuch.",
+        "en": "Separate status states for local collection and aWATTar prices. Retry delays increase after API failures."
+      },
       "0.3.0-beta.12": {
         "de": "Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.",
         "en": "Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard."
@@ -142,5 +146,49 @@
     "energyMinGrossCt": null,
     "energyMaxGrossCt": null
   },
-  "instanceObjects": []
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "de": "Adapterinformationen",
+          "en": "Adapter information"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": {
+          "de": "Lokale Messwerterfassung",
+          "en": "Local source access"
+        },
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.awattarAvailable",
+      "type": "state",
+      "common": {
+        "name": {
+          "de": "Aktueller aWATTar-Preis verfügbar",
+          "en": "Current aWATTar price available"
+        },
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
