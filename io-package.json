@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.3.0-beta.10",
+    "version": "0.3.0-beta.11",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,6 +25,10 @@
     },
     "wwwDontUpload": false,
     "news": {
+      "0.3.0-beta.11": {
+        "de": "Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.",
+        "en": "The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices."
+      },
       "0.3.0-beta.10": {
         "de": "Hausstromzähler mit frei wählbaren Datenpunkten für Leistung und Zählerstand.",
         "en": "House electricity meter with selectable data points for power and meter reading."

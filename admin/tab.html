@@ -22,38 +22,25 @@
         article, .surface { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
         article p, small, #status, .note { color: var(--muted); }
         .value { display: block; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 25px; overflow-wrap: anywhere; }
-        .tile-grid {
+        .summary-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .summary-panel { flex: 1 1 275px; min-width: 0; }
+        .summary-panel h3 { font-size: 16px; margin-bottom: 10px; }
+        .summary-metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(min(112px, 100%), 1fr));
+            gap: 4px 12px;
         }
-        .overview-tile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 84px;
-            padding: 12px;
+        .summary-metric {
+            display: block;
+            min-width: 0;
+            padding: 6px 0;
             color: var(--ink);
-            background: var(--paper);
-            border: 1px solid var(--line);
-            border-radius: 14px;
             text-decoration: none;
+            overflow-wrap: anywhere;
         }
-        .overview-tile:hover { border-color: var(--teal); background: #f9fdfd; }
-        .tile-icon {
-            display: grid;
-            place-items: center;
-            flex: 0 0 42px;
-            height: 42px;
-            border-radius: 50%;
-            color: #086b91;
-            background: #e0f2fa;
-            font-size: 23px;
-            font-weight: 700;
-        }
-        .overview-tile:nth-child(3) .tile-icon,
-        .overview-tile:nth-child(5) .tile-icon { color: #08695d; background: #dff1ed; }
-        .tile-content { min-width: 0; }
+        a.summary-metric:hover .tile-value { color: var(--teal); text-decoration: underline; }
+        #summaryTariffStatus { display: block; margin-top: 6px; }
+        #summaryTariffStatus[hidden] { display: none; }
         .tile-label { display: block; color: var(--muted); font-size: 13px; line-height: 1.3; }
         .tile-value { display: block; margin-top: 3px; font-size: 19px; font-variant-numeric: tabular-nums; }
         .scroll { overflow: auto; }
@@ -129,7 +116,7 @@
         .room-device-list small { display: block; }
         .room-device-power { white-space: nowrap; font-variant-numeric: tabular-nums; }
     </style>
-    <script defer src="dashboard.js?v=0.3.0-beta.9-insights"></script>
+    <script defer src="dashboard.js?v=0.3.0-beta.11"></script>
 </head>
 <body>
 <main>
@@ -139,8 +126,22 @@
     </header>
     <nav id="navigation" aria-label="Energy Manager"></nav>
     <section id="overview" data-page>
-        <h2 data-text="overview"></h2><div id="summary" class="tile-grid"></div>
-        <p class="note" data-text="coverage"></p>
+        <h2 data-text="overview"></h2>
+        <div class="summary-grid">
+            <section id="meterSummary" class="surface summary-panel" hidden>
+                <h3 data-text="houseMeter"></h3>
+                <div id="meterMetrics" class="summary-metrics"></div>
+            </section>
+            <section class="surface summary-panel">
+                <h3 data-text="measuredDevices"></h3>
+                <div id="deviceMetrics" class="summary-metrics"></div>
+            </section>
+            <section class="surface summary-panel">
+                <h3 data-text="prices"></h3>
+                <div id="priceMetrics" class="summary-metrics"></div>
+                <small id="summaryTariffStatus" hidden></small>
+            </section>
+        </div>
         <div id="energyInsights" class="surface overview-chart" hidden>
             <h2 data-text="insightsTitle"></h2>
             <p id="insightsComparison"></p>
@@ -166,6 +167,7 @@
     </section>
     <section id="devices" data-page hidden>
         <h2 data-text="devices"></h2><p class="note" data-text="deviceHint"></p>
+        <p class="note" data-text="coverage"></p>
         <div class="surface scroll"><table>
             <thead><tr><th data-text="device"></th><th data-text="room"></th><th data-text="power"></th><th data-text="meter"></th><th data-text="source"></th></tr></thead>
             <tbody id="deviceRows"></tbody>

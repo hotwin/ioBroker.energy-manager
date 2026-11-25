@@ -2,7 +2,7 @@
 
 const translations = {
     en: {
-        housePower: 'House meter · current power', houseEnergy: 'House meter · meter reading',
+        houseMeter: 'Main electricity meter', measuredDevices: 'Monitored devices',
         insightsTitle: 'Energy insights',
         insightsWaiting: 'The comparison needs a reading from yesterday and at least three of the seven preceding days.',
         insightsPriceMissing: 'No upcoming interval with a calculated gross rate in the next 24 hours.',
@@ -27,7 +27,7 @@ const translations = {
         room: 'Room', power: 'Current power', meter: 'Meter reading', source: 'Source', market: 'Market price',
         tariff: 'Gross contract rate', today: 'Today', seven: 'Last 7 days', month: 'This month', quarter: 'This quarter',
         year: 'This year', period: 'Period', start: 'Start', end: 'End', todayEnergy: 'Consumption today',
-        todayCost: 'Recorded variable cost today', unassigned: 'Unassigned', noDevices: 'No meters discovered.',
+        todayCost: 'Variable cost today', unassigned: 'Unassigned', noDevices: 'No meters discovered.',
         noPrices: 'No price data available.', noHistory: 'No consumption recorded for this period.',
         coverage: 'Totals cover the selected measurement points. Exclude overlapping meters in the instance settings.',
         deviceHint: 'Add a meter, channel or device to the Strommessung enum, or configure it manually.',
@@ -63,7 +63,7 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
-        housePower: 'Hausstromzähler · aktuelle Leistung', houseEnergy: 'Hausstromzähler · Zählerstand',
+        houseMeter: 'Hausstromzähler', measuredDevices: 'Erfasste Geräte',
         insightsTitle: 'Stromverbrauch im Blick',
         insightsWaiting: 'Für den Vergleich fehlen Messwerte von gestern oder von mindestens drei der sieben Tage davor.',
         insightsPriceMissing: 'Für die nächsten 24 Stunden ist kein kommendes Intervall mit berechnetem Brutto-Arbeitspreis verfügbar.',
@@ -88,7 +88,7 @@ const translations = {
         power: 'Aktuelle Leistung', meter: 'Zählerstand', source: 'Quelle', market: 'Börsenpreis',
         tariff: 'Brutto-Arbeitspreis', today: 'Heute', seven: 'Letzte 7 Tage', month: 'Dieser Monat', quarter: 'Dieses Quartal',
         year: 'Dieses Jahr', period: 'Zeitraum', start: 'Beginn', end: 'Ende', todayEnergy: 'Verbrauch heute',
-        todayCost: 'Erfasste variable Kosten heute', unassigned: 'Ohne Raum', noDevices: 'Keine Messgeräte gefunden.',
+        todayCost: 'Variable Kosten heute', unassigned: 'Ohne Raum', noDevices: 'Keine Messgeräte gefunden.',
         noPrices: 'Keine Strompreise verfügbar.', noHistory: 'In diesem Zeitraum wurde kein Verbrauch erfasst.',
         coverage: 'Die Summe umfasst die ausgewählten Messpunkte. Überlappende Zähler lassen sich in der Instanzkonfiguration ausschließen.',
         deviceHint: 'Füge einen Zähler, Kanal oder ein Gerät zur Aufzählung Strommessung hinzu oder hinterlege es manuell.',
@@ -500,31 +500,35 @@ function renderInsights(insights) {
         : words.insightsPriceMissing;
 }
 
+function renderSummary(id, metrics) {
+    el(id).replaceChildren(...metrics.map(([label, value, page]) => {
+        const metric = node(page ? 'a' : 'div', null, 'summary-metric');
+        if (page) metric.href = '#' + page;
+        metric.append(node('span', words[label], 'tile-label'), node('strong', value, 'tile-value'));
+        return metric;
+    }));
+}
+
 function render() {
     const data = snapshot || {};
     renderInsights(data.insights);
     const today = data.daily?.[dayKey(Date.now())];
     updateStatus();
-    const tiles = [
-        ['ϟ', 'power', format(data.totalPower, 'W'), 'devices'],
-        ...(data.houseMeter?.powerW !== undefined ? [['ϟ', 'housePower', format(data.houseMeter.powerW, 'W')]] : []),
-        ...(data.houseMeter?.energyKWh !== undefined
-            ? [['↗', 'houseEnergy', format(data.houseMeter.energyKWh, 'kWh', 3)]] : []),
-        ['↗', 'todayEnergy', format(today?.kWh, 'kWh', 3), 'statistics'],
-        ['€', 'todayCost', format(today?.pricedKWh > 0 ? today.costEUR : null, '€'), 'statistics'],
-        ['⇅', 'market', format(data.marketCt, 'ct/kWh'), 'prices'],
-        ['≋', 'tariff', format(data.tariffCt, 'ct/kWh'), 'prices'],
-    ];
-    el('summary').replaceChildren(...tiles.map(([symbol, label, value, page]) => {
-        const tile = node(page ? 'a' : 'div', null, 'overview-tile');
-        if (page) tile.href = '#' + page;
-        const icon = node('span', symbol, 'tile-icon');
-        icon.setAttribute('aria-hidden', 'true');
-        const content = node('span', null, 'tile-content');
-        content.append(node('span', words[label], 'tile-label'), node('strong', value, 'tile-value'));
-        tile.append(icon, content);
-        return tile;
-    }));
+    const meter = data.houseMeter;
+    el('meterSummary').hidden = !meter;
+    renderSummary('meterMetrics', [
+        ...(meter?.powerW !== undefined ? [['power', format(meter.powerW, 'W')]] : []),
+        ...(meter?.energyKWh !== undefined ? [['meter', format(meter.energyKWh, 'kWh', 3)]] : []),
+    ]);
+    renderSummary('deviceMetrics', [
+        ['power', format(data.totalPower, 'W'), 'devices'],
+        ['todayEnergy', format(today?.kWh, 'kWh', 3), 'statistics'],
+        ['todayCost', format(today?.pricedKWh > 0 ? today.costEUR : null, '€'), 'statistics'],
+    ]);
+    renderSummary('priceMetrics', [
+        ['market', format(data.marketCt, 'ct/kWh'), 'prices'],
+        ['tariff', format(data.tariffCt, 'ct/kWh'), 'prices'],
+    ]);
     rows('deviceRows', (data.devices || []).map(device => [
         deviceLabel(device), device.room || words.unassigned, format(device.powerW, 'W'),
         format(device.energyKWh, 'kWh', 3), [words[device.source], device.exclude && words.excluded].filter(Boolean).join(' · '),
@@ -537,7 +541,8 @@ function render() {
     const contract = data.contract || {};
     const reason = words[contract.status] || '';
     el('tariffStatus').textContent = reason;
-    if (reason) el('summary').lastElementChild.append(node('small', reason));
+    el('summaryTariffStatus').textContent = reason;
+    el('summaryTariffStatus').hidden = !reason;
     cards('contractCards', [
         [words.fixed, format(contract.fixedMonthlyGross, '€')],
         [words.extra, format(contract.extraCt, 'ct/kWh')],
