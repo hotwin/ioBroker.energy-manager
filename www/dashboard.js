@@ -2,6 +2,7 @@
 
 const translations = {
     en: {
+        themeLabel: 'Theme', themeAuto: 'Automatic', themeLight: 'Light', themeDark: 'Dark',
         houseMeter: 'Main electricity meter', measuredDevices: 'Monitored devices',
         unassignedPower: 'Unassigned power', meterUnconfigured: 'Select a cumulative Wh or kWh state in the instance settings.',
         meterMissing: 'The configured meter state was not found.',
@@ -71,6 +72,7 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
+        themeLabel: 'Darstellung', themeAuto: 'Automatisch', themeLight: 'Hell', themeDark: 'Dunkel',
         houseMeter: 'Hausstromzähler', measuredDevices: 'Erfasste Geräte',
         unassignedPower: 'Nicht zugeordnete Leistung', meterUnconfigured: 'Wähle in den Instanzeinstellungen einen fortlaufenden Zählerstand in Wh oder kWh.',
         meterMissing: 'Der eingestellte Zählerdatenpunkt wurde nicht gefunden.',
@@ -329,8 +331,8 @@ function renderFlow(from, through) {
         ctx.fillStyle = color;
         ctx.fill();
     };
-    const palette = ['#08796e', '#4169a7', '#925e25', '#83538d'];
-    ctx.fillStyle = '#183135';
+    const palette = ['--chart-green', '--chart-blue', '--chart-amber', '--chart-purple'].map(chartColor);
+    ctx.fillStyle = chartColor('--ink');
     ctx.fillText(words.capturedEnergy + ' · ' + format(total, 'kWh', 3), 12, 15, 245);
     ctx.fillRect(15, 40, 10, total * scale);
     const detail = node('details', null, 'flow-detail');
@@ -356,13 +358,13 @@ function renderFlow(from, through) {
             ribbon(310, nextRoomY, 575, deviceY, width, color + '55');
             ctx.fillStyle = color;
             ctx.fillRect(575, deviceY, 10, width);
-            ctx.fillStyle = '#183135';
+            ctx.fillStyle = chartColor('--ink');
             ctx.fillText(describe(device), 594, deviceY + 8, 296);
             children.append(node('li', describe(device)));
             nextRoomY += width;
             deviceY += 16 + width;
         }
-        ctx.fillStyle = '#183135';
+        ctx.fillStyle = chartColor('--ink');
         ctx.fillText(describe(room), 320, Math.min(canvas.height - 10, roomLabelY), 245);
         sourceY += height;
         roomY = deviceY;
@@ -406,15 +408,15 @@ function renderPriceHistory(now) {
     ctx.font = '14px system-ui';
     for (let step = 0; step <= 4; step++) {
         const rate = low + (high - low) * step / 4;
-        ctx.strokeStyle = '#d6e5e3';
+        ctx.strokeStyle = chartColor('--line');
         ctx.beginPath();
         ctx.moveTo(60, y(rate));
         ctx.lineTo(canvas.width - 15, y(rate));
         ctx.stroke();
-        ctx.fillStyle = '#183135';
+        ctx.fillStyle = chartColor('--ink');
         ctx.fillText(rate.toFixed(1), 4, y(rate) + 4);
     }
-    for (const [color, value] of [['#4169a7', item => item.marketprice / 10], ['#08796e', item => item.tariffCt]]) {
+    for (const [color, value] of [[chartColor('--chart-blue'), item => item.marketprice / 10], [chartColor('--chart-green'), item => item.tariffCt]]) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -971,6 +973,45 @@ async function connect() {
         updateStatus();
     }
 }
+
+// ioBroker Admin passes react=light or react=dark to custom tabs.
+const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+const themeParam = new URLSearchParams(location.search);
+let adminTheme = themeParam.get('react') || themeParam.get('theme');
+const themeStorageKey = 'hotwin-energy-manager.theme';
+let chosenTheme = 'auto';
+try {
+    const stored = localStorage.getItem(themeStorageKey);
+    if (['auto', 'light', 'dark'].includes(stored)) chosenTheme = stored;
+} catch {
+    // The dashboard still works with storage disabled.
+}
+function chartColor(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function applyTheme() {
+    const dark = chosenTheme === 'dark' || (chosenTheme === 'auto' &&
+        (adminTheme ? /dark/i.test(adminTheme) : systemTheme.matches));
+    const next = dark ? 'dark' : 'light';
+    const changed = document.documentElement.dataset.theme !== next;
+    document.documentElement.dataset.theme = next;
+    if (changed && snapshot) renderOverviewCharts();
+}
+el('themeMode').value = chosenTheme;
+el('themeMode').addEventListener('change', () => {
+    chosenTheme = el('themeMode').value;
+    try { localStorage.setItem(themeStorageKey, chosenTheme); } catch { /* optional preference */ }
+    applyTheme();
+});
+systemTheme.addEventListener('change', applyTheme);
+window.addEventListener('message', event => {
+    if (event.source !== window.parent || event.origin !== location.origin) return;
+    if (event.data?.type === 'updateTheme' && typeof event.data.themeName === 'string') {
+        adminTheme = event.data.themeName;
+        applyTheme();
+    }
+});
+applyTheme();
 
 window.addEventListener('hashchange', selectPage);
 instanceSelect.addEventListener('change', selectInstance);
