@@ -14,18 +14,25 @@ const missingPackageFindings = name => [
     `[E2000] Package ${name} not found on npm. Please publish`,
 ];
 
-async function registryConfirmsMissing(name) {
+const missingCandidateNews = version =>
+    `[W2004] Version "${version}" listed at common.news at io-package.json does not exist at NPM and will be ignored at repository listing. Please remove from news section.`;
+
+// The candidate version may legitimately be absent until the gate allows its first publication.
+async function registryConfirmsMissing(name, version) {
     try {
-        const response = await fetch('https://registry.npmjs.org/' + encodeURIComponent(name), {
+        const suffix = version ? '/' + encodeURIComponent(version) : '';
+        const response = await fetch('https://registry.npmjs.org/' + encodeURIComponent(name) + suffix, {
             signal: AbortSignal.timeout(10000),
         });
-        return response.status === 404 && (await response.json()).error === 'Not found';
+        if (response.status !== 404) return false;
+        const payload = await response.json();
+        return version ? payload === 'version not found: ' + version : payload.error === 'Not found';
     } catch {
         return false;
     }
 }
 
-function reviewReport(report, { sha, packageName, adapterName, admissionIssue, npmMissing }) {
+function reviewReport(report, { sha, packageName, adapterName, version, admissionIssue, npmMissing, candidateMissing }) {
     const verified = report.result === 'OK' && report.lastCommitSha === sha && packageName === 'iobroker.' + adapterName &&
         report.checks.includes(`Name of adapter in package.json must be lowercase and be equal to "${packageName}".`) &&
         report.checks.includes('"common.name" is valid in io-package.json');
@@ -34,10 +41,14 @@ function reviewReport(report, { sha, packageName, adapterName, admissionIssue, n
     const warnings = report.warnings.filter(finding => finding.startsWith('[W') &&
         !(finding.startsWith('[W3031]') && finding.includes(`and branch "${sha}"`)));
     const pending = [...report.errors, ...warnings];
-    const canDefer = verified && isAdmissionIssue(admissionIssue);
-    const deferred = canDefer ? pending.filter(finding =>
-        finding === `[W4001] Cannot find "${adapterName}" in latest repository. Please ignore if PR to add adapter to repositories already exists.` ||
-        (npmMissing && missingPackageFindings(packageName).includes(finding))) : [];
+    const admissionApproved = isAdmissionIssue(admissionIssue);
+    const deferred = verified ? pending.filter(finding => {
+        if (candidateMissing && finding === missingCandidateNews(version)) return true;
+        return admissionApproved && (
+            finding === `[W4001] Cannot find "${adapterName}" in latest repository. Please ignore if PR to add adapter to repositories already exists.` ||
+            (npmMissing && missingPackageFindings(packageName).includes(finding))
+        );
+    }) : [];
     return { verified, deferred, unresolved: pending.filter(finding => !deferred.includes(finding)) };
 }
 
@@ -76,8 +87,10 @@ async function main() {
     const npmMissing = Boolean(admissionIssue) &&
         report.errors.some(finding => missingPackageFindings(pkg.name).includes(finding)) &&
         await registryConfirmsMissing(pkg.name);
+    const candidateMissing = report.warnings.includes(missingCandidateNews(pkg.version)) &&
+        await registryConfirmsMissing(pkg.name, pkg.version);
     const { verified, deferred, unresolved } = reviewReport(report, {
-        sha, packageName: pkg.name, adapterName, admissionIssue, npmMissing,
+        sha, packageName: pkg.name, adapterName, version: pkg.version, admissionIssue, npmMissing, candidateMissing,
     });
     const passed = verified && unresolved.length === 0;
     const message = `Repository Checker ${report.version} reported SHA ${report.lastCommitSha || 'unavailable'}. ` +
@@ -87,7 +100,11 @@ async function main() {
     for (const finding of [...report.errors, ...report.warnings]) {
         console.log(JSON.stringify(finding));
     }
-    const deferralNote = deferred.length ? `\n\nAdmission evidence ${admissionIssue}\n\n` +
+    const evidence = [
+        admissionIssue && `Admission evidence ${admissionIssue}`,
+        deferred.includes(missingCandidateNews(pkg.version)) && `npm confirms ${pkg.name}@${pkg.version} is not published yet.`,
+    ].filter(Boolean).join('\n');
+    const deferralNote = deferred.length ? `\n\n${evidence}\n\n` +
         deferred.map(finding => `- ${finding}`).join('\n') : '';
     if (deferralNote) console.log(deferralNote);
     if (process.env.GITHUB_STEP_SUMMARY) {

@@ -38,7 +38,7 @@ After this workflow is merged into main and the release candidate is approved, m
 
 The `release` npm script uses the ioBroker Creator plugin configuration (ioBroker, license, manual review). Run it from an up-to-date development branch. The manual npm workflow remains the publication gate. Version tags trigger CI validation without publishing.
 
-1. Add a `## **WORK IN PROGRESS**` section at the top of `README.md` with English entries; maintain the German notes in README.de.md and the bilingual history in CHANGELOG_OLD.md. Add the localized release summary under `common.news.NEXT` in `io-package.json` so the script can reuse the supplied text without calling a translation service. Commit the release notes.
+1. Add a `## **WORK IN PROGRESS**` section at the top of `README.md` with English entries; maintain the German notes in `doc/de/README.md` and the bilingual release notes in `doc/RELEASE-HISTORY.md`. Keep `CHANGELOG_OLD.md` in English. Add the localized release summary under `common.news.NEXT` in `io-package.json` so the script can reuse the supplied text without calling a translation service. Commit the release notes.
 2. Run `npm run release prerelease beta -- --dry`. Review the next version and proposed tag. The script updates the npm manifest and lockfile, adapter metadata, and bilingual changelog together during a real release.
 3. When approved, run `npm run release prerelease beta` and review the resulting changes at the manual review prompt. Verify the tagged commit's CI results before requesting publication through the manual workflow above.
 
@@ -57,3 +57,7 @@ For the checker development branch `develop/repository-checker-24`, pushes also 
 ### Full-SHA policy conflict
 
 The 2026-11-25 CI run 45671973967 failed during setup because the official check and adapter composite actions reference actions/checkout@v6 and actions/setup-node@v6 internally. Repository policy requires full commit SHAs. The checker also rejects pinned ioBroker composite actions (E8918). Preserve the security policy and run the ioBroker testing package scripts directly with pinned checkout/setup-node and the full OS matrix. W3013/W3015 and the custom beta deploy warning still require a documented upstream resolution or explicit policy decision; no checker findings are silently suppressed. Release news for unpublished historical betas is retained in the README and bilingual archive instead of common.news.
+
+The gate records and defers W2004 only for the exact candidate if the registry independently confirms that version is still unpublished. Other missing release entries remain blocking. Rerun the checker after publication.
+
+Enable GitHub immutable releases before publishing. If npm accepted the exact beta archive and GitHub archival subsequently failed, rerun the gated workflow with the same version. The workflow resumes archival only when the registry confirms the archive's SHA-512 integrity and the beta channel still points to that version. A mismatch or registry failure stops the deployment.
