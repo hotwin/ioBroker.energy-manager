@@ -2,7 +2,7 @@
 
 const translations = {
     en: {
-        themeLabel: 'Theme', themeAuto: 'Automatic', themeLight: 'Light', themeDark: 'Dark',
+        headerSubtitle: 'Energy monitoring & electricity costs',
         houseMeter: 'Main electricity meter', measuredDevices: 'Monitored devices',
         unassignedPower: 'Unassigned power', meterUnconfigured: 'Select a cumulative Wh or kWh state in the instance settings.',
         meterMissing: 'The configured meter state was not found.',
@@ -72,7 +72,7 @@ const translations = {
         manual: 'Manual', shelly: 'Shelly', priced: 'priced', instance: 'ioBroker instance',
     },
     de: {
-        themeLabel: 'Darstellung', themeAuto: 'Automatisch', themeLight: 'Hell', themeDark: 'Dunkel',
+        headerSubtitle: 'Stromverbrauch, Energie und Kosten im Blick',
         houseMeter: 'Hausstromzähler', measuredDevices: 'Erfasste Geräte',
         unassignedPower: 'Nicht zugeordnete Leistung', meterUnconfigured: 'Wähle in den Instanzeinstellungen einen fortlaufenden Zählerstand in Wh oder kWh.',
         meterMissing: 'Der eingestellte Zählerdatenpunkt wurde nicht gefunden.',
@@ -180,6 +180,7 @@ function dayKey(value) {
 function updateStatus() {
     const stale = snapshot && Date.now() - snapshot.ts > 120000;
     const key = stale && displayStatus === 'ready' ? 'stale' : displayStatus;
+    el('status').dataset.state = key;
     el('status').textContent = words[key] + (snapshot ? ' · ' + dateTime(snapshot.ts) : '');
 }
 
@@ -197,7 +198,6 @@ function translate() {
     document.documentElement.lang = language;
     words = translations[language];
     for (const item of document.querySelectorAll('[data-text]')) item.textContent = words[item.dataset.text];
-    el('instance').setAttribute('aria-label', words.instance);
     el('navigation').replaceChildren(...pages.map(page => {
         const link = node('a', words[page]);
         link.href = '#' + page;
@@ -637,10 +637,8 @@ function render() {
 
 el('flowPeriod').addEventListener('change', renderOverviewCharts);
 
-const instanceSelect = el('instance');
-const given = params.get('instance') ?? location.search.slice(1);
-const defaultInstance = /^\d+$/.test(given) ? given : '0';
-instanceSelect.add(new Option('hotwin-energy-manager.' + defaultInstance, defaultInstance));
+const given = params.get('instance') ?? [...params.keys()].find(key => /^\d+$/.test(key));
+let selectedInstance = /^\d+$/.test(given) ? given : '0';
 let socket;
 let stateId;
 let connected = false;
@@ -663,7 +661,7 @@ function deviceLabel(device) {
         edit.title = words.editName;
         edit.setAttribute('aria-label', words.editName + ' · ' + label.textContent);
         edit.addEventListener('click', () => {
-            editingAlias = { device, instance: instanceSelect.value };
+            editingAlias = { device, instance: selectedInstance };
             aliasInput.value = device.name || '';
             el('originalDeviceName').textContent = device.technicalName || device.originalName || device.id;
             aliasStatus.textContent = '';
@@ -683,7 +681,7 @@ function deviceLabel(device) {
 }
 
 async function saveAlias(value) {
-    if (!editingAlias || !adminTab || !connected || editingAlias.instance !== instanceSelect.value) return;
+    if (!editingAlias || !adminTab || !connected || editingAlias.instance !== selectedInstance) return;
     const { device, instance } = editingAlias;
     const buttons = [...aliasForm.querySelectorAll('button')];
     for (const button of buttons) button.disabled = true;
@@ -740,7 +738,7 @@ async function loadContract() {
     contractFields.disabled = true;
     contractFeedback.textContent = words.contractLoading;
     try {
-        const object = await contractRpc('getObject', 'system.adapter.hotwin-energy-manager.' + instanceSelect.value);
+        const object = await contractRpc('getObject', 'system.adapter.hotwin-energy-manager.' + selectedInstance);
         if (request !== contractRequest) return;
         if (object?.type !== 'instance' || !object.native) throw Error('Missing configuration');
         savedContract = object.native;
@@ -810,7 +808,7 @@ contractForm.addEventListener('submit', async event => {
     contractFields.disabled = true;
     contractFeedback.textContent = '';
     try {
-        await contractRpc('extendObject', 'system.adapter.hotwin-energy-manager.' + instanceSelect.value, { native: changed });
+        await contractRpc('extendObject', 'system.adapter.hotwin-energy-manager.' + selectedInstance, { native: changed });
         if (request !== contractRequest) return;
         savedContract = { ...savedContract, ...changed };
         contractFeedback.textContent = words.contractSaved;
@@ -850,7 +848,7 @@ function selectInstance() {
     el('roomCards').replaceChildren();
     if (aliasDialog.open) aliasDialog.close();
     if (subscribed) socket.emit('unsubscribe', stateId);
-    stateId = 'hotwin-energy-manager.' + instanceSelect.value + '.snapshot';
+    stateId = 'hotwin-energy-manager.' + selectedInstance + '.snapshot';
     subscribed = false;
     snapshot = null;
     displayStatus = 'waiting';
@@ -883,16 +881,10 @@ function onConnect() {
             startkey: 'system.adapter.hotwin-energy-manager.', endkey: 'system.adapter.hotwin-energy-manager.\u9999',
         }, (error, view) => {
             if (error || !view?.rows?.length) return;
-            const selected = instanceSelect.value;
-            for (const row of view.rows) {
-                const id = row.id?.split('.').at(-1);
-                if (/^\d+$/.test(id) && ![...instanceSelect.options].some(option => option.value === id)) {
-                    instanceSelect.add(new Option('hotwin-energy-manager.' + id, id));
-                }
-            }
-            if (!/^\d+$/.test(given) && !view.rows.some(row => row.id?.endsWith('.' + selected))) {
-                instanceSelect.value = view.rows[0].id.split('.').at(-1);
-                if (instanceSelect.value) selectInstance();
+            const instances = view.rows.map(row => row.id?.split('.').at(-1)).filter(id => /^\d+$/.test(id));
+            if (!/^\d+$/.test(given) && instances.length && !instances.includes(selectedInstance)) {
+                selectedInstance = instances.sort((a, b) => Number(a) - Number(b))[0];
+                selectInstance();
             }
         });
     }
@@ -978,31 +970,16 @@ async function connect() {
 const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
 const themeParam = new URLSearchParams(location.search);
 let adminTheme = themeParam.get('react') || themeParam.get('theme');
-const themeStorageKey = 'hotwin-energy-manager.theme';
-let chosenTheme = 'auto';
-try {
-    const stored = localStorage.getItem(themeStorageKey);
-    if (['auto', 'light', 'dark'].includes(stored)) chosenTheme = stored;
-} catch {
-    // The dashboard still works with storage disabled.
-}
 function chartColor(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 function applyTheme() {
-    const dark = chosenTheme === 'dark' || (chosenTheme === 'auto' &&
-        (adminTheme ? /dark/i.test(adminTheme) : systemTheme.matches));
+    const dark = adminTheme ? /dark/i.test(adminTheme) : systemTheme.matches;
     const next = dark ? 'dark' : 'light';
     const changed = document.documentElement.dataset.theme !== next;
     document.documentElement.dataset.theme = next;
     if (changed && snapshot) renderOverviewCharts();
 }
-el('themeMode').value = chosenTheme;
-el('themeMode').addEventListener('change', () => {
-    chosenTheme = el('themeMode').value;
-    try { localStorage.setItem(themeStorageKey, chosenTheme); } catch { /* optional preference */ }
-    applyTheme();
-});
 systemTheme.addEventListener('change', applyTheme);
 window.addEventListener('message', event => {
     if (event.source !== window.parent || event.origin !== location.origin) return;
@@ -1014,7 +991,6 @@ window.addEventListener('message', event => {
 applyTheme();
 
 window.addEventListener('hashchange', selectPage);
-instanceSelect.addEventListener('change', selectInstance);
 el('period').addEventListener('change', renderStats);
 contractForm.hidden = !adminTab;
 el('contractWebHint').hidden = adminTab;
