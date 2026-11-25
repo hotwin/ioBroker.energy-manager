@@ -9,7 +9,7 @@ const packageName = 'iobroker.hotwin-energy-manager';
 const adapterName = 'hotwin-energy-manager';
 const absent = `[E2000] Package ${packageName} not found on npm. Please publish`;
 const unlisted = `[W4001] Cannot find "${adapterName}" in latest repository. Please ignore if PR to add adapter to repositories already exists.`;
-const issue = 'https://github.com/hotwin/ioBroker.energy-manager/issues/24';
+const issue = 'https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/24';
 const report = {
     result: 'OK', lastCommitSha: sha, errors: [], warnings: [],
     checks: [

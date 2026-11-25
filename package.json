@@ -24,12 +24,12 @@
   "author": "hotwin",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hotwin/ioBroker.energy-manager.git"
+    "url": "git+https://github.com/hotwin/ioBroker.hotwin-energy-manager.git"
   },
   "bugs": {
-    "url": "https://github.com/hotwin/ioBroker.energy-manager/issues"
+    "url": "https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues"
   },
-  "homepage": "https://github.com/hotwin/ioBroker.energy-manager#readme",
+  "homepage": "https://github.com/hotwin/ioBroker.hotwin-energy-manager#readme",
   "keywords": [
     "ioBroker",
     "energy",

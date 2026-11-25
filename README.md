@@ -40,11 +40,11 @@ Consumption is calculated from cumulative meter differences after recording begi
 
 GitHub Actions checks lint, package metadata, dashboard synchronization, unit tests, integration and Compact Mode on Node.js 22/24. The beta.8 npm publish job succeeded. The official release script is configured in the development branch.
 
-- [Main branch integration / Developer Portal](https://github.com/hotwin/ioBroker.energy-manager/pull/12)
-- [Official Latest admission preparation](https://github.com/hotwin/ioBroker.energy-manager/issues/10)
-- [Safe migration of legacy data](https://github.com/hotwin/ioBroker.energy-manager/issues/11)
+- [Main branch integration / Developer Portal](https://github.com/hotwin/ioBroker.hotwin-energy-manager/pull/12)
+- [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
+- [Safe migration of legacy data](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/11)
 
-This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
+This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
 
 ## Changelog
 

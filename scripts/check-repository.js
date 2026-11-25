@@ -44,7 +44,7 @@ function reviewReport(report, { sha, packageName, adapterName, admissionIssue, n
 async function main() {
     const checkout = process.argv[2];
     if (!checkout) throw Error('Pass the path to the official ioBroker Repository Checker checkout.');
-    const repository = process.env.GITHUB_REPOSITORY || 'hotwin/ioBroker.energy-manager';
+    const repository = process.env.GITHUB_REPOSITORY || 'hotwin/ioBroker.hotwin-energy-manager';
     const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: path.join(__dirname, '..'), encoding: 'utf8' }).trim();
     const { handler } = require(path.resolve(checkout, 'index.js'));
     const identity = `${repository}@${sha} · ${pkg.name}@${pkg.version}`;
