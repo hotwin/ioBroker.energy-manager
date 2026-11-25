@@ -20,5 +20,9 @@
   "source_powerId": "Vermogensstatus (W of kW)",
   "source_energyId": "Status van de energiemeter",
   "source_unit": "Eenheid van de energiemeter",
-  "source_exclude": "Uitsluiten van totalen"
+  "source_exclude": "Uitsluiten van totalen",
+  "settings_measurement": "Meting en hoofdmeter",
+  "settings_devices": "Apparaten en datapunten",
+  "settings_tariff": "Elektriciteitstarief",
+  "settings_fixedCosts": "Vaste kosten en voorschotten"
 }

@@ -20,5 +20,9 @@
   "source_powerId": "Состояние мощности (Вт или кВт)",
   "source_energyId": "Состояние счётчика энергии",
   "source_unit": "Единица счётчика энергии",
-  "source_exclude": "Исключить из итогов"
+  "source_exclude": "Исключить из итогов",
+  "settings_measurement": "Измерение и основной счётчик",
+  "settings_devices": "Устройства и точки данных",
+  "settings_tariff": "Тариф на электроэнергию",
+  "settings_fixedCosts": "Постоянные расходы и авансы"
 }
