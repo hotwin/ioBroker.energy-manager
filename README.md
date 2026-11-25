@@ -150,6 +150,8 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 ### 0.1.0 – 2026-11-24
 - Initial alpha with Shelly discovery, manual energy sources, room assignment, aWATTar prices and web dashboard. Installation and power calculation confirmed in a practical test. REST endpoint returns 404.
 
+[Older release notes](CHANGELOG_OLD.md)
+
 ## License
 
 Copyright (c) 2026 hotwin <hotwin@gmx.net>. MIT. See [LICENSE](LICENSE).
