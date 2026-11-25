@@ -9,6 +9,9 @@
 - DE: Der offizielle ioBroker Repository Checker prüft den konkreten Release-Commit und muss vor der npm-Veröffentlichung erfolgreich sein.
 - EN: The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 
+- DE: Die Freigabeprüfung bestätigt auch die geprüfte Paketkennung und protokolliert eng begrenzte Ausnahmen für die Erstaufnahme.
+- EN: The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+
 ## 0.3.0-beta.13 – 2026-11-25
 
 - DE: Die lokale Messwerterfassung und die Verfügbarkeit eines aktuellen aWATTar-Preises haben getrennte Statusdatenpunkte. Nach API-Fehlern verlängert sich der Wiederholungsabstand auf bis zu 15 Minuten.

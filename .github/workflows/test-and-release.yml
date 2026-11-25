@@ -10,6 +10,10 @@ on:
         description: Run the official repository gate for this candidate
         type: boolean
         default: false
+      admission_issue:
+        description: GitHub issue or PR documenting an approved ioBroker admission exception
+        type: string
+        required: false
       publish_beta:
         description: Publish the checked beta package to npm
         type: boolean
@@ -91,6 +95,7 @@ jobs:
       - name: Validate the exact candidate with the official checker
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          IOBROKER_ADMISSION_ISSUE: ${{ inputs.admission_issue }}
         run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
 
   publish-beta:
