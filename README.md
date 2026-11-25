@@ -28,7 +28,7 @@ iobroker add hotwin-energy-manager@0.3.0-beta.8
 
 The package is published under the npm beta tag, not yet in the official ioBroker Latest or Stable repository.
 
-**Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; automatic migration is planned, not available yet. Keep the old instance and back up its data.
+**Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; the beta.9 development version adds an [opt-in import](doc/en/README.md#import-from-a-legacy-instance). Keep the old instance and back up its data.
 
 ## Setup and data accuracy
 
@@ -47,6 +47,11 @@ GitHub Actions checks lint, package metadata, dashboard synchronization, unit te
 This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
 
 ## Changelog / Release history
+
+### 0.3.0-beta.9 – 2026-11-25
+
+- DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
+- EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
 
 ### 0.3.0-beta.8 – 2026-11-24
 

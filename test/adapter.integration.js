@@ -3,6 +3,9 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const os = require('node:os');
+const { execFile } = require('node:child_process');
+const { mkdtemp, readFile, rm, stat } = require('node:fs/promises');
+const { promisify } = require('node:util');
 const { once } = require('node:events');
 const { setTimeout: wait } = require('node:timers/promises');
 const { tests } = require('@iobroker/testing');
@@ -34,6 +37,102 @@ tests.integration(path.join(__dirname, '..'), {
                 assert.equal(snapshot.devices[0].source, 'enum');
                 await harness.stopAdapter();
                 assert.equal((await harness.states.getStateAsync('hotwin-energy-manager.0.info.connection')).val, false);
+            });
+        });
+        suite('Legacy migration', getHarness => {
+            it('previews, protects and imports real controller data without changing the source', async function () {
+                this.timeout(90000);
+                const { objects, states } = getHarness();
+                const oldId = 'system.adapter.energy-manager.3';
+                const newId = 'system.adapter.hotwin-energy-manager.0';
+                const oldHistory = 'energy-manager.3.consumption';
+                const newHistory = 'hotwin-energy-manager.0.consumption';
+                const legacy = {
+                    type: 'instance',
+                    common: { name: 'energy-manager', enabled: false },
+                    native: { tariffConfigured: true, markupCt: 0.35, deviceAliases: { meter: 'Kitchen' }, sources: [] },
+                };
+                const schema = {
+                    type: 'state',
+                    common: { name: 'Consumption', type: 'string', role: 'json', read: true, write: false },
+                    native: {},
+                };
+                const historical = {
+                    days: { '2026-11-20': { kWh: 15, costEUR: 3, pricedKWh: 15 } },
+                    meters: { meter: { value: 22 } },
+                    hourly: { 18000: 10 },
+                    deviceDays: { '2026-11-20': { meter: { kWh: 15 } } },
+                    priceHistory: {},
+                };
+                const existing = { days: { '2026-11-21': { kWh: 2 } }, meters: {} };
+                await objects.setObjectAsync(oldId, legacy);
+                const target = await objects.getObjectAsync(newId);
+                target.common.enabled = false;
+                target.native.markupCt = 0.8;
+                await objects.setObjectAsync(newId, target);
+                for (const [id, ledger] of [[oldHistory, historical], [newHistory, existing]]) {
+                    await objects.setObjectAsync(id, schema);
+                    await states.setStateAsync(id, { val: JSON.stringify(ledger), ack: true });
+                }
+                // The test harness runs the controller databases without a host daemon.
+                const hostId = 'system.host.' + os.hostname();
+                await objects.setObjectAsync(hostId, { type: 'host', common: { name: os.hostname() }, native: {} });
+                await states.setStateAsync(hostId + '.alive', { val: true, ack: true });
+                const oldBefore = await objects.getObjectAsync(oldId);
+                const oldStateBefore = await states.getStateAsync(oldHistory);
+                const directory = await mkdtemp(path.join(os.tmpdir(), 'energy-migration-'));
+                const backup = path.join(directory, 'original.json');
+                const testHost = path.join(os.tmpdir(), 'test-iobroker.hotwin-energy-manager');
+                const cli = path.join('node_modules', 'iobroker.hotwin-energy-manager', 'lib', 'migrate-legacy.js');
+                const execute = promisify(execFile);
+                const run = async (...args) => JSON.parse((await execute(process.execPath,
+                    [cli, '--from', '3', '--to', '0', ...args], { cwd: testHost, timeout: 15000 })).stdout);
+
+                try {
+                    const preview = await run();
+                    assert.deepEqual(preview.conflictingSettings, ['markupCt']);
+                    assert.equal(preview.historyConflict, true);
+                    assert.equal(preview.sourceHistoryDays, 1);
+                    await states.setStateAsync(newId + '.alive', { val: true, ack: true });
+                    await assert.rejects(run('--apply', '--backup', backup, '--overwrite'), /Stop and disable both instances/);
+                    await states.setStateAsync(newId + '.alive', { val: false, ack: true });
+                    await assert.rejects(run('--apply', '--backup', backup), /explicitly confirm replacement/);
+                    await assert.rejects(stat(backup), { code: 'ENOENT' });
+                    assert.equal((await states.getStateAsync(newHistory)).val, JSON.stringify(existing));
+                    assert.equal((await objects.getObjectAsync(newId)).native.markupCt, 0.8);
+
+                    const applied = await run('--apply', '--backup', backup, '--overwrite');
+                    assert.equal(applied.applied, true);
+                    assert.equal((await stat(backup)).mode & 0o777, 0o600);
+                    const saved = JSON.parse(await readFile(backup, 'utf8'));
+                    assert.equal(saved.target.instance.native.markupCt, 0.8);
+                    assert.deepEqual(saved.target.ledger, existing);
+                    const updated = await objects.getObjectAsync(newId);
+                    assert.deepEqual(updated.acl, target.acl);
+                    assert.equal(updated.native.markupCt, 0.35);
+                    assert.equal(updated.native.tariffConfigured, true);
+                    assert.deepEqual(updated.native.deviceAliases, { meter: 'Kitchen' });
+                    const copied = await states.getStateAsync(newHistory);
+                    assert.equal(copied.ack, true);
+                    assert.deepEqual(JSON.parse(copied.val), { ...historical, meters: {} });
+                    assert.deepEqual(await objects.getObjectAsync(oldId), oldBefore);
+                    assert.deepEqual(await states.getStateAsync(oldHistory), oldStateBefore);
+                    const retry = await run('--apply', '--backup', backup);
+                    assert.deepEqual(retry.changedSettings, []);
+                    assert.equal(retry.copyHistory, false);
+
+                    await states.delState(newHistory);
+                    await objects.delObjectAsync(newHistory);
+                    const fresh = await run('--apply', '--backup', path.join(directory, 'fresh.json'));
+                    assert.equal(fresh.applied, true);
+                    assert.equal(fresh.historyConflict, false);
+                    assert.equal((await objects.getObjectAsync(newHistory)).common.role, 'json');
+
+                    await states.setStateAsync(oldHistory, { val: 'invalid', ack: true });
+                    await assert.rejects(run(), /Unexpected consumption history format/);
+                } finally {
+                    await rm(directory, { force: true, recursive: true });
+                }
             });
         });
         suite('Compact mode', getHarness => {

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.3.0-beta.8",
+    "version": "0.3.0-beta.9",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager"
@@ -25,6 +25,10 @@
     },
     "wwwDontUpload": false,
     "news": {
+      "0.3.0-beta.9": {
+        "de": "Optionale Migration von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf.",
+        "en": "Opt-in migration of settings, tariff, device aliases and consumption history."
+      },
       "0.3.0-beta.8": {
         "en": "Configure the standard ioBroker release script.",
         "de": "Das standardmäßige ioBroker-Release-Script eingerichtet."
