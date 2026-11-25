@@ -18,6 +18,42 @@ Local energy monitoring and electricity cost analysis for ioBroker, with a respo
 - Editable tariff components, VAT, aWATTar HOURLY percentage surcharge and optional gross energy price limits. Fixed charges and advance payments are shown separately.
 - German and English interface; optional Web adapter dashboard.
 
+## Dashboard screenshots
+
+The published Beta 8 Admin dashboard with fictional measurement and contract data. The screenshots show the German interface.
+
+![Overview with live power, tariff, Sankey diagram and historical charts](docs/screenshots/0.3.0-beta.8/overview.webp)
+
+<details>
+<summary>Devices, rooms, statistics, prices, contract, updates and mobile overview</summary>
+
+![Devices with power, meter readings and data sources](docs/screenshots/0.3.0-beta.8/devices.webp)
+
+![Room cards with an expanded list of kitchen devices](docs/screenshots/0.3.0-beta.8/rooms.webp)
+
+![Seven days of recorded energy and variable costs](docs/screenshots/0.3.0-beta.8/statistics.webp)
+
+![Upcoming spot and gross prices by delivery interval](docs/screenshots/0.3.0-beta.8/prices.webp)
+
+![Editable example electricity contract and monthly charges](docs/screenshots/0.3.0-beta.8/contract.webp)
+
+![Updates page with installed Beta 8 and a link to GitHub Releases](docs/screenshots/0.3.0-beta.8/updates.webp)
+
+![Mobile dashboard overview at 390 pixels wide](docs/screenshots/0.3.0-beta.8/mobile.webp)
+
+</details>
+
+<details>
+<summary>Beta 12 test package — mobile and updates</summary>
+
+Supplementary screenshots of the Beta 12 test package using fictional data.
+
+![Beta 12 overview on a 390-pixel-wide mobile screen](docs/screenshots/v0.3.0-beta.12/mobile.webp)
+
+![Beta 12 Updates page showing the installed version and the Releases link](docs/screenshots/v0.3.0-beta.12/updates.webp)
+
+</details>
+
 ## Installation
 
 Requires Node.js 22+, ioBroker Admin 7.6.20+ and js-controller 6.0.11+. Measurement states must be supplied by installed device adapters.
