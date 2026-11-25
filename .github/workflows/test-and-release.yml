@@ -6,6 +6,10 @@ on:
     tags: ['v[0-9]+.[0-9]+.[0-9]+', 'v[0-9]+.[0-9]+.[0-9]+-**']
   workflow_dispatch:
     inputs:
+      check_repository:
+        description: Run the official repository gate for this candidate
+        type: boolean
+        default: false
       publish_beta:
         description: Publish the checked beta package to npm
         type: boolean
@@ -62,9 +66,36 @@ jobs:
       - name: Integration and Compact Mode tests
         run: npm run test:integration
 
+  repository-check:
+    if: github.event_name == 'workflow_dispatch' && (inputs.check_repository || inputs.publish_beta)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Install official Repository Checker 5.24.3
+        run: |
+          checker="$RUNNER_TEMP/repochecker"
+          git init "$checker"
+          git -C "$checker" remote add origin https://github.com/ioBroker/ioBroker.repochecker.git
+          git -C "$checker" fetch --depth=1 origin 755ec6ddde9fd3c9914cd818986ee134a32c4874
+          git -C "$checker" checkout --detach FETCH_HEAD
+          npm --prefix "$checker" ci --omit=dev --ignore-scripts --no-audit --no-fund
+      - name: Validate the exact candidate with the official checker
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
+
   publish-beta:
     if: github.event_name == 'workflow_dispatch' && inputs.publish_beta && github.ref == 'refs/heads/develop/0.3.0-beta.1'
-    needs: [check-and-lint, adapter-tests]
+    needs: [check-and-lint, adapter-tests, repository-check]
     runs-on: ubuntu-latest
     environment: npm-beta
     steps:

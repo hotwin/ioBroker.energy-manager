@@ -30,7 +30,7 @@ Repository Checker 5.24.3 completed against `f599957`. Its CLI returned `OK` but
 
 ## First npm beta from GitHub Actions
 
-The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The workflow is available on the default branch. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after both validation jobs succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
+The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The workflow is available on the default branch. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after lint, package validation, both adapter test matrix jobs and the official Repository Checker succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
 
 1. Create the GitHub Actions environment `npm-beta`. Allow deployments from the development branch and store a short-lived granular npm token as the environment secret `NPM_TOKEN`. The token must permit creating the unscoped package and have Bypass 2FA enabled. Keep the token in GitHub Secrets.
 2. Under **Actions → Test and Release → Run workflow**, select the development branch. First run with the publish checkbox cleared to exercise validation only. Verify the version and select the publish checkbox only when ready to release.
@@ -46,3 +46,11 @@ The `release` npm script uses the ioBroker Creator plugin configuration (ioBroke
 3. When approved, run `npm run release prerelease beta` and review the resulting changes at the manual review prompt. Verify the tagged commit's CI results before requesting publication through the manual workflow above.
 
 The Developer Portal reads the default branch. Its detection can be verified after this configuration is approved for the default branch. Release preparation is scoped to development branches. The portal must support targeting a development branch for execution with this configuration.
+
+## Repository Checker release gate
+
+For every beta and stable candidate, let the tag-triggered tests finish, then dispatch **Test and Release** for the same revision with **Run the official repository gate for this candidate** enabled and npm publishing disabled. Record the workflow URL, reported commit and npm package in the release issue, and review the findings before creating the GitHub Release or dispatching npm publication. The npm publishing job also runs the checker and requires it to pass.
+
+The workflow pins the official ioBroker Repository Checker. Version 5.24.3 exposes its checks through `index.js`. The wrapper uses its structured report to verify the SHA, checker completion, errors and unresolved warnings. The SHA-specific W3031 branch lookup is documented by the wrapper because CI verifies the exact revision independently. The checker can also be run from the adapter checkout with `node scripts/check-repository.js /path/to/ioBroker.repochecker` after installing the checker's dependencies. The candidate must be available on GitHub at the local checkout's SHA.
+
+A tag, package registration and ioBroker repository admission are separate steps. Record any initial-publish or admission exception with the concrete checker finding and the approval before changing release policy. Rerun the gate after the external step. A failed or incomplete report always blocks automatic npm publishing.
