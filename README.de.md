@@ -27,7 +27,7 @@ Die Beta ist auf npm veröffentlicht, aber noch nicht im offiziellen Latest- ode
 
 ## Einrichtung
 
-Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür eine neue Instanz an. Bisherige Einstellungen und Verbrauchsdaten bleiben bei der alten Instanz.
+Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür eine neue Instanz an. Bisherige Einstellungen und Verbrauchsdaten bleiben bei der alten Instanz. Die Entwicklungsversion Beta 9 ermöglicht eine [optionale Übernahme](doc/de/README.md#daten-aus-einer-alten-instanz-übernehmen).
 
 1. Lege im ioBroker Admin eine Funktionsaufzählung namens **Strommessung** oder **Energy measurement** an.
 2. Füge die numerischen Messdatenpunkte, deren Kanal oder das Gerät hinzu. **W** oder **kW** liefern die Live-Leistung, ein fortlaufender Zähler in **Wh** oder **kWh** liefert den Verbrauch. Lege Leistung und Energie nach Möglichkeit in denselben Kanal.
@@ -51,6 +51,10 @@ Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Ada
 Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
 ## Changelog / Versionsverlauf
+
+### 0.3.0-beta.9 – 2026-11-25
+
+- Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
 
 ### 0.3.0-beta.8 – 2026-11-24
 

@@ -1,5 +1,10 @@
 # Changelog / Änderungsprotokoll
 
+## 0.3.0-beta.9 – 2026-11-25
+
+- DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
+- EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
+
 ## 0.3.0-beta.8 – 2026-11-24
 
 - DE: Adapterkennung auf `hotwin-energy-manager` geändert, um den npm-Namenskonflikt zu lösen.
