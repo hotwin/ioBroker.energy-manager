@@ -9,6 +9,7 @@ const { promisify } = require('node:util');
 const { once } = require('node:events');
 const { setTimeout: wait } = require('node:timers/promises');
 const { tests } = require('@iobroker/testing');
+const { localDay } = require('../lib/consumption');
 
 tests.integration(path.join(__dirname, '..'), {
     controllerVersion: '7.2.5',
@@ -28,6 +29,14 @@ tests.integration(path.join(__dirname, '..'), {
                 await harness.objects.setObjectAsync('enum.functions.strommessung', {
                     type: 'enum', common: { name: 'Strommessung', members: ['zigbee2mqtt.0.test'] }, native: {},
                 });
+                const date = new Date(localDay(Date.now()) + 'T12:00:00Z');
+                const days = Object.fromEntries([6, 2, 2, 2].map(kWh => {
+                    date.setUTCDate(date.getUTCDate() - 1);
+                    return [date.toISOString().slice(0, 10), { kWh }];
+                }));
+                await harness.states.setStateAsync('hotwin-energy-manager.0.consumption', {
+                    val: JSON.stringify({ days }), ack: true,
+                });
                 await harness.startAdapterAndWait(true);
                 const state = await harness.states.getStateAsync('hotwin-energy-manager.0.snapshot');
                 const snapshot = JSON.parse(state.val);
@@ -35,6 +44,9 @@ tests.integration(path.join(__dirname, '..'), {
                 assert.equal(snapshot.totalPower, 1325);
                 assert.equal(snapshot.devices[0].energyKWh, 42);
                 assert.equal(snapshot.devices[0].source, 'enum');
+                assert.deepEqual(snapshot.insights.comparison, {
+                    yesterday: Object.keys(days)[0], kWh: 6, average: 2, difference: 4, trend: 'high', days: 3,
+                });
                 await harness.stopAdapter();
                 assert.equal((await harness.states.getStateAsync('hotwin-energy-manager.0.info.connection')).val, false);
             });
