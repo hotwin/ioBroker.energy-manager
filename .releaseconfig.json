@@ -1,4 +1,8 @@
 {
-  "plugins": ["iobroker", "license", "manual-review"],
-  "branchPattern": "develop/*"
+  "plugins": [
+    "iobroker",
+    "license",
+    "manual-review"
+  ],
+  "branchPattern": "main"
 }
