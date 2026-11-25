@@ -43,13 +43,19 @@
       "type": "objectId",
       "label": "housePowerId",
       "xs": 12,
-      "sm": 6
+      "sm": 6,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "houseEnergyId": {
       "type": "objectId",
       "label": "houseEnergyId",
       "xs": 12,
-      "sm": 6
+      "sm": 6,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "sources": {
       "type": "table",

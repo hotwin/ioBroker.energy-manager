@@ -1,0 +1,23 @@
+{
+  "tariffConfigured": "Composantes du tarif vérifiées",
+  "markupCt": "Autres suppléments hors taxe, hors montants saisis séparément (ct/kWh)",
+  "vatPercent": "TVA (%)",
+  "autoShelly": "Détecter automatiquement les appareils Shelly",
+  "housePowerId": "Compteur principal : puissance actuelle (W ou kW)",
+  "houseEnergyId": "Compteur principal : index du compteur (Wh ou kWh)",
+  "sources": "Sources d’énergie manuelles",
+  "baseMonthly": "Abonnement mensuel hors taxe (EUR)",
+  "meterAnnual": "Frais annuels supplémentaires de comptage hors taxe (EUR)",
+  "electricityTaxCt": "Taxe sur l’électricité hors taxe (ct/kWh)",
+  "networkCt": "Frais de réseau hors taxe (ct/kWh)",
+  "concessionCt": "Redevance de concession hors taxe (ct/kWh)",
+  "leviesCt": "Prélèvements hors taxe (ct/kWh)",
+  "advanceMonthly": "Acompte mensuel TTC (EUR)",
+  "contractStart": "Début du contrat (AAAA-MM-JJ)",
+  "source_name": "Nom",
+  "source_room": "Pièce",
+  "source_powerId": "État de puissance (W ou kW)",
+  "source_energyId": "État du compteur d’énergie",
+  "source_unit": "Unité du compteur d’énergie",
+  "source_exclude": "Exclure des totaux"
+}

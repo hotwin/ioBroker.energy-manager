@@ -13,7 +13,7 @@
 
 Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker. Er verbindet Messdaten verschiedener Hersteller mit Raumübersichten und dynamischen Börsenpreisen von [aWATTar](https://www.awattar.de/).
 
-[English](README.md) · [Dokumentation](doc/de/README.md) · [Änderungsprotokoll](CHANGELOG.md) · [npm](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+[English](README.md) · [Dokumentation](doc/de/README.md) · [Änderungsprotokoll](#changelog--versionsverlauf) · [npm](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 
 ## Funktionen
 

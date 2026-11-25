@@ -1,0 +1,23 @@
+{
+  "tariffConfigured": "已核对电价组成",
+  "markupCt": "其他未单独填写的税前附加费（欧分/千瓦时）",
+  "vatPercent": "增值税 (%)",
+  "autoShelly": "自动发现 Shelly 设备",
+  "housePowerId": "总电表：当前功率（W 或 kW）",
+  "houseEnergyId": "总电表：电表读数（Wh 或 kWh）",
+  "sources": "手动配置的能源数据源",
+  "baseMonthly": "税前月基本费用（EUR）",
+  "meterAnnual": "税前年度额外计量费用（EUR）",
+  "electricityTaxCt": "税前电力税（欧分/千瓦时）",
+  "networkCt": "税前电网费用（欧分/千瓦时）",
+  "concessionCt": "税前特许经营费（欧分/千瓦时）",
+  "leviesCt": "税前征费（欧分/千瓦时）",
+  "advanceMonthly": "含税月预付款（EUR）",
+  "contractStart": "合同起始日期（YYYY-MM-DD）",
+  "source_name": "名称",
+  "source_room": "房间",
+  "source_powerId": "功率状态（W 或 kW）",
+  "source_energyId": "电能表状态",
+  "source_unit": "电能表单位",
+  "source_exclude": "不计入合计"
+}

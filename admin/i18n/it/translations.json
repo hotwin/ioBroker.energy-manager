@@ -1,0 +1,23 @@
+{
+  "tariffConfigured": "Componenti della tariffa verificate",
+  "markupCt": "Altri supplementi netti, esclusi gli importi indicati separatamente (ct/kWh)",
+  "vatPercent": "IVA (%)",
+  "autoShelly": "Rileva automaticamente i dispositivi Shelly",
+  "housePowerId": "Contatore principale: potenza attuale (W o kW)",
+  "houseEnergyId": "Contatore principale: lettura del contatore (Wh o kWh)",
+  "sources": "Fonti di energia manuali",
+  "baseMonthly": "Quota mensile base netta (EUR)",
+  "meterAnnual": "Costo aggiuntivo annuo di misurazione, netto (EUR)",
+  "electricityTaxCt": "Imposta sull’elettricità, netta (ct/kWh)",
+  "networkCt": "Oneri di rete netti (ct/kWh)",
+  "concessionCt": "Canone di concessione netto (ct/kWh)",
+  "leviesCt": "Oneri netti (ct/kWh)",
+  "advanceMonthly": "Acconto mensile lordo (EUR)",
+  "contractStart": "Inizio del contratto (AAAA-MM-GG)",
+  "source_name": "Nome",
+  "source_room": "Stanza",
+  "source_powerId": "Stato della potenza (W o kW)",
+  "source_energyId": "Stato del contatore di energia",
+  "source_unit": "Unità del contatore di energia",
+  "source_exclude": "Escludi dai totali"
+}

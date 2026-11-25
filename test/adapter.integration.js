@@ -115,7 +115,9 @@ tests.integration(path.join(__dirname, '..'), {
 
                     const applied = await run('--apply', '--backup', backup, '--overwrite');
                     assert.equal(applied.applied, true);
-                    assert.equal((await stat(backup)).mode & 0o777, 0o600);
+                    if (process.platform !== 'win32') {
+                        assert.equal((await stat(backup)).mode & 0o777, 0o600);
+                    }
                     const saved = JSON.parse(await readFile(backup, 'utf8'));
                     assert.equal(saved.target.instance.native.markupCt, 0.8);
                     assert.deepEqual(saved.target.ledger, existing);

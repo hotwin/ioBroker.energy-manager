@@ -1,0 +1,23 @@
+{
+  "tariffConfigured": "Zweryfikowane składniki taryfy",
+  "markupCt": "Pozostałe dopłaty netto bez kwot wpisanych osobno (ct/kWh)",
+  "vatPercent": "VAT (%)",
+  "autoShelly": "Automatycznie wykrywaj urządzenia Shelly",
+  "housePowerId": "Licznik główny: bieżąca moc (W lub kW)",
+  "houseEnergyId": "Licznik główny: stan licznika (Wh lub kWh)",
+  "sources": "Ręcznie dodawane źródła energii",
+  "baseMonthly": "Miesięczna opłata podstawowa netto (EUR)",
+  "meterAnnual": "Dodatkowa roczna opłata za pomiar netto (EUR)",
+  "electricityTaxCt": "Podatek od energii elektrycznej netto (ct/kWh)",
+  "networkCt": "Opłaty sieciowe netto (ct/kWh)",
+  "concessionCt": "Opłata koncesyjna netto (ct/kWh)",
+  "leviesCt": "Opłaty netto (ct/kWh)",
+  "advanceMonthly": "Miesięczna zaliczka brutto (EUR)",
+  "contractStart": "Początek umowy (RRRR-MM-DD)",
+  "source_name": "Nazwa",
+  "source_room": "Pomieszczenie",
+  "source_powerId": "Stan mocy (W lub kW)",
+  "source_energyId": "Stan licznika energii",
+  "source_unit": "Jednostka licznika energii",
+  "source_exclude": "Wyklucz z sum"
+}
