@@ -195,6 +195,7 @@
             .brand-icon { flex-basis: 44px; height: 44px; }
             .app-header .header-actions { width: 100%; justify-content: space-between; }
         }
+        .brand-icon img { width: 92%; height: 92%; object-fit: contain; }
     </style>
     <script defer src="dashboard.js?v=0.3.0-beta.14"></script>
 </head>
@@ -202,7 +203,7 @@
 <main>
     <header class="app-header">
         <div class="brand">
-            <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-12h-7l1-8Z"/></svg></span>
+            <span class="brand-icon" aria-hidden="true"><img src="header-logo.webp" alt="" width="48" height="48"></span>
             <div class="brand-copy">
                 <h1>Energy Manager</h1>
                 <p class="brand-subtitle" data-text="headerSubtitle">Energy monitoring &amp; electricity costs</p>
@@ -346,7 +347,7 @@
         </div>
     </section>
     <footer class="project-footer">
-        <p><span data-text="projectResponsible"></span> <strong>Böttcher Services</strong></p>
+        <p><span data-text="projectResponsible"></span> <strong><a href="https://hotgame.duckdns.org/" target="_blank" rel="noopener noreferrer">Böttcher Services</a></strong></p>
         <div class="project-links">
             <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues" target="_blank" rel="noopener noreferrer" data-text="projectIssues"></a>
