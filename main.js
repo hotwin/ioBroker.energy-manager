@@ -6,9 +6,12 @@ const readDevices = require('./lib/sources');
 const energyInsights = require('./lib/energy-insights');
 const calculateTariff = require('./lib/tariff');
 const { version } = require('./package.json');
+const { instanceObjects } = require('./io-package.json');
+
+const priceRetryMs = 60_000;
+const priceRefreshMs = 900_000;
 
 const states = {
-    'info.connection': ['Local source access', 'boolean', 'indicator.connected'],
     snapshot: ['Energy snapshot', 'string', 'json'],
     totalPower: ['Measured power', 'number', 'value.power', 'W'],
     consumption: ['Daily consumption ledger', 'string', 'json'],
@@ -29,7 +32,9 @@ class EnergyManager extends utils.Adapter {
     }
 
     async start() {
-        await this.setObjectNotExistsAsync('info', { type: 'channel', common: { name: 'Adapter information' }, native: {} });
+        for (const { _id, ...definition } of instanceObjects) {
+            await this.setObjectNotExistsAsync(_id, definition);
+        }
         for (const [id, [name, type, role, unit]] of Object.entries(states)) {
             await this.setObjectNotExistsAsync(id, {
                 type: 'state', common: { name, type, role, ...(unit && { unit }), read: true, write: false }, native: {},
@@ -40,7 +45,7 @@ class EnergyManager extends utils.Adapter {
         } catch {
             this.ledger = null;
         }
-        await this.setStateAsync('info.connection', false, true);
+        await this.clearStatus();
         if (!this.stopping) await this.poll();
     }
 
@@ -68,12 +73,15 @@ class EnergyManager extends utils.Adapter {
         if (this.timer) this.clearTimeout(this.timer);
         this.priceRequest?.abort();
         await this.pending;
-        await this.setStateAsync('info.connection', false, true).catch(() => {});
+        await this.clearStatus().catch(() => {});
+    }
+
+    async clearStatus() {
+        await Promise.all(['info.connection', 'info.awattarAvailable'].map(id => this.setStateAsync(id, false, true)));
     }
 
     async refreshPrices() {
         if (this.stopping || Date.now() < (this.nextPricePoll || 0)) return;
-        this.nextPricePoll = Date.now() + 60000;
         this.priceRequest = new AbortController();
         const timeout = this.setTimeout(() => this.priceRequest?.abort(), 5000);
         try {
@@ -81,11 +89,17 @@ class EnergyManager extends utils.Adapter {
             if (!response.ok) throw Error('HTTP ' + response.status);
             const { data } = await response.json();
             if (!Array.isArray(data)) throw Error('Invalid price data');
-            this.prices = data.filter(item => Number.isFinite(item?.marketprice) &&
+            const prices = data.filter(item => Number.isFinite(item?.marketprice) &&
                 Number.isFinite(item.start_timestamp) && Number.isFinite(item.end_timestamp) &&
                 item.end_timestamp > item.start_timestamp).sort((a, b) => a.start_timestamp - b.start_timestamp);
-            this.nextPricePoll = Date.now() + 900000;
+            if (prices.length === 0) throw Error('No valid price intervals');
+            this.prices = prices;
+            this.priceRetryDelay = priceRetryMs;
+            this.nextPricePoll = Date.now() + priceRefreshMs;
         } catch (error) {
+            const delay = this.priceRetryDelay ?? priceRetryMs;
+            this.nextPricePoll = Date.now() + delay;
+            this.priceRetryDelay = Math.min(delay * 2, priceRefreshMs);
             if (!this.stopping) this.log.warn('aWATTar: ' + error.message);
         } finally {
             this.clearTimeout(timeout);
@@ -96,11 +110,6 @@ class EnergyManager extends utils.Adapter {
     async collect() {
         await this.refreshPrices();
         if (this.stopping) return;
-        const [devices, houseMeter] = await Promise.all([
-            readDevices(this),
-            readDevices.readHouseMeter(this),
-        ]);
-        if (this.stopping) return;
         const now = Date.now();
         const priceDay = new Intl.DateTimeFormat('sv-SE', {
             timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
@@ -110,6 +119,12 @@ class EnergyManager extends utils.Adapter {
             tariffCt: calculateTariff(this.config, item.marketprice / 10, priceDay.format(item.start_timestamp)).tariffCt,
         }));
         const current = prices.find(item => item.start_timestamp <= now && item.end_timestamp > now);
+        await this.setStateAsync('info.awattarAvailable', Boolean(current), true);
+        const [devices, houseMeter] = await Promise.all([
+            readDevices(this),
+            readDevices.readHouseMeter(this),
+        ]);
+        if (this.stopping) return;
         const marketCt = current ? current.marketprice / 10 : null;
         const { contract, tariffCt } = calculateTariff(this.config, marketCt, accumulate.localDay(now));
         const rooms = new Map();
