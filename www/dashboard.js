@@ -3,6 +3,13 @@
 const translations = {
     en: {
         houseMeter: 'Main electricity meter', measuredDevices: 'Monitored devices',
+        unassignedPower: 'Unassigned power', meterUnconfigured: 'Select a cumulative Wh or kWh state in the instance settings.',
+        meterMissing: 'The configured meter state was not found.',
+        meterUnit: 'The configured meter state needs a Wh or kWh unit.',
+        meterUnavailable: 'The configured meter has no valid reading.',
+        currentMarket: 'Current market price', currentTariff: 'Current gross contract rate',
+        priceValidity: (start, end) => `Valid from ${start} until ${end}`,
+        priceAwaiting: 'Waiting for prices for the current interval.',
         insightsTitle: 'Energy insights',
         insightsWaiting: 'The comparison needs a reading from yesterday and at least three of the seven preceding days.',
         insightsPriceMissing: 'No upcoming interval with a calculated gross rate in the next 24 hours.',
@@ -64,6 +71,13 @@ const translations = {
     },
     de: {
         houseMeter: 'Hausstromzähler', measuredDevices: 'Erfasste Geräte',
+        unassignedPower: 'Nicht zugeordnete Leistung', meterUnconfigured: 'Wähle in den Instanzeinstellungen einen fortlaufenden Zählerstand in Wh oder kWh.',
+        meterMissing: 'Der eingestellte Zählerdatenpunkt wurde nicht gefunden.',
+        meterUnit: 'Der eingestellte Zählerdatenpunkt benötigt die Einheit Wh oder kWh.',
+        meterUnavailable: 'Für den eingestellten Zähler liegt kein gültiger Messwert vor.',
+        currentMarket: 'Aktueller Börsenpreis', currentTariff: 'Aktueller Brutto-Arbeitspreis',
+        priceValidity: (start, end) => `Gültig von ${start} bis ${end}`,
+        priceAwaiting: 'Warte auf Preise für das laufende Intervall.',
         insightsTitle: 'Stromverbrauch im Blick',
         insightsWaiting: 'Für den Vergleich fehlen Messwerte von gestern oder von mindestens drei der sieben Tage davor.',
         insightsPriceMissing: 'Für die nächsten 24 Stunden ist kein kommendes Intervall mit berechnetem Brutto-Arbeitspreis verfügbar.',
@@ -136,6 +150,7 @@ let language = 'en';
 let words = translations.en;
 let snapshot;
 let displayStatus = 'waiting';
+let overviewDeadline;
 
 function node(tag, value, className) {
     const item = document.createElement(tag);
@@ -237,9 +252,16 @@ function periodBounds(period, now) {
     return [start.toISOString().slice(0, 10), end.toISOString().slice(0, 10)];
 }
 
+function recordedDay(key) {
+    const day = snapshot?.daily?.[key];
+    if (!Number.isFinite(day?.kWh)) return null;
+    return day.kWh > 0 || (day.kWh === 0 && Object.keys(snapshot.deviceDays?.[key] || {}).length) ? day : null;
+}
+
 function renderStats() {
     const [from, through] = periodBounds(el('period').value, Date.now());
-    const days = Object.entries(snapshot?.daily || {}).filter(([key]) => key >= from && key <= through).sort();
+    const days = Object.entries(snapshot?.daily || {}).filter(([key]) =>
+        key >= from && key <= through && recordedDay(key)).sort();
     const total = key => days.reduce((sum, [, day]) => sum + (day[key] || 0), 0);
     const priced = total('pricedKWh');
     el('statsTotal').textContent = days.length ? [
@@ -518,7 +540,7 @@ function renderRooms(rooms, devices) {
     focus?.focus({ preventScroll: true });
 }
 
-function renderInsights(insights) {
+function renderInsights(insights, now) {
     el('energyInsights').hidden = !insights;
     if (!insights) return;
     const { comparison, cheapest } = insights;
@@ -526,7 +548,7 @@ function renderInsights(insights) {
         ? words.insightsCompare(comparison.yesterday, format(comparison.kWh, 'kWh'),
             format(comparison.average, 'kWh'), comparison.days, words.insightsTrend[comparison.trend])
         : words.insightsWaiting;
-    el('insightsPrice').textContent = cheapest
+    el('insightsPrice').textContent = cheapest && cheapest.from > now
         ? words.insightsRate(dateTime(cheapest.from), dateTime(cheapest.to), format(cheapest.rate, 'ct/kWh'))
         : words.insightsPriceMissing;
 }
@@ -540,25 +562,54 @@ function renderSummary(id, metrics) {
     }));
 }
 
-function render() {
-    const data = snapshot || {};
-    renderInsights(data.insights);
-    const today = data.daily?.[dayKey(Date.now())];
-    updateStatus();
+function renderLiveOverview(data) {
+    clearTimeout(overviewDeadline);
+    const now = Date.now();
+    // Older adapters publish the same interval in the price list alongside the snapshot's price pair.
+    const interval = data.currentPrice ?? data.prices?.find(price =>
+        price.start_timestamp <= data.ts && data.ts < price.end_timestamp);
+    const current = interval && interval.start_timestamp <= now && now < interval.end_timestamp;
+    const validUntil = el('priceValidity');
+    validUntil.textContent = current
+        ? words.priceValidity(dateTime(interval.start_timestamp), dateTime(interval.end_timestamp))
+        : words.priceAwaiting;
+    renderSummary('priceMetrics', [
+        ['currentMarket', format(current ? data.marketCt : null, 'ct/kWh'), 'prices'],
+        ['currentTariff', format(current ? data.tariffCt : null, 'ct/kWh'), 'prices'],
+    ]);
+    const reason = current ? words[data.contract?.status] || '' : '';
+    el('summaryTariffStatus').textContent = reason;
+    el('summaryTariffStatus').hidden = !reason;
     const meter = data.houseMeter;
+    const meterReason = {
+        unconfigured: words.meterUnconfigured, missing: words.meterMissing,
+        unit: words.meterUnit, unavailable: words.meterUnavailable,
+    }[meter?.energyStatus];
+    const meterStatus = el('meterStatus');
+    meterStatus.textContent = meterReason || '';
+    meterStatus.hidden = !meterReason;
     el('meterSummary').hidden = !meter;
+    const freshPower = Number.isFinite(meter?.unassignedUntil) && now < meter.unassignedUntil;
     renderSummary('meterMetrics', [
         ...(meter?.powerW !== undefined ? [['power', format(meter.powerW, 'W')]] : []),
-        ...(meter?.energyKWh !== undefined ? [['meter', format(meter.energyKWh, 'kWh', 3)]] : []),
+        ['meter', format(meter?.energyKWh, 'kWh', 3)],
+        ...(freshPower ? [['unassignedPower', format(meter.unassignedW, 'W')]] : []),
     ]);
+    renderInsights(data.insights, now);
+    const nextChange = Math.min(...[current && interval.end_timestamp, meter?.unassignedUntil,
+        data.insights?.cheapest?.from].filter(time => Number.isFinite(time) && time > now));
+    if (Number.isFinite(nextChange)) overviewDeadline = setTimeout(() => renderLiveOverview(data), nextChange - now);
+}
+
+function render() {
+    const data = snapshot || {};
+    const today = recordedDay(dayKey(Date.now()));
+    updateStatus();
+    renderLiveOverview(data);
     renderSummary('deviceMetrics', [
         ['power', format(data.totalPower, 'W'), 'devices'],
         ['todayEnergy', format(today?.kWh, 'kWh', 3), 'statistics'],
         ['todayCost', format(today?.pricedKWh > 0 ? today.costEUR : null, '€'), 'statistics'],
-    ]);
-    renderSummary('priceMetrics', [
-        ['market', format(data.marketCt, 'ct/kWh'), 'prices'],
-        ['tariff', format(data.tariffCt, 'ct/kWh'), 'prices'],
     ]);
     renderDevices(data.devices || []);
     renderRooms(data.rooms || [], data.devices || []);
@@ -569,8 +620,6 @@ function render() {
     const contract = data.contract || {};
     const reason = words[contract.status] || '';
     el('tariffStatus').textContent = reason;
-    el('summaryTariffStatus').textContent = reason;
-    el('summaryTariffStatus').hidden = !reason;
     cards('contractCards', [
         [words.fixed, format(contract.fixedMonthlyGross, '€')],
         [words.extra, format(contract.extraCt, 'ct/kWh')],
@@ -612,17 +661,18 @@ function deviceLabel(device) {
         edit.addEventListener('click', () => {
             editingAlias = { device, instance: instanceSelect.value };
             aliasInput.value = device.name || '';
-            el('originalDeviceName').textContent = device.originalName || device.id;
+            el('originalDeviceName').textContent = device.technicalName || device.originalName || device.id;
             aliasStatus.textContent = '';
             aliasDialog.showModal();
             aliasInput.select();
         });
         container.append(edit);
     }
-    const source = [device.powerId, device.powerUnit].filter(Boolean).join(' · ');
-    if (device.powerId) {
+    const source = [device.technicalName || device.originalName,
+        [device.powerId, device.powerUnit].filter(Boolean).join(' · '), device.meterId].filter(Boolean);
+    if (source.length) {
         const details = node('details', null, 'device-details');
-        details.append(node('summary', words.source), node('small', source));
+        details.append(node('summary', words.source), ...source.map(text => node('small', text)));
         container.append(details);
     }
     return container;

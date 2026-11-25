@@ -27,3 +27,14 @@ test('maintains legacy totals and records per-device and hourly deltas without c
     const gap = accumulate(third, [meter('washer', 12)], start + 360000, 30);
     assert.equal(gap.days[day].kWh, 4.25);
 });
+
+test('distinguishes a measured zero from an empty daily entry', () => {
+    const ledger = {
+        days: { first: { kWh: 0 }, second: { kWh: 0 }, third: { kWh: 4 } },
+        deviceDays: { second: { meter: { kWh: 0 } } },
+    };
+    assert.equal(accumulate.recordedKWh(ledger, 'first'), null);
+    assert.equal(accumulate.recordedKWh(ledger, 'second'), 0);
+    assert.equal(accumulate.recordedKWh(ledger, 'third'), 4);
+    assert.equal(accumulate.recordedKWh(ledger, 'fourth'), null);
+});

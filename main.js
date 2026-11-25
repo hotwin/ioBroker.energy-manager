@@ -4,7 +4,7 @@ const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
 const energyInsights = require('./lib/energy-insights');
-const calculateTariff = require('./lib/tariff');
+const { priceSnapshot } = require('./lib/prices');
 const { version } = require('./package.json');
 const { instanceObjects } = require('./io-package.json');
 
@@ -111,22 +111,17 @@ class EnergyManager extends utils.Adapter {
         await this.refreshPrices();
         if (this.stopping) return;
         const now = Date.now();
-        const priceDay = new Intl.DateTimeFormat('sv-SE', {
-            timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
-        });
-        const prices = (this.prices || []).map(item => ({
-            ...item,
-            tariffCt: calculateTariff(this.config, item.marketprice / 10, priceDay.format(item.start_timestamp)).tariffCt,
-        }));
-        const current = prices.find(item => item.start_timestamp <= now && item.end_timestamp > now);
-        await this.setStateAsync('info.awattarAvailable', Boolean(current), true);
-        const [devices, houseMeter] = await Promise.all([
+        const { prices, currentPrice, marketCt, tariffCt, contract } = priceSnapshot(this.config, this.prices, now);
+        await this.setStateAsync('info.awattarAvailable', Boolean(currentPrice), true);
+        const [devices, meter] = await Promise.all([
             readDevices(this),
             readDevices.readHouseMeter(this),
         ]);
         if (this.stopping) return;
-        const marketCt = current ? current.marketprice / 10 : null;
-        const { contract, tariffCt } = calculateTariff(this.config, marketCt, accumulate.localDay(now));
+        const difference = meter && this.config.compareHousePower === true
+            ? await readDevices.unassignedPower(this, meter, devices, Date.now()) : null;
+        const houseMeter = difference ? { ...meter, ...difference } : meter;
+        if (this.stopping) return;
         const rooms = new Map();
         let totalPower = null;
         for (const device of devices) {
@@ -138,7 +133,7 @@ class EnergyManager extends utils.Adapter {
             }
             rooms.set(device.room, room);
         }
-        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', current?.start_timestamp ?? null);
+        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', currentPrice?.start_timestamp ?? null);
         const priceHistory = new Map(Object.entries(this.ledger?.priceHistory || {}));
         for (const item of prices) {
             const key = String(item.start_timestamp);
@@ -152,12 +147,12 @@ class EnergyManager extends utils.Adapter {
         const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
         const display = {
             displayPower: Math.abs(totalPower) >= 1000 ? show(totalPower / 1000, 'kW') : show(totalPower, 'W'),
-            displayToday: show(today.kWh, 'kWh'),
+            displayToday: show(accumulate.recordedKWh(ledger, ledger.day), 'kWh'),
             displayMarket: show(marketCt, 'ct/kWh'),
             displayTariff: show(tariffCt, 'ct/kWh'),
             displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
             totalPower,
-            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, totalPower, marketCt, tariffCt,
+            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, totalPower, marketCt, tariffCt, currentPrice,
                 prices: prices.filter(item => item.end_timestamp > now),
                 insights: energyInsights(ledger, prices, now),
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,

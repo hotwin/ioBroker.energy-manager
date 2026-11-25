@@ -5,6 +5,7 @@
   "autoShelly": "Shelly automatisch erkennen",
   "housePowerId": "Hausstromzähler: aktuelle Leistung (W oder kW)",
   "houseEnergyId": "Hausstromzähler: Zählerstand (Wh oder kWh)",
+  "compareHousePower": "Nicht zugeordnete Leistung anzeigen. Die einbezogenen Messstellen liegen hinter dem Hauptzähler und überschneiden sich nicht.",
   "sources": "Manuelle Energiequellen",
   "baseMonthly": "Grundgebühr netto (€/Monat)",
   "meterAnnual": "Messstellenbetrieb zusätzlich netto (€/Jahr)",
