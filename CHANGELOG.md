@@ -24,37 +24,76 @@
 - DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
 - EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
 
-## Unreleased / In Entwicklung
-- DE: Herstellerübergreifende Messstellenerkennung aus Strommessungs-Aufzählungen vor Shelly-Fallback; noch ungetestet.
-- EN: Vendor-independent discovery from energy measurement enums before Shelly fallback; untested.
-- DE: Web-Navigation mit getrennten Ansichten und Vertragsübersicht; native Admin-Einzelwerte bleiben erhalten. Web-Änderungen noch ungetestet.
-- EN: Separate web views and contract overview; native Admin summary retained. Web changes not yet tested.
-- DE: Native JSON-Anbindung im Praxistest bestätigt; formatierte Einzelwerte statt Rohdaten im Praxistest mit Admin 8.3.5 bestätigt.
-- EN: Native JSON connection confirmed in practice; formatted summary values confirmed in practical testing with Admin 8.3.5.
-- DE: Nativer JSON-Admin-Tab zur Diagnose mit drei schreibgeschützten Datenpunkten; Admin 8.3.5 beim Nutzer bestätigt, Integration noch ungetestet.
-- EN: Native JSON Admin diagnostic tab with three read-only states; user runs Admin 8.3.5, integration not yet tested.
-- DE: Admin-Verbindungsdiagnose, sofortige Abfrage bei bestehender Verbindung und Timeout ergänzt. Tagesverbrauch im Praxistest aufgezeichnet.
-- EN: Added Admin connection diagnostics, immediate read for existing connections and timeout. Daily consumption recorded in practical testing.
-- DE: Helles responsives Dashboard mit überarbeiteten Kacheln, Navigation, Tabellen und Preisübersicht; visuelle Prüfung offen.
-- EN: Refreshed responsive light dashboard, cards, navigation, tables and price overview; visual review pending.
-- DE: Automatische Leistungsanzeige in kW ab 1.000 W in Web und Admin.
-- EN: Automatically display power in kW from 1,000 W in web and Admin.
-- DE: Admin unterstützt auch Socket-Client-Objekte mit io.connect statt ausschließlich Funktionsaufruf.
-- EN: Admin supports socket client objects exposing io.connect, not only callable clients.
-- DE: Admin-spezifische Socket.IO-Skriptpfade ergänzt; Weboberfläche unverändert. Praxistest offen.
-- EN: Added Admin-specific Socket.IO script path fallbacks; web dashboard unchanged. Practical test pending.
-- DE: Automatische Raum- und Funktionszuordnung über ioBroker-Aufzählungen, Raumkacheln mit aktueller Leistung. Ungetestet.
-- EN: Automatic room and function assignment via ioBroker enums, room cards with current power. Untested.
-- DE: Eigener Admin-Menüeintrag mit Dashboard und Statistik; Admin-Verbindung noch zu testen.
-- EN: Native Admin menu entry with dashboard and statistics; Admin connection not yet tested.
-- DE: Separate Netto-Tarifbestandteile, Grundgebühr, Messstellenbetrieb, Abschlag und Vertragsbeginn konfigurierbar. Variable Aufschläge in Tarifberechnung integriert; zeitanteilige Fixkostenstatistik noch offen.
-- EN: Configurable net tariff components, base charge, metering, advance payment and contract start. Variable surcharges included in tariff calculation; historical fixed charge allocation pending.
-- DE: Statistik mit Zeitraumwahl bis 365 Tage und Tagesbalken; ungetestet.
-- EN: Statistics with period selection up to 365 days and daily bars; untested.
-- DE: Persistente Tagesverbrauchserfassung aus Zählerdifferenzen; Messlücken, Rücksetzungen und Tageswechsel werden konservativ ausgelassen. Teilkosten nur bei bekanntem unverändertem Tarif. Noch ungetestet.
-- EN: Persistent daily meter delta aggregation; gaps, resets and day boundaries are conservatively skipped. Partial costs only for known unchanged tariffs. Not yet tested.
-- DE: Responsive Navigation und ioBroker-Gerätenamen ergänzt; noch ungetestet.
-- EN: Added responsive navigation and ioBroker device names; not yet tested.
+## 0.3.0-beta.8 – 2026-11-24
+
+- DE: Adapterkennung auf `hotwin-energy-manager` geändert, um den npm-Namenskonflikt zu lösen.
+- EN: Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
+- DE: Offizielles ioBroker-Release-Script für Versionsabgleich, Changelog und Git-Tags eingerichtet.
+- EN: Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
+
+## 0.3.0-beta.7 – 2026-11-24
+
+- DE: Gerätenamen über ein dezentes Stiftsymbol und einen klareren Dialog bearbeiten. „Aktuelle Leistung“ zeigt nur Messwert und Einheit. Details zum Messpunkt stehen beim Gerätenamen.
+- EN: Edit device names with a pencil button and a clearer dialog. Current power displays only the reading and unit. Power source details appear under the device name.
+
+## 0.3.0-beta.6 – 2026-11-24
+
+- DE: Die Raumübersicht zeigt aktuelle Leistung und Geräteanzahl in kompakten Karten. Die Geräteliste mit Einzelwerten lässt sich je Raum aufklappen.
+- EN: Compact room cards show current power and device count. Expand each card to see individual device readings.
+
+## 0.3.0-beta.5 – 2026-11-24
+
+- DE: Energiefluss von der erfassten Gesamtenergie über Räume zu Geräten sowie Verlauf für Stundenverbrauch, Tageskosten und Strompreise auf der Startseite. Die neuen Messreihen beginnen mit der Aufzeichnung nach dem Update.
+- EN: Energy flow from recorded total to rooms and devices, with hourly usage, daily costs and electricity price history on the overview. New measurement series start recording after the update.
+
+## 0.3.0-beta.4 – 2026-11-24
+
+- DE: Gerätenamen im Admin speichern. Die Geräteliste zeigt Leistungsdatenpunkte und Einheiten an und bevorzugt aktuelle Messwerte.
+- EN: Store device aliases in Admin. The device list shows power state IDs and units and prefers live measurements.
+
+## 0.3.0-beta.3 – 2026-11-24
+
+### Deutsch
+
+- Vertragsdaten im ioBroker Admin bearbeiten und dauerhaft in der Instanz speichern.
+- Brutto-Arbeitspreis anhand der gewählten Formel berechnen. aWATTar HOURLY unterstützt den prozentualen Aufschlag auf den Betrag des Börsenpreises und optionale Bruttopreisgrenzen für die Energie.
+- Fehlende Vertragsbeträge, einen späteren Vertragsstart und fehlende aktuelle Börsenpreise im Dashboard anzeigen.
+
+### English
+
+- Edit contract details in ioBroker Admin and persist them in the instance configuration.
+- Calculate gross rates with the selected formula. aWATTar HOURLY supports a percentage surcharge on the absolute spot price and optional gross energy price limits.
+- Explain missing contract inputs, future start dates and unavailable market prices in the dashboard.
+
+## 0.3.0-beta.2 – 2026-11-24
+
+### Deutsch
+
+- Anklickbare Kacheln für Leistung, Verbrauch, Kosten, Börsenpreis und Brutto-Arbeitspreis.
+- Die Preisübersicht zeigt Börsenpreis und den berechneten Brutto-Arbeitspreis je verfügbarem Preisintervall.
+
+### English
+
+- Clickable tiles for power, consumption, costs, market price and gross contract rate.
+- The price view displays the market price and calculated gross contract rate for each available interval.
+
+## 0.3.0-beta.1 – 2026-11-24
+
+### Deutsch
+
+- Responsives Dashboard im ioBroker Admin mit Übersicht, Geräten, Räumen, Verbrauchsstatistik, Preisen, Vertrag und Updates.
+- Geräteerkennung über die Aufzählung Strommessung, mit manueller Zuordnung und optionaler Shelly-Erkennung.
+- Neues PNG-Icon sowie deutsche und englische Texte im Dashboard und in der Konfiguration.
+- Auswertungen für sieben Tage, Monat, Quartal und Jahr. Tarifgrenzen und Fixkosten werden separat behandelt.
+- ESLint, ioBroker-Paketprüfung sowie Integrations- und Compact-Mode-Tests in der abgesicherten GitHub-Workflow-Matrix.
+
+### English
+
+- Responsive ioBroker Admin dashboard covering overview, devices, rooms, statistics, prices, contract and updates.
+- Energy measurement enum discovery across vendors, with manual mappings and optional Shelly discovery.
+- New PNG icon and English and German dashboard and configuration text.
+- Seven-day, monthly, quarterly and annual statistics. Tariff boundaries and fixed charges are handled separately.
+- ESLint, ioBroker package validation, and integration and Compact Mode tests in the pinned GitHub workflow matrix.
 
 ## 0.2.1 – 2026-11-24
 - DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Live-Anzeige im Praxistest bestätigt.

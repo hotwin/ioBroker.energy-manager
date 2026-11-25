@@ -1,101 +1,156 @@
-const accumulate = require('./lib/consumption');
+'use strict';
+
 const utils = require('@iobroker/adapter-core');
+const accumulate = require('./lib/consumption');
+const readDevices = require('./lib/sources');
+const energyInsights = require('./lib/energy-insights');
+const calculateTariff = require('./lib/tariff');
+const { version } = require('./package.json');
+
+const states = {
+    'info.connection': ['Local source access', 'boolean', 'indicator.connected'],
+    snapshot: ['Energy snapshot', 'string', 'json'],
+    totalPower: ['Measured power', 'number', 'value.power', 'W'],
+    consumption: ['Daily consumption ledger', 'string', 'json'],
+    displayPower: ['Current power', 'string', 'text'],
+    displayToday: ['Consumption today', 'string', 'text'],
+    displayMarket: ['Market price', 'string', 'text'],
+    displayTariff: ['Contract tariff', 'string', 'text'],
+    displayCost: ['Recorded variable cost', 'string', 'text'],
+};
+
 class EnergyManager extends utils.Adapter {
- constructor(options={}) { super({...options,name:'energy-manager'}); this.on('ready',()=>this.start()); this.on('unload',cb=>{clearInterval(this.timer);cb();}); }
- async start(){
-  await this.setObjectNotExistsAsync('snapshot',{type:'state',common:{name:'Energy snapshot',type:'string',role:'json',read:true,write:false},native:{}});
-  await this.setObjectNotExistsAsync('totalPower',{type:'state',common:{name:'Measured power',type:'number',role:'value.power',unit:'W',read:true,write:false},native:{}});
-  await this.setObjectNotExistsAsync('consumption',{type:'state',common:{name:'Daily consumption ledger',type:'string',role:'json',read:true,write:false},native:{}});
-  try{this.ledger=JSON.parse((await this.getStateAsync('consumption'))?.val||'null');}catch{this.ledger=null;}
-  const poll=async()=>{if(this.busy)return;this.busy=true;try{await this.collect();}catch(e){this.log.warn(String(e));}finally{this.busy=false;}};
-  this.timer=setInterval(poll,60000);await poll();
- }
- async collect(){
-  const objects=await this.getForeignObjectsAsync('shelly.*','state');
-  const enums=await this.getForeignObjectsAsync('enum.*','enum');
-  const energyMembers=Object.entries(enums||{}).filter(([id,o])=>{const n=o.common?.name;return /strommessung|energiemessung|stromverbrauch|energy measurement/i.test(id+' '+(typeof n==='string'?n:JSON.stringify(n||{})));}).flatMap(([,o])=>o.common.members||[]);
-  const devices=[];
-  const manual=Array.isArray(this.config.sources)?this.config.sources:[];
-  const used=new Set();
-  for(const source of manual){
-   const id=source.powerId||source.energyId;if(!id||used.has(id))continue;
-   const p=source.powerId?await this.getForeignStateAsync(source.powerId):null;
-   const e=source.energyId?await this.getForeignStateAsync(source.energyId):null;
-   const powerW=typeof p?.val==='number'&&Number.isFinite(p.val)?p.val:null;
-   const energyKWh=typeof e?.val==='number'&&Number.isFinite(e.val)?(source.unit==='Wh'?e.val/1000:source.unit==='kWh'?e.val:null):null;
-   if(powerW===null&&energyKWh===null)continue;
-   used.add(id);if(source.powerId)used.add(source.powerId);if(source.energyId)used.add(source.energyId);
-   devices.push({id,name:source.name||id,room:source.room||'',powerW,energyKWh,exclude:!!source.exclude,ts:p?.ts||e?.ts});
-  }
-  const candidates=new Map();
-  for(const member of new Set(energyMembers)){
-   const direct=await this.getForeignObjectAsync(member);
-   const states=direct?.type==='state'?{[member]:direct}:await this.getForeignObjectsAsync(member+'.*','state');
-   for(const [id,o] of Object.entries(states||{})){
-    const unit=o.common?.unit,role=o.common?.role||'';
-    if(!['W','kW','Wh','kWh'].includes(unit)||o.common?.type!=='number')continue;
-    if(!/power|energy|consumption/i.test(role+' '+id))continue;
-    const base=id.slice(0,id.lastIndexOf('.'));
-    const c=candidates.get(base)||{};
-    if(unit==='W'||unit==='kW'){if(!c.power)c.power={id,unit};}
-    else if(!c.energy)c.energy={id,unit};
-    candidates.set(base,c);
-   }
-  }
-  for(const [base,c] of candidates){
-   if([c.power?.id,c.energy?.id].some(id=>id&&used.has(id)))continue;
-   const p=c.power?await this.getForeignStateAsync(c.power.id):null;
-   const e=c.energy?await this.getForeignStateAsync(c.energy.id):null;
-   const powerW=Number.isFinite(p?.val)?p.val*(c.power.unit==='kW'?1000:1):null;
-   const energyKWh=Number.isFinite(e?.val)?e.val/(c.energy.unit==='Wh'?1000:1):null;
-   if(powerW===null&&energyKWh===null)continue;
-   const obj=await this.getForeignObjectAsync(base);const n=obj?.common?.name;
-   devices.push({id:base,name:(typeof n==='string'?n:n?.de||n?.en)||base,powerW,energyKWh,ts:p?.ts||e?.ts,source:'enum'});
-   for(const id of [c.power?.id,c.energy?.id])if(id)used.add(id);
-  }
-  for(const [id,obj] of Object.entries(objects||{})){
-   if(this.config.autoShelly===false||used.has(id)||used.has(id.slice(0,-6)+'.Energy'))continue;
-   if(!id.endsWith('.Power')||obj.common.unit!=='W')continue;
-   const base=id.slice(0,-6);
-   const p=await this.getForeignStateAsync(id);
-   const e=await this.getForeignStateAsync(base+'.Energy');
-   const eo=objects[base+'.Energy'];
-   if(!p||typeof p.val!=='number'||!Number.isFinite(p.val))continue;
-   const channel=await this.getForeignObjectAsync(base);
-   const parent=await this.getForeignObjectAsync(base.substring(0,base.lastIndexOf('.')));
-   const label=o=>typeof o?.common?.name==='string'?o.common.name:o?.common?.name?.de||o?.common?.name?.en;
-   devices.push({id:base,name:[label(parent),label(channel)].filter(Boolean).join(' / ')||base,powerW:p.val,energyKWh:e&&typeof e.val==='number'?(eo?.common?.unit==='Wh'?e.val/1000:eo?.common?.unit==='kWh'?e.val:null):null,ts:p.ts});
-  }
-  const label=o=>typeof o.common.name==='string'?o.common.name:o.common.name?.de||o.common.name?.en||o._id;
-  for(const d of devices){
-   const matches=prefix=>Object.entries(enums||{}).filter(([id,o])=>id.startsWith(prefix)&&Array.isArray(o.common.members)&&o.common.members.some(member=>d.id===member||d.id.startsWith(member+'.')||d.id+'.Power'===member||d.id+'.Energy'===member)).map(([id,o])=>({id,name:label(o)}));
-   const rooms=matches('enum.rooms.');
-   d.room=d.room||rooms[0]?.name||'';
-   d.functions=matches('enum.functions.').map(x=>x.name);
-  }
-  const rooms=Object.values(devices.reduce((acc,d)=>{const name=d.room||'Ohne Raum';const r=acc[name]||(acc[name]={name,powerW:0,devices:0});if(!d.exclude)r.powerW+=d.powerW||0;r.devices++;return acc;},Object.create(null)));
-  let prices=null;
-  try{if(!this.prices||Date.now()-this.priceTime>900000){const r=await fetch('https://api.awattar.de/v1/marketdata',{signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('HTTP '+r.status);this.prices=(await r.json()).data;this.priceTime=Date.now();}prices=this.prices;}catch(e){this.log.warn('aWATTar: '+e.message);}
-  const now=Date.now(), current=prices?.find(p=>p.start_timestamp<=now&&now<p.end_timestamp);
-  const marketCt=current?current.marketprice/10:null;
-  const extraCt=['markupCt','electricityTaxCt','networkCt','concessionCt','leviesCt'].reduce((sum,k)=>sum+Number(this.config[k]||0),0);
-  const fixedMonthlyGross=(Number(this.config.baseMonthly||0)+Number(this.config.meterAnnual||0)/12)*(1+Number(this.config.vatPercent)/100);
-  const contract={extraCt,fixedMonthlyGross,advanceMonthly:Number(this.config.advanceMonthly||0),start:this.config.contractStart||null,configured:!!this.config.tariffConfigured};
-  const tariffCt=this.config.tariffConfigured&&marketCt!==null?(marketCt+extraCt)*(1+Number(this.config.vatPercent)/100):null;
-  const totalPower=devices.reduce((s,d)=>s+(d.exclude?0:d.powerW||0),0);
-  const ledger=accumulate(this.ledger,devices,now,tariffCt);
-  await this.setStateAsync('consumption',JSON.stringify(ledger),true);
-  this.ledger=ledger;
-  const today=ledger.days[ledger.day];
-  for(const [id,name,value] of [
-   ['displayPower','Aktuelle Leistung',totalPower>=1000?(totalPower/1000).toFixed(2)+' kW':totalPower.toFixed(1)+' W'],
-   ['displayToday','Verbrauch heute',today.kWh.toFixed(3)+' kWh'],
-   ['displayMarket','Börsenpreis',marketCt===null?'Nicht verfügbar':marketCt.toFixed(2)+' ct/kWh'],
-   ['displayTariff','Vertragstarif',tariffCt===null?'Nicht konfiguriert':tariffCt.toFixed(2)+' ct/kWh'],
-   ['displayCost','Erfasste Teilkosten',today.pricedKWh>0?today.costEUR.toFixed(2)+' EUR':'Nicht verfügbar']
-  ]){await this.setObjectNotExistsAsync(id,{type:'state',common:{name,type:'string',role:'text',read:true,write:false},native:{}});await this.setStateAsync(id,value,true);}
-  await this.setStateAsync('totalPower',totalPower,true);
-  await this.setStateAsync('snapshot',JSON.stringify({ts:now,devices,totalPower,marketCt,tariffCt,prices,daily:ledger.days,contract,rooms}),true);
- }
+    constructor(options = {}) {
+        super({ ...options, name: 'hotwin-energy-manager' });
+        this.on('ready', () => {
+            this.pending = this.start().catch(error => this.log.error(String(error)));
+        });
+        this.on('unload', callback => void this.unloadAdapter().finally(callback));
+    }
+
+    async start() {
+        await this.setObjectNotExistsAsync('info', { type: 'channel', common: { name: 'Adapter information' }, native: {} });
+        for (const [id, [name, type, role, unit]] of Object.entries(states)) {
+            await this.setObjectNotExistsAsync(id, {
+                type: 'state', common: { name, type, role, ...(unit && { unit }), read: true, write: false }, native: {},
+            });
+        }
+        try {
+            this.ledger = JSON.parse((await this.getStateAsync('consumption'))?.val || 'null');
+        } catch {
+            this.ledger = null;
+        }
+        await this.setStateAsync('info.connection', false, true);
+        if (!this.stopping) await this.poll();
+    }
+
+    async poll() {
+        try {
+            await this.collect();
+            if (!this.stopping) await this.setStateAsync('info.connection', true, true);
+        } catch (error) {
+            if (!this.stopping) {
+                this.log.warn(String(error));
+                await this.setStateAsync('info.connection', false, true).catch(() => {});
+            }
+        } finally {
+            if (!this.stopping) {
+                this.timer = this.setTimeout(() => {
+                    this.timer = null;
+                    this.pending = this.poll();
+                }, 30000);
+            }
+        }
+    }
+
+    async unloadAdapter() {
+        this.stopping = true;
+        if (this.timer) this.clearTimeout(this.timer);
+        this.priceRequest?.abort();
+        await this.pending;
+        await this.setStateAsync('info.connection', false, true).catch(() => {});
+    }
+
+    async refreshPrices() {
+        if (this.stopping || Date.now() < (this.nextPricePoll || 0)) return;
+        this.nextPricePoll = Date.now() + 60000;
+        this.priceRequest = new AbortController();
+        const timeout = this.setTimeout(() => this.priceRequest?.abort(), 5000);
+        try {
+            const response = await fetch('https://api.awattar.de/v1/marketdata', { signal: this.priceRequest.signal });
+            if (!response.ok) throw Error('HTTP ' + response.status);
+            const { data } = await response.json();
+            if (!Array.isArray(data)) throw Error('Invalid price data');
+            this.prices = data.filter(item => Number.isFinite(item?.marketprice) &&
+                Number.isFinite(item.start_timestamp) && Number.isFinite(item.end_timestamp) &&
+                item.end_timestamp > item.start_timestamp).sort((a, b) => a.start_timestamp - b.start_timestamp);
+            this.nextPricePoll = Date.now() + 900000;
+        } catch (error) {
+            if (!this.stopping) this.log.warn('aWATTar: ' + error.message);
+        } finally {
+            this.clearTimeout(timeout);
+            this.priceRequest = null;
+        }
+    }
+
+    async collect() {
+        await this.refreshPrices();
+        if (this.stopping) return;
+        const [devices, houseMeter] = await Promise.all([
+            readDevices(this),
+            readDevices.readHouseMeter(this),
+        ]);
+        if (this.stopping) return;
+        const now = Date.now();
+        const priceDay = new Intl.DateTimeFormat('sv-SE', {
+            timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
+        });
+        const prices = (this.prices || []).map(item => ({
+            ...item,
+            tariffCt: calculateTariff(this.config, item.marketprice / 10, priceDay.format(item.start_timestamp)).tariffCt,
+        }));
+        const current = prices.find(item => item.start_timestamp <= now && item.end_timestamp > now);
+        const marketCt = current ? current.marketprice / 10 : null;
+        const { contract, tariffCt } = calculateTariff(this.config, marketCt, accumulate.localDay(now));
+        const rooms = new Map();
+        let totalPower = null;
+        for (const device of devices) {
+            const room = rooms.get(device.room) || { name: device.room, devices: 0, powerW: null };
+            room.devices++;
+            if (!device.exclude && Number.isFinite(device.powerW)) {
+                totalPower = (totalPower || 0) + device.powerW;
+                room.powerW = (room.powerW || 0) + device.powerW;
+            }
+            rooms.set(device.room, room);
+        }
+        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', current?.start_timestamp ?? null);
+        const priceHistory = new Map(Object.entries(this.ledger?.priceHistory || {}));
+        for (const item of prices) {
+            const key = String(item.start_timestamp);
+            if (item.end_timestamp > now || !priceHistory.has(key)) priceHistory.set(key, item);
+        }
+        const cutoff = now - 7 * 86400000;
+        ledger.priceHistory = Object.fromEntries([...priceHistory].filter(([, item]) => item.end_timestamp > cutoff));
+        await this.setStateAsync('consumption', JSON.stringify(ledger), true);
+        this.ledger = ledger;
+        const today = ledger.days[ledger.day];
+        const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
+        const display = {
+            displayPower: Math.abs(totalPower) >= 1000 ? show(totalPower / 1000, 'kW') : show(totalPower, 'W'),
+            displayToday: show(today.kWh, 'kWh'),
+            displayMarket: show(marketCt, 'ct/kWh'),
+            displayTariff: show(tariffCt, 'ct/kWh'),
+            displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
+            totalPower,
+            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, totalPower, marketCt, tariffCt,
+                prices: prices.filter(item => item.end_timestamp > now),
+                insights: energyInsights(ledger, prices, now),
+                daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
+                priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
+        };
+        await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
+    }
 }
-if(require.main===module)new EnergyManager();else module.exports=options=>new EnergyManager(options);
+
+if (require.main === module) new EnergyManager();
+else module.exports = options => new EnergyManager(options);

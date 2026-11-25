@@ -3,59 +3,82 @@
   "items": {
     "tariffConfigured": {
       "type": "checkbox",
-      "label": "Tarifbestandteile geprüft"
+      "label": "tariffConfigured",
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "markupCt": {
       "type": "number",
-      "label": {
-        "de": "Weitere Netto-Aufschläge, ohne separat erfasste Beträge (ct/kWh)",
-        "en": "Other net surcharges excluding separately entered amounts (ct/kWh)"
-      },
-      "min": 0
+      "label": "markupCt",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "vatPercent": {
       "type": "number",
-      "label": "Mehrwertsteuer (%)",
-      "min": 0
+      "label": "vatPercent",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "autoShelly": {
       "type": "checkbox",
-      "label": {
-        "de": "Shelly automatisch erkennen",
-        "en": "Automatically discover Shelly"
-      }
+      "label": "autoShelly",
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
+    },
+    "housePowerId": {
+      "type": "objectId",
+      "label": "housePowerId",
+      "xs": 12,
+      "sm": 6
+    },
+    "houseEnergyId": {
+      "type": "objectId",
+      "label": "houseEnergyId",
+      "xs": 12,
+      "sm": 6
     },
     "sources": {
       "type": "table",
-      "label": {
-        "de": "Manuelle Energiequellen",
-        "en": "Manual energy sources"
-      },
+      "label": "sources",
       "items": [
         {
           "type": "text",
           "attr": "name",
-          "title": "Name"
+          "title": "source_name"
         },
         {
           "type": "text",
           "attr": "room",
-          "title": "Raum / Room"
+          "title": "source_room"
         },
         {
           "type": "objectId",
           "attr": "powerId",
-          "title": "Leistung / Power (W)"
+          "title": "source_powerId"
         },
         {
           "type": "objectId",
           "attr": "energyId",
-          "title": "Energie / Energy"
+          "title": "source_energyId"
         },
         {
           "type": "select",
           "attr": "unit",
-          "title": "Unit",
+          "title": "source_unit",
           "options": [
             {
               "label": "Wh",
@@ -70,72 +93,94 @@
         {
           "type": "checkbox",
           "attr": "exclude",
-          "title": "Exclude from total"
+          "title": "source_exclude"
         }
-      ]
+      ],
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
     },
     "baseMonthly": {
       "type": "number",
-      "label": {
-        "de": "Grundgebühr netto (€/Monat)",
-        "en": "Monthly base charge net (EUR)"
-      },
-      "min": 0
+      "label": "baseMonthly",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "meterAnnual": {
       "type": "number",
-      "label": {
-        "de": "Messstellenbetrieb zusätzlich netto (€/Jahr)",
-        "en": "Additional annual metering net (EUR)"
-      },
-      "min": 0
+      "label": "meterAnnual",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "electricityTaxCt": {
       "type": "number",
-      "label": {
-        "de": "Stromsteuer netto (ct/kWh)",
-        "en": "Electricity tax net (ct/kWh)"
-      },
-      "min": 0
+      "label": "electricityTaxCt",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "networkCt": {
       "type": "number",
-      "label": {
-        "de": "Netzentgelte netto (ct/kWh)",
-        "en": "Network charges net (ct/kWh)"
-      },
-      "min": 0
+      "label": "networkCt",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "concessionCt": {
       "type": "number",
-      "label": {
-        "de": "Konzessionsabgabe netto (ct/kWh)",
-        "en": "Concession fee net (ct/kWh)"
-      },
-      "min": 0
+      "label": "concessionCt",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "leviesCt": {
       "type": "number",
-      "label": {
-        "de": "Umlagen netto (ct/kWh)",
-        "en": "Levies net (ct/kWh)"
-      },
-      "min": 0
+      "label": "leviesCt",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "advanceMonthly": {
       "type": "number",
-      "label": {
-        "de": "Abschlag brutto (€/Monat)",
-        "en": "Monthly advance gross (EUR)"
-      },
-      "min": 0
+      "label": "advanceMonthly",
+      "min": 0,
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "contractStart": {
       "type": "text",
-      "label": {
-        "de": "Vertragsbeginn (JJJJ-MM-TT)",
-        "en": "Contract start (YYYY-MM-DD)"
-      }
+      "label": "contractStart",
+      "xs": 12,
+      "sm": 6,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     }
-  }
+  },
+  "i18n": true
 }

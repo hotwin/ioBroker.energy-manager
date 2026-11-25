@@ -80,7 +80,7 @@ jobs:
           node <<'NODE'
           const pkg = require('./package.json');
           const adapter = require('./io-package.json');
-          if (pkg.name !== 'iobroker.energy-manager' ||
+          if (pkg.name !== 'iobroker.hotwin-energy-manager' ||
               !/^\d+\.\d+\.\d+-beta\.\d+$/.test(pkg.version) ||
               pkg.version !== adapter.common.version) {
             throw new Error('Expected matching Energy Manager beta package metadata.');
