@@ -1,201 +1,225 @@
 {
-  "type": "panel",
+  "type": "tabs",
+  "i18n": true,
   "items": {
-    "tariffConfigured": {
-      "type": "checkbox",
-      "label": "tariffConfigured",
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "markupCt": {
-      "type": "number",
-      "label": "markupCt",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "vatPercent": {
-      "type": "number",
-      "label": "vatPercent",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "autoShelly": {
-      "type": "checkbox",
-      "label": "autoShelly",
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "housePowerId": {
-      "type": "objectId",
-      "label": "housePowerId",
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 6,
-      "xl": 6
-    },
-    "houseEnergyId": {
-      "type": "objectId",
-      "label": "houseEnergyId",
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 6,
-      "xl": 6
-    },
-    "compareHousePower": {
-      "type": "checkbox",
-      "label": "compareHousePower",
-      "xs": 12,
-      "sm": 12,
-      "md": 12,
-      "lg": 12,
-      "xl": 12
-    },
-    "sources": {
-      "type": "table",
-      "label": "sources",
-      "items": [
-        {
-          "type": "text",
-          "attr": "name",
-          "title": "source_name"
+    "measurement": {
+      "type": "panel",
+      "label": "settings_measurement",
+      "items": {
+        "autoShelly": {
+          "type": "checkbox",
+          "label": "autoShelly",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
         },
-        {
-          "type": "text",
-          "attr": "room",
-          "title": "source_room"
-        },
-        {
+        "housePowerId": {
           "type": "objectId",
-          "attr": "powerId",
-          "title": "source_powerId"
+          "label": "housePowerId",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
         },
-        {
+        "houseEnergyId": {
           "type": "objectId",
-          "attr": "energyId",
-          "title": "source_energyId"
+          "label": "houseEnergyId",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
         },
-        {
-          "type": "select",
-          "attr": "unit",
-          "title": "source_unit",
-          "options": [
+        "compareHousePower": {
+          "type": "checkbox",
+          "label": "compareHousePower",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        }
+      }
+    },
+    "devices": {
+      "type": "panel",
+      "label": "settings_devices",
+      "items": {
+        "sources": {
+          "type": "table",
+          "label": "sources",
+          "items": [
             {
-              "label": "Wh",
-              "value": "Wh"
+              "type": "text",
+              "attr": "name",
+              "title": "source_name"
             },
             {
-              "label": "kWh",
-              "value": "kWh"
+              "type": "text",
+              "attr": "room",
+              "title": "source_room"
+            },
+            {
+              "type": "objectId",
+              "attr": "powerId",
+              "title": "source_powerId"
+            },
+            {
+              "type": "objectId",
+              "attr": "energyId",
+              "title": "source_energyId"
+            },
+            {
+              "type": "select",
+              "attr": "unit",
+              "title": "source_unit",
+              "options": [
+                {
+                  "label": "Wh",
+                  "value": "Wh"
+                },
+                {
+                  "label": "kWh",
+                  "value": "kWh"
+                }
+              ]
+            },
+            {
+              "type": "checkbox",
+              "attr": "exclude",
+              "title": "source_exclude"
             }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "attr": "exclude",
-          "title": "source_exclude"
+          ],
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
-      ],
-      "xs": 12,
-      "sm": 12,
-      "md": 12,
-      "lg": 12,
-      "xl": 12
+      }
     },
-    "baseMonthly": {
-      "type": "number",
-      "label": "baseMonthly",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
+    "tariff": {
+      "type": "panel",
+      "label": "settings_tariff",
+      "items": {
+        "tariffConfigured": {
+          "type": "checkbox",
+          "label": "tariffConfigured",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "contractStart": {
+          "type": "text",
+          "label": "contractStart",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "markupCt": {
+          "type": "number",
+          "label": "markupCt",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "vatPercent": {
+          "type": "number",
+          "label": "vatPercent",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "electricityTaxCt": {
+          "type": "number",
+          "label": "electricityTaxCt",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "networkCt": {
+          "type": "number",
+          "label": "networkCt",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "concessionCt": {
+          "type": "number",
+          "label": "concessionCt",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "leviesCt": {
+          "type": "number",
+          "label": "leviesCt",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        }
+      }
     },
-    "meterAnnual": {
-      "type": "number",
-      "label": "meterAnnual",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "electricityTaxCt": {
-      "type": "number",
-      "label": "electricityTaxCt",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "networkCt": {
-      "type": "number",
-      "label": "networkCt",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "concessionCt": {
-      "type": "number",
-      "label": "concessionCt",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "leviesCt": {
-      "type": "number",
-      "label": "leviesCt",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "advanceMonthly": {
-      "type": "number",
-      "label": "advanceMonthly",
-      "min": 0,
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
-    },
-    "contractStart": {
-      "type": "text",
-      "label": "contractStart",
-      "xs": 12,
-      "sm": 6,
-      "md": 6,
-      "lg": 4,
-      "xl": 4
+    "fixedCosts": {
+      "type": "panel",
+      "label": "settings_fixedCosts",
+      "items": {
+        "baseMonthly": {
+          "type": "number",
+          "label": "baseMonthly",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "meterAnnual": {
+          "type": "number",
+          "label": "meterAnnual",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "advanceMonthly": {
+          "type": "number",
+          "label": "advanceMonthly",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        }
+      }
     }
-  },
-  "i18n": true
+  }
 }

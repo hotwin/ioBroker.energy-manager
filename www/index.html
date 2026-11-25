@@ -124,6 +124,47 @@
         .github-button:hover { border-color: var(--teal); color: var(--teal); }
         .project-footer { border-top: 1px solid var(--line); margin-top: 24px; padding: 16px 0; color: var(--muted); font-size: 13px; text-align: center; }
         .project-footer .project-links { justify-content: center; margin-top: 8px; }
+        /* Light, compact application layout. The same stylesheet serves Admin and Web. */
+        :root { --ink: #243244; --muted: #526276; --teal: #006d8b; --line: #dbe3ec; --paper: #fff; }
+        body { background: #f5f7fa; }
+        main { max-width: 1480px; padding: clamp(12px, 2.4vw, 30px); }
+        header { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 0 2px 8px #24324408; }
+        h1 { font-size: clamp(24px, 4vw, 32px); letter-spacing: -.035em; }
+        h2 { font-size: 20px; letter-spacing: -.02em; }
+        #status { font-size: 13px; margin-top: 4px; }
+        nav { gap: 5px; padding: 6px; overflow-x: auto; flex-wrap: nowrap; }
+        nav a { flex: 0 0 auto; color: var(--muted); white-space: nowrap; padding: 10px 14px; }
+        nav a:hover { background: #f0f5f9; color: var(--ink); }
+        nav a[aria-current] { background: #e2f1f7; color: #005b76; }
+        article, .surface { border-radius: 16px; padding: 18px; box-shadow: 0 2px 8px #24324406; }
+        .summary-grid { gap: 14px; }
+        .summary-panel { padding: 16px; flex-basis: 290px; }
+        .summary-panel h3 { display: flex; align-items: center; gap: 9px; }
+        .summary-panel h3::before { content: ''; width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: #007da1; }
+        #meterSummary h3::before { background: #007da1; }
+        .summary-panel:nth-child(2) h3::before { background: #33865e; }
+        .summary-panel:nth-child(3) h3::before { background: #b76b13; }
+        .summary-metrics { gap: 8px; grid-template-columns: repeat(auto-fit, minmax(min(125px, 100%), 1fr)); }
+        .summary-metric { background: #f5f7fa; border-radius: 10px; padding: 10px 12px; }
+        a.summary-metric:hover { background: #eaf4f8; }
+        .tile-value { font-size: clamp(18px, 2.1vw, 24px); }
+        .room-icon { color: #005b76; background: #e2f1f7; }
+        .room-card summary { color: #005b76; }
+        .room-card { box-shadow: 0 2px 8px #24324408; }
+        th { color: var(--muted); font-size: 12px; background: #f5f7fa; }
+        select, .contract-fields input, .contract-fields select { border: 1px solid #a9b8c8; border-radius: 9px; background: var(--paper); color: var(--ink); }
+        #contractForm button[type="submit"] { border: 0; border-radius: 9px; background: var(--teal); color: white; font-weight: 600; cursor: pointer; }
+        #contractForm button:disabled { opacity: .6; cursor: default; }
+        .project-footer { margin-top: 24px; }
+        @media (max-width: 600px) {
+            header { padding: 14px; }
+            .header-actions { width: 100%; justify-content: space-between; }
+            nav a { padding: 9px 12px; }
+            article, .surface { padding: 13px; }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            a.summary-metric, nav a, .github-button { transition: background-color .15s, color .15s; }
+        }
     </style>
     <script defer src="dashboard.js?v=0.3.0-beta.14"></script>
 </head>
