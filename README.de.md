@@ -40,6 +40,17 @@ Das Admin-Dashboard der veröffentlichten Beta 8 mit fiktiven Mess- und Vertrags
 
 </details>
 
+<details>
+<summary>Beta-12-Testpaket – Mobilansicht und Updates</summary>
+
+Ergänzende Screenshots des Beta-12-Testpakets mit fiktiven Daten.
+
+![Übersicht von Beta 12 auf einem 390 Pixel breiten Mobilbildschirm](docs/screenshots/v0.3.0-beta.12/mobile.webp)
+
+![Update-Seite von Beta 12 mit installierter Version und Link zu den Releases](docs/screenshots/v0.3.0-beta.12/updates.webp)
+
+</details>
+
 ## Installation
 
 Voraussetzungen: Node.js ab 22, Admin ab 7.6.20, js-controller ab 6.0.11 sowie vorhandene Messdatenpunkte.
