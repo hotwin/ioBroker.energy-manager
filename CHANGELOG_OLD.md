@@ -2,6 +2,9 @@
 
 ## 0.3.0-beta.14 – 2026-11-25
 
+- DE: Offizielle ioBroker-Testaktionen, Betriebssystem-Testmatrix und Dependabot vorbereitet.
+- EN: Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
+
 - DE: GitHub-Schaltfläche, Projektlinks und Fußzeile mit Verantwortlichkeit in Admin- und Webansicht ergänzt; GitHub-Badge in beiden README-Dateien.
 - EN: Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.
 

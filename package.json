@@ -54,6 +54,6 @@
     "doc/",
     "io-package.json",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG_OLD.md"
   ]
 }
