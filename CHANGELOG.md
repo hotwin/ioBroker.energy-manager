@@ -2,7 +2,7 @@
 
 ## 0.3.0-beta.12 – 2026-11-25
 
-[Installationspaket / Installation package (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz)
+[Installationspaket / Installation package (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz)
 
 - DE: Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.
 - EN: Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.

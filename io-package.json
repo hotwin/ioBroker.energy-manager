@@ -87,8 +87,8 @@
     },
     "icon": "energy-manager.png",
     "compact": true,
-    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/refs/heads/develop/0.3.0-beta.1/admin/energy-manager.png",
-    "readme": "https://github.com/hotwin/ioBroker.energy-manager#readme",
+    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/main/admin/energy-manager.png",
+    "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager#readme",
     "globalDependencies": [
       {
         "admin": ">=7.6.20"

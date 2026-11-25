@@ -61,7 +61,7 @@ Screenshots from a running beta.12 instance. Personal details have been partiall
 
 Requires Node.js 22+, ioBroker Admin 7.6.20+ and js-controller 6.0.11+. Measurement states must be supplied by installed device adapters.
 
-[Download beta.12 (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz). Paste the download URL into **Adapters → Install from custom URL** in ioBroker Admin.
+[Download beta.12 (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz). Paste the download URL into **Adapters → Install from custom URL** in ioBroker Admin.
 
 The earlier npm beta.8 can still be installed:
 
@@ -85,10 +85,10 @@ Consumption is calculated from cumulative meter differences after recording begi
 
 GitHub Actions checks lint, package metadata, dashboard synchronization, unit tests, integration and Compact Mode on Node.js 22/24. The beta.8 npm publish job succeeded. The official release script is configured in the repository.
 
-- [Official Latest admission preparation](https://github.com/hotwin/ioBroker.energy-manager/issues/10)
-- [Safe migration of legacy data](https://github.com/hotwin/ioBroker.energy-manager/issues/11)
+- [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
+- [Safe migration of legacy data](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/11)
 
-This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
+This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
 
 ## Changelog / Release history
 
