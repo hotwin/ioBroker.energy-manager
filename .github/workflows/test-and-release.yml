@@ -2,7 +2,7 @@ name: Test and Release
 
 on:
   push:
-    branches: [main, 'develop/0.3.0-beta.1', 'develop/**']
+    branches: ['*', '**']
     tags: ['v[0-9]+.[0-9]+.[0-9]+', 'v[0-9]+.[0-9]+.[0-9]+-**']
   workflow_dispatch:
     inputs:
@@ -26,55 +26,40 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   check-and-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: ioBroker/testing-action-check@d439029c6e049a91d786e9921720f569323e8b11 # v2
         with:
           node-version: 22
-          cache: npm
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Lint and check dashboard copies
-        run: npm run lint && npm run check:dashboard
-      - name: Official package tests
-        run: npm run test:package
+          lint: true
+      - name: Check dashboard copies
+        run: npm run check:dashboard
       - name: Validate package
         run: npm pack --dry-run
 
   adapter-tests:
     needs: check-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         node-version: [22, 24, 26]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: ioBroker/testing-action-adapter@d4c684a25df5a2a75d57a967fb19630eb4086f46 # v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Unit tests
-        run: npm run test:unit
-      - name: Integration and Compact Mode tests
-        run: npm run test:integration
+          os: ${{ matrix.os }}
 
   repository-check:
     if: >-
       (github.event_name == 'workflow_dispatch' && (inputs.check_repository || inputs.publish_beta)) ||
-      (github.event_name == 'push' && (github.ref == 'refs/heads/develop/repository-checker-24' || github.ref == 'refs/heads/develop/release-gate-bootstrap-24' || github.ref == 'refs/heads/develop/npm-trusted-publishing'))
+      (github.event_name == 'push' && (github.ref == 'refs/heads/develop/repository-checker-24' || github.ref == 'refs/heads/develop/release-gate-bootstrap-24' || github.ref == 'refs/heads/develop/npm-trusted-publishing' || github.ref == 'refs/heads/develop/checker-remediation-34'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -101,7 +86,7 @@ jobs:
           IOBROKER_ADMISSION_ISSUE: ${{ inputs.admission_issue }}
         run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
 
-  publish-beta:
+  deploy:
     if: github.event_name == 'workflow_dispatch' && inputs.publish_beta && github.ref == 'refs/heads/main'
     needs: [check-and-lint, adapter-tests, repository-check]
     runs-on: ubuntu-latest
