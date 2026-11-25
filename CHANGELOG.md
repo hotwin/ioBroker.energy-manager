@@ -9,6 +9,8 @@
 - EN: The current spot and gross contract prices display their shared validity window. Expired values are hidden until a matching snapshot arrives.
 - DE: Kompaktere Übersicht mit Zählerdiagnose, optionaler nicht zugeordneter Leistung und eigenen Gerätenamen mit separaten technischen Details. Fehlende Verbrauchswerte erscheinen nicht als null Kilowattstunden.
 - EN: A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
+- DE: Der offizielle ioBroker Repository Checker prüft den konkreten Release-Commit und muss vor der npm-Veröffentlichung erfolgreich sein.
+- EN: The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 
 ## 0.3.0-beta.13 – 2026-11-25
 
