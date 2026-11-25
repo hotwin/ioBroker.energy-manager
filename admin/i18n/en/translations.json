@@ -20,5 +20,9 @@
   "source_powerId": "Power state (W or kW)",
   "source_energyId": "Energy counter state",
   "source_unit": "Energy counter unit",
-  "source_exclude": "Exclude from totals"
+  "source_exclude": "Exclude from totals",
+  "settings_measurement": "Metering & main meter",
+  "settings_devices": "Devices & data points",
+  "settings_tariff": "Electricity tariff",
+  "settings_fixedCosts": "Fixed costs & advances"
 }
