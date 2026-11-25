@@ -1,109 +1,75 @@
-# Changelog / Änderungsprotokoll
+# Release history
 
 ## 0.3.0-beta.14 – 2026-11-25
 
-- DE: Helles und dunkles Dashboard mit automatischer Theme-Erkennung, schlankem Header ohne Auswahlfelder, angepassten Diagrammen und vier Registern in der Instanzkonfiguration.
-- EN: Light and dark dashboard themes with automatic detection, a streamlined header without selectors, theme-aware charts and four native configuration tabs.
+- Light and dark dashboard themes with automatic detection, a streamlined header without selectors, theme-aware charts and four native configuration tabs.
 
-- DE: Offizielle ioBroker-Testaktionen, Betriebssystem-Testmatrix und Dependabot vorbereitet.
-- EN: Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
+- Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
 
-- DE: GitHub-Schaltfläche, Projektlinks und Fußzeile mit Verantwortlichkeit in Admin- und Webansicht ergänzt; GitHub-Badge in beiden README-Dateien.
-- EN: Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.
+- Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.
 
-- DE: Migrations-CLI setzt den Exit-Status, statt den Prozess erzwungen zu beenden (Repository Checker E5050).
-- EN: Migration CLI sets its exit status instead of forcibly terminating the process (Repository Checker E5050).
+- Migration CLI sets its exit status instead of forcibly terminating the process (Repository Checker E5050).
 
-- DE: npm-Veröffentlichung auf Trusted Publishing (OIDC) vorbereitet; Repository-Links an den neuen Namen angepasst.
-- EN: Prepare npm publication via Trusted Publishing (OIDC) and update repository links to the new name.
+- Prepare npm publication via Trusted Publishing (OIDC) and update repository links to the new name.
 
-- DE: Vertragsformular erklärt ausdrücklich, dass optionale Energiepreisgrenzen ohne vertragliche Begrenzung leer bleiben müssen; 0 ist eine wirksame Preisgrenze. Regressionstest für den Praxistest #23.
-- EN: The contract form explicitly distinguishes empty optional energy price limits from a real zero-price limit. Regression test for field report #23.
+- The contract form explicitly distinguishes empty optional energy price limits from a real zero-price limit. Regression test for field report #23.
 
-- DE: Aktueller Börsen- und Brutto-Arbeitspreis zeigen ihr gemeinsames Gültigkeitsintervall. Abgelaufene Werte werden bis zur nächsten passenden Messung ausgeblendet.
-- EN: The current spot and gross contract prices display their shared validity window. Expired values are hidden until a matching snapshot arrives.
-- DE: Kompaktere Übersicht mit Zählerdiagnose, optionaler nicht zugeordneter Leistung und eigenen Gerätenamen mit separaten technischen Details. Fehlende Verbrauchswerte erscheinen nicht als null Kilowattstunden.
-- EN: A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
-- DE: Der offizielle ioBroker Repository Checker prüft den konkreten Release-Commit und muss vor der npm-Veröffentlichung erfolgreich sein.
-- EN: The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
+- The current spot and gross contract prices display their shared validity window. Expired values are hidden until a matching snapshot arrives.
+- A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
+- The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 
-- DE: Die Freigabeprüfung bestätigt auch die geprüfte Paketkennung und protokolliert eng begrenzte Ausnahmen für die Erstaufnahme.
-- EN: The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+- The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
 
-- DE: Die Adapter-Metadaten begrenzen die Kurzmeldungen auf sieben Versionen. Zählerfelder sind für alle Admin-Bildschirmgrößen konfiguriert.
-- EN: Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
+- Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
 
-- DE: Die Instanzkonfiguration, Adapterbeschreibung und Versionsmeldungen stehen in neun weiteren Sprachen bereit.
-- EN: Instance settings, adapter metadata and release summaries are available in nine additional languages.
+- Instance settings, adapter metadata and release summaries are available in nine additional languages.
 
-- DE: Die Adapter-Tests laufen zusätzlich auf Node.js 26.
-- EN: The adapter test matrix now includes Node.js 26.
-- DE: Die deutsche Anleitung und die begleitende Dokumentation liegen im ioBroker-Dokumentationsordner.
-- EN: The German guide and supporting documentation use the ioBroker documentation directory.
+- The adapter test matrix now includes Node.js 26.
+- The German guide and supporting documentation use the ioBroker documentation directory.
 
 ## 0.3.0-beta.13 – 2026-11-25
 
-- DE: Die lokale Messwerterfassung und die Verfügbarkeit eines aktuellen aWATTar-Preises haben getrennte Statusdatenpunkte. Nach API-Fehlern verlängert sich der Wiederholungsabstand auf bis zu 15 Minuten.
-- EN: Local data collection and current aWATTar price availability have separate status states. Retry delays increase to up to 15 minutes after API failures.
+- Local data collection and current aWATTar price availability have separate status states. Retry delays increase to up to 15 minutes after API failures.
 
 ## 0.3.0-beta.12 – 2026-11-25
 
-- DE: Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.
-- EN: Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
+- Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
 
 ## 0.3.0-beta.11 – 2026-11-25
 
-- DE: Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.
-- EN: The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.
+- The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.
 
 ## 0.3.0-beta.10 – 2026-11-25
 
-- DE: Datenpunkte für Zählerstand und aktuelle Leistung des Hausstromzählers lassen sich einzeln in der Instanzkonfiguration auswählen und erscheinen in der Übersicht.
-- EN: Select the house meter's reading and current power independently in the instance settings to display them in the overview.
+- Select the house meter's reading and current power independently in the instance settings to display them in the overview.
 
 ## 0.3.0-beta.9 – 2026-11-25
 
-- DE: Lokale Verbrauchsauswertung mit Vergleich zum Durchschnitt erfasster Vortage und günstigstem verfügbaren Tarifintervall der nächsten 24 Stunden.
-- EN: Local consumption insights compare yesterday with recorded prior days and highlight the cheapest available tariff interval in the next 24 hours.
-- DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
-- EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
+- Local consumption insights compare yesterday with recorded prior days and highlight the cheapest available tariff interval in the next 24 hours.
+- Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
 
 ## 0.3.0-beta.8 – 2026-11-24
 
-- DE: Adapterkennung auf `hotwin-energy-manager` geändert, um den npm-Namenskonflikt zu lösen.
-- EN: Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
-- DE: Offizielles ioBroker-Release-Script für Versionsabgleich, Changelog und Git-Tags eingerichtet.
-- EN: Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
+- Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
+- Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
 
 ## 0.3.0-beta.7 – 2026-11-24
 
-- DE: Gerätenamen über ein dezentes Stiftsymbol und einen klareren Dialog bearbeiten. „Aktuelle Leistung“ zeigt nur Messwert und Einheit. Details zum Messpunkt stehen beim Gerätenamen.
-- EN: Edit device names with a pencil button and a clearer dialog. Current power displays only the reading and unit. Power source details appear under the device name.
+- Edit device names with a pencil button and a clearer dialog. Current power displays only the reading and unit. Power source details appear under the device name.
 
 ## 0.3.0-beta.6 – 2026-11-24
 
-- DE: Die Raumübersicht zeigt aktuelle Leistung und Geräteanzahl in kompakten Karten. Die Geräteliste mit Einzelwerten lässt sich je Raum aufklappen.
-- EN: Compact room cards show current power and device count. Expand each card to see individual device readings.
+- Compact room cards show current power and device count. Expand each card to see individual device readings.
 
 ## 0.3.0-beta.5 – 2026-11-24
 
-- DE: Energiefluss von der erfassten Gesamtenergie über Räume zu Geräten sowie Verlauf für Stundenverbrauch, Tageskosten und Strompreise auf der Startseite. Die neuen Messreihen beginnen mit der Aufzeichnung nach dem Update.
-- EN: Energy flow from recorded total to rooms and devices, with hourly usage, daily costs and electricity price history on the overview. New measurement series start recording after the update.
+- Energy flow from recorded total to rooms and devices, with hourly usage, daily costs and electricity price history on the overview. New measurement series start recording after the update.
 
 ## 0.3.0-beta.4 – 2026-11-24
 
-- DE: Gerätenamen im Admin speichern. Die Geräteliste zeigt Leistungsdatenpunkte und Einheiten an und bevorzugt aktuelle Messwerte.
-- EN: Store device aliases in Admin. The device list shows power state IDs and units and prefers live measurements.
+- Store device aliases in Admin. The device list shows power state IDs and units and prefers live measurements.
 
 ## 0.3.0-beta.3 – 2026-11-24
-
-### Deutsch
-
-- Vertragsdaten im ioBroker Admin bearbeiten und dauerhaft in der Instanz speichern.
-- Brutto-Arbeitspreis anhand der gewählten Formel berechnen. aWATTar HOURLY unterstützt den prozentualen Aufschlag auf den Betrag des Börsenpreises und optionale Bruttopreisgrenzen für die Energie.
-- Fehlende Vertragsbeträge, einen späteren Vertragsstart und fehlende aktuelle Börsenpreise im Dashboard anzeigen.
-
-### English
 
 - Edit contract details in ioBroker Admin and persist them in the instance configuration.
 - Calculate gross rates with the selected formula. aWATTar HOURLY supports a percentage surcharge on the absolute spot price and optional gross energy price limits.
@@ -111,27 +77,10 @@
 
 ## 0.3.0-beta.2 – 2026-11-24
 
-### Deutsch
-
-- Anklickbare Kacheln für Leistung, Verbrauch, Kosten, Börsenpreis und Brutto-Arbeitspreis.
-- Die Preisübersicht zeigt Börsenpreis und den berechneten Brutto-Arbeitspreis je verfügbarem Preisintervall.
-
-### English
-
 - Clickable tiles for power, consumption, costs, market price and gross contract rate.
 - The price view displays the market price and calculated gross contract rate for each available interval.
 
 ## 0.3.0-beta.1 – 2026-11-24
-
-### Deutsch
-
-- Responsives Dashboard im ioBroker Admin mit Übersicht, Geräten, Räumen, Verbrauchsstatistik, Preisen, Vertrag und Updates.
-- Geräteerkennung über die Aufzählung Strommessung, mit manueller Zuordnung und optionaler Shelly-Erkennung.
-- Neues PNG-Icon sowie deutsche und englische Texte im Dashboard und in der Konfiguration.
-- Auswertungen für sieben Tage, Monat, Quartal und Jahr. Tarifgrenzen und Fixkosten werden separat behandelt.
-- ESLint, ioBroker-Paketprüfung sowie Integrations- und Compact-Mode-Tests in der abgesicherten GitHub-Workflow-Matrix.
-
-### English
 
 - Responsive ioBroker Admin dashboard covering overview, devices, rooms, statistics, prices, contract and updates.
 - Energy measurement enum discovery across vendors, with manual mappings and optional Shelly discovery.
@@ -140,13 +89,10 @@
 - ESLint, ioBroker package validation, and integration and Compact Mode tests in the pinned GitHub workflow matrix.
 
 ## 0.2.1 – 2026-11-24
-- DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Live-Anzeige im Praxistest bestätigt.
-- EN: Explicit WebSocket transport avoids HTTP polling when WebSockets are forced. Live display confirmed in practical test.
+- Explicit WebSocket transport avoids HTTP polling when WebSockets are forced. Live display confirmed in practical test.
 
 ## 0.2.0 – 2026-11-24
-- DE: Experimentelle Socket.IO-Live-Anbindung ersetzt REST-Abfrage. Weboberfläche erreichbar; Verbindung meldet `xhr poll error` bei erzwungenen WebSockets.
-- EN: Experimental Socket.IO live connection replaces REST polling. Dashboard loads; connection reports `xhr poll error` with forced WebSockets.
+- Experimental Socket.IO live connection replaces REST polling. Dashboard loads; connection reports `xhr poll error` with forced WebSockets.
 
 ## 0.1.0 – 2026-11-24
-- DE: Erste Alpha-Version mit Shelly-Erkennung, manuellen Energiequellen, Raumzuordnung, aWATTar-Preisen und Web-Dashboard. Installation und Leistungsberechnung praktisch bestätigt. REST-Endpunkt liefert 404.
-- EN: Initial alpha with Shelly discovery, manual energy sources, room assignment, aWATTar prices and web dashboard. Installation and power calculation confirmed in a practical test. REST endpoint returns 404.
+- Initial alpha with Shelly discovery, manual energy sources, room assignment, aWATTar prices and web dashboard. Installation and power calculation confirmed in a practical test. REST endpoint returns 404.

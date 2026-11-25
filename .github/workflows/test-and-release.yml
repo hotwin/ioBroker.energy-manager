@@ -145,7 +145,7 @@ jobs:
           test "$(git rev-list -n 1 "$tag")" = "$GITHUB_SHA"
           mkdir -p "$RUNNER_TEMP/energy-release"
           npm pack --pack-destination "$RUNNER_TEMP/energy-release"
-          node -e "const fs=require('node:fs'); const v=require('./package.json').version; const s=fs.readFileSync('CHANGELOG_OLD.md','utf8'); const start=s.indexOf('## '+v+' '); if(start<0) throw Error('Missing release notes'); const rest=s.slice(start); const next=rest.indexOf('\n## ',1); process.stdout.write(next<0?rest:rest.slice(0,next));" > "$RUNNER_TEMP/energy-release/notes.md"
+          node -e "const fs=require('node:fs'); const v=require('./package.json').version; const s=fs.readFileSync('doc/RELEASE-HISTORY.md','utf8'); const start=s.indexOf('## '+v+' '); if(start<0) throw Error('Missing release notes'); const rest=s.slice(start); const next=rest.indexOf('\n## ',1); process.stdout.write(next<0?rest:rest.slice(0,next));" > "$RUNNER_TEMP/energy-release/notes.md"
           cd "$RUNNER_TEMP/energy-release"
           sha256sum "iobroker.hotwin-energy-manager-$version.tgz" > SHA256SUMS
       - name: Publish exact archive to npm under the beta tag using OIDC
