@@ -806,6 +806,17 @@ function renderCostBudget(costs) {
     ]);
 }
 
+function formatDeviceCost(value) {
+    if (Number.isFinite(value) && value !== 0 && Math.abs(value) < 0.005) {
+        return (value < 0 ? '−' : '') + '< ' + format(0.01, '€');
+    }
+    return format(value, '€');
+}
+
+function formatPriceCoverage(value) {
+    return value > 0 && value < 0.05 ? '< ' + format(0.1, '%', 1) : format(value, '%', 1);
+}
+
 function renderCostDevices() {
     const [from, through] = periodBounds(el('costDevicePeriod').value, Date.now());
     const totals = new Map();
@@ -825,8 +836,8 @@ function renderCostDevices() {
     }
     rows(el('costDeviceRows'), [...totals.values()].sort((a, b) => b.kWh - a.kWh)
         .map(item => [item.name, format(item.kWh, 'kWh', 3),
-            format(item.pricedKWh > 0 ? item.costEUR : null, '€'),
-            format(item.kWh > 0 ? item.pricedKWh / item.kWh * 100 : null, '%', 1)]), words.noHistory, 4);
+            formatDeviceCost(item.pricedKWh > 0 ? item.costEUR : null),
+            formatPriceCoverage(item.kWh > 0 ? item.pricedKWh / item.kWh * 100 : null)]), words.noHistory, 4);
 }
 
 function renderCosts() {
