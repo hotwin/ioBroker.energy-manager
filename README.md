@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.6.0-beta.6 (development)
+
+- Show market feed diagnostics and explain the active gross tariff with an itemized breakdown.
+
 ### 0.6.0-beta.5 (development)
 
 - Select aWATTar Germany or a custom day-ahead market feed from an ioBroker JSON state. The state accepts an array or an object with a data array. Each interval uses start_timestamp and end_timestamp in Unix milliseconds and marketprice in EUR/MWh. Supply non-overlapping intervals and select a feed that matches your contract and bidding zone.
