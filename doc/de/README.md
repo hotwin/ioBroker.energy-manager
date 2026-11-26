@@ -59,6 +59,8 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## VIS Classic und VIS 2
 
+Fertige Kacheln: [VIS Classic](../vis/energy-manager-vis-classic.json) · [VIS 2](../vis/energy-manager-vis-2.json). Im passenden Editor den Widget-Import öffnen und den Inhalt der JSON-Datei einfügen. Die Kacheln nutzen die eingebauten Basiswidgets und sind auf `hotwin-energy-manager.0` eingestellt. Bei abweichender Instanznummer die IDs vor dem Import anpassen.
+
 Wähle im jeweiligen VIS-Editor ein Basis-Wertwidget und setze dessen Objekt-ID beispielsweise auf `hotwin-energy-manager.0.todayEnergy`. Ersetze `.0` bei Bedarf durch deine Instanznummer. Die folgenden numerischen Datenpunkte sind schreibgeschützt und ohne Messwert leer. Die Einheit kannst du im Widget ergänzen.
 
 | Datenpunkt | Wert |
