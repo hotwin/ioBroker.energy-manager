@@ -92,6 +92,12 @@
         .flow-surface { overflow: auto; }
         .flow-surface canvas { width: 100%; min-width: 620px; display: block; }
         .budget-exceeded { color: var(--chart-amber); font-weight: 700; }
+        #tariffBreakdown { margin-top: 10px; }
+        #tariffBreakdown summary { cursor: pointer; font-weight: 600; }
+        .tariff-breakdown { margin: 8px 0 0; }
+        .tariff-breakdown > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 5px 0; }
+        .tariff-breakdown dd { margin: 0; font-variant-numeric: tabular-nums; text-align: end; }
+        .tariff-breakdown-total { border-top: 1px solid var(--line); margin-top: 4px; font-weight: 700; }
         .price-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
         .price-legend > span { display: inline-flex; align-items: center; gap: 6px; }
         .price-key { width: 18px; height: 4px; border-radius: 2px; }
@@ -250,8 +256,8 @@
                 <small id="summaryTariffStatus" class="summary-note" hidden></small>
                 <small id="marketSourceStatus" class="summary-note" hidden></small>
                 <details id="tariffBreakdown" hidden>
-                    <summary data-text="tariffBreakdown"></summary>
-                    <div id="tariffBreakdownMetrics" class="summary-metrics"></div>
+                    <summary><span data-text="tariffBreakdown"></span> <small>(ct/kWh)</small></summary>
+                    <dl id="tariffBreakdownMetrics" class="tariff-breakdown"></dl>
                 </details>
             </section>
         </div>
