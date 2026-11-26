@@ -32,6 +32,8 @@ const translations = {
         sampleLabel: "Recorded sample days",
         sampleCoverage: "Sample price coverage",
         budgetBalance: "Budget remaining against forecast",
+        budgetExceeded: "Projected monthly costs exceed the budget by",
+        budgetNoForecast: "There is not enough data to check the budget against a monthly forecast.",
         altVariable: "Alternative variable costs on priced energy",
         altDifference: "Alternative savings (+) / extra cost (−)",
         headerSubtitle: 'Energy monitoring & electricity costs',
@@ -135,6 +137,8 @@ const translations = {
         sampleLabel: "Erfasste Tage der Stichprobe",
         sampleCoverage: "Preisabdeckung der Stichprobe",
         budgetBalance: "Restbudget gegenüber Prognose",
+        budgetExceeded: "Die prognostizierten Monatskosten überschreiten das Budget um",
+        budgetNoForecast: "Für den Budgetvergleich liegen noch nicht genug Daten für eine Monatsprognose vor.",
         altVariable: "Alternative variable Kosten für bewertete Energie",
         altDifference: "Alternative Ersparnis (+) / Mehrkosten (−)",
         headerSubtitle: 'Stromverbrauch, Energie und Kosten im Blick',
@@ -726,8 +730,14 @@ function renderCostBudget(costs) {
     const month = costs?.month;
     const altCost = alternative !== null && month?.pricedKWh > 0 ? alternative * month.pricedKWh / 100 : null;
     const diff = altCost !== null && Number.isFinite(month?.variableEUR) ? month.variableEUR - altCost : null;
+    const balance = budget !== null && Number.isFinite(costs?.monthForecast) ? budget - costs.monthForecast : null;
+    const message = el('costBudgetStatus');
+    message.classList.toggle('budget-exceeded', balance !== null && balance < 0);
+    message.textContent = budget === null ? '' : balance === null ? words.budgetNoForecast :
+        balance < 0 ? words.budgetExceeded + ' ' + format(-balance, '€') + '.' : '';
+    message.hidden = !message.textContent;
     cards('costBudgetCards', [
-        [words.budgetBalance, format(budget !== null && Number.isFinite(costs?.monthForecast) ? budget - costs.monthForecast : null, '€')],
+        [words.budgetBalance, format(balance, '€')],
         [words.altVariable, format(altCost, '€')],
         [words.altDifference, format(diff, '€')],
     ]);

@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.4.0-beta.3 (development)
+
+- Show an explicit budget warning if forecast monthly costs exceed the target, and explain when there is insufficient data for a forecast.
+
 ### 0.4.0-beta.2 (development)
 
 - Show recorded hourly or daily consumption as vertical columns, with gaps for unmeasured hours and the original cost totals.

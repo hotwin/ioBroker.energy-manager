@@ -84,6 +84,7 @@
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
         .flow-surface { overflow: auto; }
         .flow-surface canvas { width: 100%; min-width: 620px; display: block; }
+        .budget-exceeded { color: var(--chart-amber); font-weight: 700; }
         .price-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
         .price-legend > span { display: inline-flex; align-items: center; gap: 6px; }
         .price-key { width: 18px; height: 4px; border-radius: 2px; }
@@ -341,6 +342,7 @@
             </div>
             <p class="note" data-text="budgetHint"></p>
             <div class="grid" id="costBudgetCards"></div>
+            <p class="note" id="costBudgetStatus" role="status" hidden></p>
         </div>
         <div class="surface overview-chart">
             <div class="stats-header">

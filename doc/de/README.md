@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.4.0-beta.3 (Entwicklung)
+
+- Bei prognostizierter Überschreitung des Monatsbudgets eine Warnung anzeigen. Fehlen Daten für die Prognose, erscheint ein eigener Hinweis.
+
 ### 0.4.0-beta.2 (Entwicklung)
 
 - Verbrauch als Säulendiagramm pro Stunde oder Tag anzeigen. Fehlende Stundenwerte bleiben als Lücken sichtbar. Die Kostensummen bleiben erhalten.
