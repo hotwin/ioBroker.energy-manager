@@ -57,7 +57,26 @@ Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Ada
 
 Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
+## VIS Classic und VIS 2
+
+Wähle im jeweiligen VIS-Editor ein Basis-Wertwidget und setze dessen Objekt-ID beispielsweise auf `hotwin-energy-manager.0.todayEnergy`. Ersetze `.0` bei Bedarf durch deine Instanznummer. Die folgenden numerischen Datenpunkte sind schreibgeschützt und ohne Messwert leer. Die Einheit kannst du im Widget ergänzen.
+
+| Datenpunkt | Wert |
+| --- | --- |
+| `totalPower` | Leistung der erfassten Geräte (W) |
+| `todayEnergy` | Verbrauch der erfassten Geräte heute (kWh) |
+| `todayCost` | Bewertete variable Kosten heute (EUR) |
+| `currentMarketPrice` | Aktueller Börsenpreis (ct/kWh) |
+| `currentGrossPrice` | Aktueller Brutto-Arbeitspreis (ct/kWh) |
+| `houseMeterEnergy` | Gesamtstand des Hauptzählers (kWh) |
+
+Für reine Textanzeigen mit bereits enthaltener Einheit stehen `displayPower`, `displayToday`, `displayMarket`, `displayTariff` und `displayCost` bereit.
+
 ## Changelog / Versionsverlauf
+
+### 0.6.0-beta.9 (Entwicklung)
+
+- Numerische Anzeigedatenpunkte für VIS Classic und VIS 2 ergänzen.
 
 ### 0.6.0-beta.8 (Entwicklung)
 
