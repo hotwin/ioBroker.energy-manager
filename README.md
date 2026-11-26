@@ -11,17 +11,37 @@
 
 Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker.
 
-[Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](CHANGELOG_OLD.md)
+**Development status:** 0.6.0 release candidate, not yet published to npm or admitted to the official ioBroker repositories. The currently published beta is 0.3.0-beta.8.
+
+[Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](#changelog)
 
 ## Features
 
-- Vendor-independent discovery via the Strommessung / Energy measurement function enum, manual mappings and optional Shelly discovery.
-- Live power in W/kW and cumulative energy in Wh/kWh; room assignments from ioBroker enums.
-- Responsive Admin dashboard with overview, devices, expandable room cards, statistics, prices and contract settings.
-- Editable device aliases, energy flow from recorded total to rooms and devices, hourly consumption, daily costs and price history.
-- Seven-day, monthly, quarterly and annual statistics; up to 400 daily records.
-- Editable tariff components, VAT, aWATTar HOURLY percentage surcharge and optional gross energy price limits. Fixed charges and advance payments are shown separately.
-- German and English interface; optional Web adapter dashboard.
+### Energy monitoring
+- Vendor-independent measurement discovery through ioBroker function enums, manual mappings and optional Shelly discovery.
+- Live power, cumulative energy, independent main-meter readings, room assignments and editable device aliases.
+- Expandable room/device cards, energy flow from monitored total to rooms and devices, hourly and daily consumption charts, and up to 400 daily records.
+- Separate collection and market feed status, meter diagnostics and optional unassigned power when readings are valid and non-overlapping.
+
+### Costs and consumption analysis
+- Recorded variable costs and priced-energy coverage, including per-device costs; unpriced energy stays unvalued.
+- Monthly and annual run-rate forecasts, fixed charges, advance-payment comparisons, budget warnings, seven-day history and device rankings.
+- Alternative energy-rate comparison, daily CSV export and simple investment payback from user-entered cost and annual net savings.
+
+### Electricity prices and contracts
+- [aWATTar Germany](https://www.awattar.de/), [aWATTar Austria](https://www.awattar.at/), [Energy-Charts](https://api.energy-charts.info/) bidding zones (DE-LU, AT, CH, FR, NL, BE, PL, CZ, DK1, DK2) and custom ioBroker JSON price feeds.
+- Current spot and gross rates with validity intervals, feed diagnostics, tariff breakdown, cheapest available interval and contiguous two-hour window.
+- Configurable net tariff components, VAT, percentage surcharge, optional energy price limits and separate fixed charges.
+
+### Solar, battery and visualization
+- Optional live PV generation, grid feed-in and battery state of charge from mapped states; monitoring only.
+- Responsive German/English Admin and optional Web dashboard, automatic light/dark theme and four native configuration tabs.
+- Read-only states for scripts and Blockly, plus importable VIS Classic and VIS 2 widgets.
+- Optional legacy-instance migration with preview and backup.
+
+## Screenshots
+
+[Dashboard screenshot gallery](doc/screenshots/0.6.0-beta.8/README.md) — genuine captures from a running development build, dated 26 November 2026. The gallery is being prepared for the 0.6.0 candidate; the screenshots show 0.6.0-beta.8, not the final release.
 
 ## Installation
 
@@ -36,6 +56,10 @@ Install Energy Manager from **Adapters** in ioBroker Admin once it is available 
 Add measurement states, channels or devices to the Strommessung or Energy measurement function enum. Assign rooms, configure manual sources and exclusions as needed, and enter verified contract components. Open Energy Manager in the Admin sidebar. The optional Web dashboard is available at /hotwin-energy-manager/index.html with integrated socket and WebSockets.
 
 Consumption is calculated from cumulative meter differences after recording begins. Resets, long gaps and midnight boundaries reset the baseline. Intervals spanning a price or tariff change are recorded without cost valuation. Exclude overlapping meters to avoid double counting. Market prices may differ from your supplier's index.
+
+## Limitations and data coverage
+
+Forecasts need at least seven recorded days and 95% priced-energy coverage. They assume similar usage, prices and current fixed charges, and are not bills or guarantees. The alternative tariff comparison covers priced energy only; alternative fixed charges are excluded. Budget and comparison inputs are browser-local. PV and battery values require configured states; no automated hardware control is provided. See the [cost guide](doc/en/cost-manager.md).
 
 ## Development and roadmap
 
@@ -53,7 +77,7 @@ Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc
 
 ## Changelog
 
-### 0.6.0
+### 0.6.0 (unreleased)
 
 - Add a cost dashboard with device-level costs and price coverage, budget warnings, tariff comparisons, CSV export and an investment payback calculator.
 - Select aWATTar DE/AT, supported Energy-Charts bidding zones or a custom ioBroker price feed. Inspect interval coverage, the gross tariff breakdown and the cheapest two-hour window.
