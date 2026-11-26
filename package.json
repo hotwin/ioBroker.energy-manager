@@ -1,6 +1,6 @@
 {
   "name": "iobroker.hotwin-energy-manager",
-  "version": "0.6.0-beta.8",
+  "version": "0.6.0-beta.9",
   "description": "Local energy monitoring for ioBroker",
   "main": "main.js",
   "license": "MIT",
