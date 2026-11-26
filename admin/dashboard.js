@@ -698,7 +698,11 @@ function renderSummary(id, metrics) {
     el(id).replaceChildren(...metrics.map(([label, value, page]) => {
         const metric = node(page ? 'a' : 'div', null, 'summary-metric');
         if (page) metric.href = '#' + page;
-        metric.append(node('span', words[label], 'tile-label'), node('strong', value, 'tile-value'));
+        const reading = node('strong', null, 'tile-value');
+        const parts = /^(\S+)\s+(\S+)$/.exec(value);
+        if (parts) reading.append(parts[1], ' ', node('span', parts[2], 'tile-unit'));
+        else reading.textContent = value;
+        metric.append(node('span', words[label], 'tile-label'), reading);
         return metric;
     }));
 }
