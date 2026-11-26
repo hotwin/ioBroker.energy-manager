@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.3.0-beta.14",
+    "version": "0.4.0-beta.4",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager",
@@ -46,6 +46,19 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
+      "0.4.0-beta.1": {
+        "en": "Cost dashboard with recorded costs, monthly and annual estimates, advances, local budget, device comparison and CSV export.",
+        "de": "Kostenübersicht mit erfassten Kosten, Monats- und Jahresprognose, Abschlägen, lokalem Budget, Gerätevergleich und CSV-Export.",
+        "es": "Panel de costes con estimaciones mensuales y anuales, presupuesto, comparación de dispositivos y exportación CSV.",
+        "fr": "Tableau des coûts avec estimations mensuelles et annuelles, budget, comparaison des appareils et export CSV.",
+        "it": "Pannello dei costi con stime mensili e annuali, budget, confronto dei dispositivi ed esportazione CSV.",
+        "nl": "Kostenoverzicht met maand- en jaarprognoses, budget, apparaatvergelijking en CSV-export.",
+        "pl": "Panel kosztów z prognozami miesięcznymi i rocznymi, budżetem, porównaniem urządzeń i eksportem CSV.",
+        "pt": "Painel de custos com estimativas mensais e anuais, orçamento, comparação de dispositivos e exportação CSV.",
+        "ru": "Панель затрат с месячными и годовыми прогнозами, бюджетом, сравнением устройств и экспортом CSV.",
+        "uk": "Панель витрат із місячними й річними прогнозами, бюджетом, порівнянням пристроїв та експортом CSV.",
+        "zh-cn": "成本面板包含月度和年度预测、预算、设备对比及 CSV 导出。"
+      },
       "0.3.0-beta.14": {
         "de": "Aktuelle Strompreise mit Gültigkeitszeitraum. Die Übersicht unterscheidet fehlende Messwerte, Zählerstände und nicht zugeordnete Leistung.",
         "en": "Current electricity prices show their validity window. The overview distinguishes missing measurements, meter readings and unassigned power.",

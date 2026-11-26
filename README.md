@@ -51,6 +51,23 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.4.0-beta.4 (development)
+
+- Show device groups as responsive room cards with device counts and measured room power.
+
+### 0.4.0-beta.3 (development)
+
+- Show an explicit budget warning if forecast monthly costs exceed the target, and explain when there is insufficient data for a forecast.
+
+### 0.4.0-beta.2 (development)
+
+- Show recorded hourly or daily consumption as vertical columns, with gaps for unmeasured hours and the original cost totals.
+- Label the spot price and gross energy rate with colored legend markers and show Berlin time on the price chart.
+
+### 0.4.0-beta.1 (development)
+
+- Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
+
 ### 0.3.0-beta.14 (development)
 
 - Move the German guide and supporting documentation to the ioBroker documentation layout.

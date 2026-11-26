@@ -17,6 +17,8 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 
 ## Funktionen
 
+- Neue Kostenseite mit erfassten variablen Kosten, Monats-/Jahreshochrechnung, Abschlagsvergleich, Budget, alternativem Arbeitspreis, Geräteverbrauchsvergleich und Tagesdaten-CSV. Prognosen benötigen ausreichende Historie und zeigen die Preisabdeckung. Budget und Vergleichspreis werden lokal im Browser gespeichert.
+
 - Herstellerübergreifende Geräteerkennung über Strommessung, manuelle Zuordnung und optionale Shelly-Erkennung.
 - Live-Leistung, Verbrauch, Raumkarten mit aufklappbaren Geräten und bearbeitbare Gerätenamen.
 - Energieflussdiagramm, Stundenverbrauch, Tageskosten und Strompreisverlauf.
@@ -56,6 +58,23 @@ Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Ada
 Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
 ## Changelog / Versionsverlauf
+
+### 0.4.0-beta.4 (Entwicklung)
+
+- Gerätegruppen als responsive Raumkarten mit Geräteanzahl und gemessener Raumleistung anzeigen.
+
+### 0.4.0-beta.3 (Entwicklung)
+
+- Bei prognostizierter Überschreitung des Monatsbudgets eine Warnung anzeigen. Fehlen Daten für die Prognose, erscheint ein eigener Hinweis.
+
+### 0.4.0-beta.2 (Entwicklung)
+
+- Verbrauch als Säulendiagramm pro Stunde oder Tag anzeigen. Fehlende Stundenwerte bleiben als Lücken sichtbar. Die Kostensummen bleiben erhalten.
+- Börsenpreis und Brutto-Arbeitspreis im Strompreisverlauf mit farbiger Legende und Berliner Uhrzeiten kennzeichnen.
+
+### 0.4.0-beta.1 (Entwicklung)
+
+- Neue Kostenseite mit erfassten variablen Kosten, Monats-/Jahreshochrechnung, Abschlagsvergleich, Budget, alternativem Arbeitspreis, Geräteverbrauchsvergleich und Tagesdaten-CSV. Prognosen benötigen ausreichende Historie und zeigen die Preisabdeckung. Budget und Vergleichspreis werden lokal im Browser gespeichert.
 
 ### 0.3.0-beta.9 – 2026-11-25
 
