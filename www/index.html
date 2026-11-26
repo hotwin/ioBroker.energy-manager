@@ -169,7 +169,9 @@
         .summary-metrics { gap: 8px; grid-template-columns: repeat(auto-fit, minmax(min(125px, 100%), 1fr)); }
         .summary-metric { background: #f5f7fa; border-radius: 10px; padding: 10px 12px; }
         a.summary-metric:hover { background: #eaf4f8; }
-        .tile-value { font-size: clamp(18px, 2.1vw, 24px); }
+        .summary-metric { container-type: inline-size; }
+        .tile-value { font-size: 18px; font-size: clamp(14px, 15cqi, 24px); white-space: nowrap; }
+        .tile-unit { font-size: .68em; font-weight: 600; }
         .room-icon { color: #005b76; background: #e2f1f7; }
         .room-card summary { color: #005b76; }
         .room-card { box-shadow: 0 2px 8px #24324408; }
