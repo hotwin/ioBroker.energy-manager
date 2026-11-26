@@ -183,7 +183,7 @@ Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc
 - Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
 - Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
 
-[Full bilingual release history](doc/RELEASE-HISTORY.md)
+[Older changelog](CHANGELOG_OLD.md) · [Full bilingual release history](doc/RELEASE-HISTORY.md)
 
 ## License
 
