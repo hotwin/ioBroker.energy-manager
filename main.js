@@ -14,6 +14,11 @@ const priceRefreshMs = 900_000;
 
 const states = {
     snapshot: ['Energy snapshot', 'string', 'json'],
+    todayEnergy: ['Energy today', 'number', 'value', 'kWh'],
+    todayCost: ['Recorded variable cost today', 'number', 'value', 'EUR'],
+    currentMarketPrice: ['Current market price', 'number', 'value', 'ct/kWh'],
+    currentGrossPrice: ['Current gross energy rate', 'number', 'value', 'ct/kWh'],
+    houseMeterEnergy: ['Main meter reading', 'number', 'value', 'kWh'],
     totalPower: ['Measured power', 'number', 'value.power', 'W'],
     consumption: ['Daily consumption ledger', 'string', 'json'],
     costSummary: ['Cost manager summary', 'string', 'json'],
@@ -178,6 +183,11 @@ class EnergyManager extends utils.Adapter {
         const costs = costManager(ledger, contract, now);
         const insights = energyInsights(ledger, prices, now);
         const display = {
+            todayEnergy: accumulate.recordedKWh(ledger, ledger.day),
+            todayCost: today.pricedKWh > 0 ? today.costEUR : null,
+            currentMarketPrice: marketCt,
+            currentGrossPrice: tariffCt,
+            houseMeterEnergy: houseMeter?.energyKWh ?? null,
             energyInsights: JSON.stringify(insights),
             costSummary: JSON.stringify(costs),
             displayPower: Math.abs(totalPower) >= 1000 ? show(totalPower / 1000, 'kW') : show(totalPower, 'W'),
