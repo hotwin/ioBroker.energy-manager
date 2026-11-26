@@ -54,6 +54,7 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 ### 0.4.0-beta.2 (development)
 
 - Show recorded hourly or daily consumption as vertical columns, with gaps for unmeasured hours and the original cost totals.
+- Label the spot price and gross energy rate with colored legend markers and show Berlin time on the price chart.
 
 ### 0.4.0-beta.1 (development)
 

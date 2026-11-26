@@ -62,6 +62,7 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 ### 0.4.0-beta.2 (Entwicklung)
 
 - Verbrauch als Säulendiagramm pro Stunde oder Tag anzeigen. Fehlende Stundenwerte bleiben als Lücken sichtbar. Die Kostensummen bleiben erhalten.
+- Börsenpreis und Brutto-Arbeitspreis im Strompreisverlauf mit farbiger Legende und Berliner Uhrzeiten kennzeichnen.
 
 ### 0.4.0-beta.1 (Entwicklung)
 

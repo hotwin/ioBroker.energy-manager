@@ -84,6 +84,11 @@
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
         .flow-surface { overflow: auto; }
         .flow-surface canvas { width: 100%; min-width: 620px; display: block; }
+        .price-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+        .price-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+        .price-key { width: 18px; height: 4px; border-radius: 2px; }
+        .price-key-spot { background: var(--chart-blue); }
+        .price-key-gross { background: var(--chart-green); }
         #priceChart { width: 100%; display: block; }
         #priceChart[hidden] { display: none; }
         .flow-detail summary { cursor: pointer; }
@@ -255,7 +260,11 @@
         </div>
         <div class="surface overview-chart">
             <h2 data-text="priceHistory"></h2>
-            <p class="note" data-text="priceChartLegend"></p>
+            <p class="note price-legend">
+                <span><i class="price-key price-key-spot" aria-hidden="true"></i><span data-text="priceSpotLegend"></span></span>
+                <span><i class="price-key price-key-gross" aria-hidden="true"></i><span data-text="priceGrossLegend"></span></span>
+                <span>ct/kWh</span>
+            </p>
             <canvas id="priceChart" width="900" height="220" role="img"></canvas>
             <p id="priceHistoryStatus" class="note"></p>
         </div>

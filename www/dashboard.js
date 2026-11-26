@@ -56,6 +56,7 @@ const translations = {
         energyFlow: 'Energy flow', capturedEnergy: 'Recorded energy', yesterday: 'Yesterday',
         hourlyUsage: 'Hourly consumption', weeklyCosts: 'Daily costs · last 7 days',
         priceHistory: 'Electricity price history',
+        priceSpotLegend: 'Spot price', priceGrossLegend: 'Gross energy rate',
         priceChartLegend: 'Blue · spot price. Green · gross energy rate. ct/kWh.',
         flowDetail: 'Rooms and devices', chartsNoData: 'No measurements for this period.',
         flowCoverage: 'Device history is available from the start of recording in this version.',
@@ -158,6 +159,7 @@ const translations = {
         energyFlow: 'Energiefluss', capturedEnergy: 'Erfasste Energie', yesterday: 'Gestern',
         hourlyUsage: 'Stundenverbrauch', weeklyCosts: 'Tageskosten · letzte 7 Tage',
         priceHistory: 'Strompreisverlauf',
+        priceSpotLegend: 'Börsenpreis', priceGrossLegend: 'Brutto-Arbeitspreis',
         priceChartLegend: 'Blau · Börsenpreis. Grün · Brutto-Arbeitspreis. ct/kWh.',
         flowDetail: 'Räume und Geräte', chartsNoData: 'Für diesen Zeitraum liegen keine Messwerte vor.',
         flowCoverage: 'Die Gerätehistorie beginnt mit der Aufzeichnung in dieser Version.',
@@ -488,7 +490,8 @@ function renderPriceHistory(now) {
     const low = Math.min(0, ...values);
     const high = Math.max(low + 1, ...values);
     const x = time => 60 + (time - start) / (now - start) * (canvas.width - 75);
-    const y = rate => canvas.height - 20 - (rate - low) / (high - low) * (canvas.height - 40);
+    const baseline = canvas.height - 33;
+    const y = rate => baseline - (rate - low) / (high - low) * (baseline - 20);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = '14px system-ui';
     for (let step = 0; step <= 4; step++) {
@@ -499,8 +502,25 @@ function renderPriceHistory(now) {
         ctx.lineTo(canvas.width - 15, y(rate));
         ctx.stroke();
         ctx.fillStyle = chartColor('--ink');
-        ctx.fillText(rate.toFixed(1), 4, y(rate) + 4);
+        ctx.fillText(format(rate, '', 1).trim(), 4, y(rate) + 4);
     }
+    const clock = new Intl.DateTimeFormat(language, {
+        timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    });
+    const ticks = canvas.clientWidth < 520 ? 2 : 4;
+    for (let step = 0; step <= ticks; step++) {
+        const time = start + (now - start) * step / ticks;
+        const left = x(time);
+        ctx.strokeStyle = chartColor('--line');
+        ctx.beginPath();
+        ctx.moveTo(left, 20);
+        ctx.lineTo(left, baseline + 4);
+        ctx.stroke();
+        ctx.textAlign = step === 0 ? 'left' : step === ticks ? 'right' : 'center';
+        ctx.fillStyle = chartColor('--ink');
+        ctx.fillText(clock.format(time), left, baseline + 24);
+    }
+    ctx.textAlign = 'left';
     for (const [color, value] of [[chartColor('--chart-blue'), item => item.marketprice / 10], [chartColor('--chart-green'), item => item.tariffCt]]) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 3;
