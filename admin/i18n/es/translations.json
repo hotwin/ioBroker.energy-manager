@@ -24,5 +24,8 @@
   "settings_measurement": "Medición y contador principal",
   "settings_devices": "Dispositivos y puntos de datos",
   "settings_tariff": "Tarifa eléctrica",
-  "settings_fixedCosts": "Costes fijos y anticipos"
+  "settings_fixedCosts": "Costes fijos y anticipos",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

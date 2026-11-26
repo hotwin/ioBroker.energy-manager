@@ -24,5 +24,8 @@
   "settings_measurement": "Meting en hoofdmeter",
   "settings_devices": "Apparaten en datapunten",
   "settings_tariff": "Elektriciteitstarief",
-  "settings_fixedCosts": "Vaste kosten en voorschotten"
+  "settings_fixedCosts": "Vaste kosten en voorschotten",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

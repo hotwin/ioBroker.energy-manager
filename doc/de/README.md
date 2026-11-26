@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.6.0-beta.1 (Entwicklung)
+
+- Günstigstes zusammenhängendes Zwei-Stunden-Fenster und optional Live-Messwerte für PV-Erzeugung, Netzeinspeisung und Batterieladestand anzeigen.
+
 ### 0.4.0-beta.4 (Entwicklung)
 
 - Gerätegruppen als responsive Raumkarten mit Geräteanzahl und gemessener Raumleistung anzeigen.

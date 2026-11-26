@@ -24,5 +24,8 @@
   "settings_measurement": "测量与总电表",
   "settings_devices": "设备与数据点",
   "settings_tariff": "电价方案",
-  "settings_fixedCosts": "固定费用与预付款"
+  "settings_fixedCosts": "固定费用与预付款",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

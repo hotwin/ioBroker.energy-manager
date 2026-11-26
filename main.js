@@ -115,9 +115,10 @@ class EnergyManager extends utils.Adapter {
         const now = Date.now();
         const { prices, currentPrice, marketCt, tariffCt, contract } = priceSnapshot(this.config, this.prices, now);
         await this.setStateAsync('info.awattarAvailable', Boolean(currentPrice), true);
-        const [devices, meter] = await Promise.all([
+        const [devices, meter, solar] = await Promise.all([
             readDevices(this),
             readDevices.readHouseMeter(this),
+            readDevices.readSolar(this),
         ]);
         if (this.stopping) return;
         const difference = meter && this.config.compareHousePower === true
@@ -156,7 +157,7 @@ class EnergyManager extends utils.Adapter {
             displayTariff: show(tariffCt, 'ct/kWh'),
             displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
             totalPower,
-            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, totalPower, marketCt, tariffCt, currentPrice,
+            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, solar, totalPower, marketCt, tariffCt, currentPrice,
                 prices: prices.filter(item => item.end_timestamp > now),
                 insights: energyInsights(ledger, prices, now), costs,
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,

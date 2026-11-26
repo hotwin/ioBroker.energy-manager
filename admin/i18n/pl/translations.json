@@ -24,5 +24,8 @@
   "settings_measurement": "Pomiary i licznik główny",
   "settings_devices": "Urządzenia i punkty danych",
   "settings_tariff": "Taryfa energii",
-  "settings_fixedCosts": "Koszty stałe i zaliczki"
+  "settings_fixedCosts": "Koszty stałe i zaliczki",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.6.0-beta.1 (development)
+
+- Show the cheapest contiguous two-hour gross-price window and optionally display live solar generation, grid feed-in and battery charge from configured states.
+
 ### 0.4.0-beta.4 (development)
 
 - Show device groups as responsive room cards with device counts and measured room power.

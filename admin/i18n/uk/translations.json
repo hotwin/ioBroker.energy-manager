@@ -24,5 +24,8 @@
   "settings_measurement": "Вимірювання та головний лічильник",
   "settings_devices": "Пристрої та точки даних",
   "settings_tariff": "Тариф на електроенергію",
-  "settings_fixedCosts": "Постійні витрати та аванси"
+  "settings_fixedCosts": "Постійні витрати та аванси",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

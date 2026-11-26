@@ -47,6 +47,8 @@ const translations = {
         priceAwaiting: 'Waiting for prices for the current interval.',
         insightsTitle: 'Energy insights',
         insightsWaiting: 'The comparison needs a reading from yesterday and at least three of the seven preceding days.',
+        twoHourWindow: 'Cheapest two-hour window', solarHeading: 'Solar and battery',
+        solarPower: 'Solar generation', feedInPower: 'Grid feed-in', batterySoc: 'Battery state of charge',
         insightsPriceMissing: 'No upcoming interval with a calculated gross rate in the next 24 hours.',
         insightsTrend: { high: 'Unusually high', low: 'Unusually low', usual: 'Within the usual range' },
         insightsCompare: (day, usage, average, count, trend) =>
@@ -152,6 +154,8 @@ const translations = {
         priceAwaiting: 'Warte auf Preise für das laufende Intervall.',
         insightsTitle: 'Stromverbrauch im Blick',
         insightsWaiting: 'Für den Vergleich fehlen Messwerte von gestern oder von mindestens drei der sieben Tage davor.',
+        twoHourWindow: 'Günstigstes Zwei-Stunden-Fenster', solarHeading: 'PV und Speicher',
+        solarPower: 'PV-Erzeugung', feedInPower: 'Netzeinspeisung', batterySoc: 'Batterieladestand',
         insightsPriceMissing: 'Für die nächsten 24 Stunden ist kein kommendes Intervall mit berechnetem Brutto-Arbeitspreis verfügbar.',
         insightsTrend: { high: 'Ungewöhnlich hoch', low: 'Ungewöhnlich niedrig', usual: 'Im üblichen Bereich' },
         insightsCompare: (day, usage, average, count, trend) =>
@@ -674,6 +678,12 @@ function renderInsights(insights, now) {
     el('insightsPrice').textContent = cheapest && cheapest.from > now
         ? words.insightsRate(dateTime(cheapest.from), dateTime(cheapest.to), format(cheapest.rate, 'ct/kWh'))
         : words.insightsPriceMissing;
+    const window = insights.cheapestTwoHours;
+    el('insightsTwoHours').textContent = window && window.from > now
+        ? words.twoHourWindow + ' · ' + dateTime(window.from) + ' – ' + dateTime(window.to) +
+            ' · Ø ' + format(window.rate, 'ct/kWh')
+        : '';
+
 }
 
 function renderSummary(id, metrics) {
@@ -720,7 +730,7 @@ function renderLiveOverview(data) {
     ]);
     renderInsights(data.insights, now);
     const nextChange = Math.min(...[current && interval.end_timestamp, meter?.unassignedUntil,
-        data.insights?.cheapest?.from].filter(time => Number.isFinite(time) && time > now));
+        data.insights?.cheapest?.from, data.insights?.cheapestTwoHours?.from].filter(time => Number.isFinite(time) && time > now));
     if (Number.isFinite(nextChange)) overviewDeadline = setTimeout(() => renderLiveOverview(data), nextChange - now);
 }
 
@@ -830,6 +840,12 @@ el('costExport').addEventListener('click', () => {
 
 function render() {
     const data = snapshot || {};
+    el('solarSection').hidden = !data.solar;
+    cards('solarCards', [
+        [words.solarPower, format(data.solar?.solarW, 'W')],
+        [words.feedInPower, format(data.solar?.feedInW, 'W')],
+        [words.batterySoc, format(data.solar?.batterySoc, '%')],
+    ]);
     const today = recordedDay(dayKey(Date.now()));
     updateStatus();
     renderLiveOverview(data);

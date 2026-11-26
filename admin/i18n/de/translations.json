@@ -24,5 +24,8 @@
   "settings_measurement": "Messung & Hauptzähler",
   "settings_devices": "Geräte & Datenpunkte",
   "settings_tariff": "Stromtarif",
-  "settings_fixedCosts": "Fixkosten & Abschläge"
+  "settings_fixedCosts": "Fixkosten & Abschläge",
+  "solarPowerId": "PV-Erzeugungsleistung",
+  "feedInPowerId": "Netzeinspeisung (Leistung)",
+  "batterySocId": "Batterieladestand"
 }

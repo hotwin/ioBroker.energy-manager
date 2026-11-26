@@ -24,5 +24,8 @@
   "settings_measurement": "Metering & main meter",
   "settings_devices": "Devices & data points",
   "settings_tariff": "Electricity tariff",
-  "settings_fixedCosts": "Fixed costs & advances"
+  "settings_fixedCosts": "Fixed costs & advances",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

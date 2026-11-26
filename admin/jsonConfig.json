@@ -41,6 +41,33 @@
           "md": 12,
           "lg": 12,
           "xl": 12
+        },
+        "solarPowerId": {
+          "type": "objectId",
+          "label": "solarPowerId",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
+        },
+        "feedInPowerId": {
+          "type": "objectId",
+          "label": "feedInPowerId",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
+        },
+        "batterySocId": {
+          "type": "objectId",
+          "label": "batterySocId",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
         }
       }
     },

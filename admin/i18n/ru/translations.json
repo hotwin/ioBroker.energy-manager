@@ -24,5 +24,8 @@
   "settings_measurement": "Измерение и основной счётчик",
   "settings_devices": "Устройства и точки данных",
   "settings_tariff": "Тариф на электроэнергию",
-  "settings_fixedCosts": "Постоянные расходы и авансы"
+  "settings_fixedCosts": "Постоянные расходы и авансы",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge"
 }

@@ -32,3 +32,13 @@ test('chooses the earliest fully upcoming interval at the lowest known gross rat
         comparison: null, cheapest: { from: now + 2 * hour, to: now + 3 * hour, rate: -1 },
     });
 });
+
+test('finds a continuous two-hour window using duration-weighted rates', () => {
+    const hour = 3600000;
+    const price = (from, to, tariffCt) => ({ start_timestamp: from * hour, end_timestamp: to * hour, tariffCt });
+    const prices = [price(1, 3, 20), price(4, 4.5, -5), price(4.5, 6, 3), price(7, 8, -100)];
+    assert.deepEqual(energyInsights({ days: {} }, prices, 0).cheapestTwoHours, {
+        from: 4 * hour, to: 6 * hour, rate: 1,
+    });
+    assert.equal(energyInsights({ days: {} }, [price(1, 2, 3), price(3, 4, 3)], 0).cheapestTwoHours, null);
+});
