@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.6.0-beta.4 (Entwicklung)
+
+- Einheitliche Abschnittsüberschriften und responsive Feldbreiten in allen vier Reitern der Instanzeinstellungen.
+
 ### 0.6.0-beta.3 (Entwicklung)
 
 - Die nativen Stromtarif-Einstellungen in Vertrag, Netto-Preisbestandteile und Mehrwertsteuer gliedern.

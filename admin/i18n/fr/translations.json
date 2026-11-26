@@ -30,5 +30,11 @@
   "batterySocId": "Battery state of charge",
   "tariffContractHeading": "Contrat",
   "tariffChargesHeading": "Composantes du prix hors taxes",
-  "tariffVatHeading": "TVA"
+  "tariffVatHeading": "TVA",
+  "mainMeterHeading": "Compteur principal",
+  "solarSettingsHeading": "Solaire et batterie",
+  "discoveryHeading": "Détection automatique",
+  "manualSourcesHeading": "Points de données manuels",
+  "fixedChargesHeading": "Abonnement et comptage",
+  "advanceHeading": "Acompte"
 }

@@ -30,5 +30,11 @@
   "batterySocId": "Batterieladestand",
   "tariffContractHeading": "Vertrag",
   "tariffChargesHeading": "Netto-Preisbestandteile",
-  "tariffVatHeading": "Mehrwertsteuer"
+  "tariffVatHeading": "Mehrwertsteuer",
+  "mainMeterHeading": "Hausstromzähler",
+  "solarSettingsHeading": "PV und Speicher",
+  "discoveryHeading": "Automatische Erkennung",
+  "manualSourcesHeading": "Manuelle Datenpunkte",
+  "fixedChargesHeading": "Grundpreis und Messstellenbetrieb",
+  "advanceHeading": "Abschlag"
 }

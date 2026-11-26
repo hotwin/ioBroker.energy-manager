@@ -30,5 +30,11 @@
   "batterySocId": "Battery state of charge",
   "tariffContractHeading": "Contract",
   "tariffChargesHeading": "Nettoprijscomponenten",
-  "tariffVatHeading": "Btw"
+  "tariffVatHeading": "Btw",
+  "mainMeterHeading": "Hoofdmeter",
+  "solarSettingsHeading": "Zonnepanelen en accu",
+  "discoveryHeading": "Automatische detectie",
+  "manualSourcesHeading": "Handmatige datapunten",
+  "fixedChargesHeading": "Vaste en meetkosten",
+  "advanceHeading": "Voorschot"
 }

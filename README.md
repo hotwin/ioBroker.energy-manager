@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.6.0-beta.4 (development)
+
+- Apply consistent section headings and responsive field widths across all four instance settings tabs.
+
 ### 0.6.0-beta.3 (development)
 
 - Group the native electricity tariff settings into contract, net price components and VAT.

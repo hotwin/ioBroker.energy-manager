@@ -30,5 +30,11 @@
   "batterySocId": "Battery state of charge",
   "tariffContractHeading": "Договір",
   "tariffChargesHeading": "Складові ціни без ПДВ",
-  "tariffVatHeading": "ПДВ"
+  "tariffVatHeading": "ПДВ",
+  "mainMeterHeading": "Головний електролічильник",
+  "solarSettingsHeading": "Сонячна енергія та акумулятор",
+  "discoveryHeading": "Автоматичне виявлення",
+  "manualSourcesHeading": "Ручне налаштування точок даних",
+  "fixedChargesHeading": "Абонплата та облік",
+  "advanceHeading": "Авансовий платіж"
 }

@@ -30,5 +30,11 @@
   "batterySocId": "Battery state of charge",
   "tariffContractHeading": "Contract",
   "tariffChargesHeading": "Net price components",
-  "tariffVatHeading": "VAT"
+  "tariffVatHeading": "VAT",
+  "mainMeterHeading": "Main electricity meter",
+  "solarSettingsHeading": "Solar and battery",
+  "discoveryHeading": "Automatic discovery",
+  "manualSourcesHeading": "Manual data points",
+  "fixedChargesHeading": "Base and metering charges",
+  "advanceHeading": "Advance payment"
 }

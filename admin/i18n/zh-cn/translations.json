@@ -30,5 +30,11 @@
   "batterySocId": "Battery state of charge",
   "tariffContractHeading": "合同",
   "tariffChargesHeading": "净价组成",
-  "tariffVatHeading": "增值税"
+  "tariffVatHeading": "增值税",
+  "mainMeterHeading": "总电表",
+  "solarSettingsHeading": "光伏和电池",
+  "discoveryHeading": "自动发现",
+  "manualSourcesHeading": "手动数据点",
+  "fixedChargesHeading": "固定费用及计量费用",
+  "advanceHeading": "预付款"
 }

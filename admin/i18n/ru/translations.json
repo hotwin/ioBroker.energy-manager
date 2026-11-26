@@ -30,5 +30,11 @@
   "batterySocId": "Battery state of charge",
   "tariffContractHeading": "Договор",
   "tariffChargesHeading": "Составляющие цены без НДС",
-  "tariffVatHeading": "НДС"
+  "tariffVatHeading": "НДС",
+  "mainMeterHeading": "Главный электросчётчик",
+  "solarSettingsHeading": "Солнечная энергия и аккумулятор",
+  "discoveryHeading": "Автоматическое обнаружение",
+  "manualSourcesHeading": "Ручная настройка точек данных",
+  "fixedChargesHeading": "Абонентская плата и учёт",
+  "advanceHeading": "Авансовый платёж"
 }
