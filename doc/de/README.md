@@ -1,7 +1,7 @@
 # ioBroker Energy Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
-[![npm beta](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/beta?label=npm%20beta)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+[![npm next](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/next?label=npm%20next)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hotwin-energy-manager?label=downloads)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Test and Release (main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
@@ -37,7 +37,45 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 
 ## Screenshots
 
-[Galerie der Dashboard-Ansichten](../screenshots/0.6.0-beta.8/README.md). Die Aufnahmen zeigen die laufende Entwicklungsversion 0.6.0-beta.8 vom 26. November 2026, nicht die noch unveröffentlichte finale Version.
+Echte Aufnahmen der laufenden Entwicklungsversion **0.6.0-beta.8** vom 26. November 2026. Persönliche Bezeichnungen wurden abgedeckt. Prognosen fehlen, solange nicht genügend Messdaten vorliegen.
+
+### Übersicht und Energiefluss
+
+![Übersicht und Energiefluss](../screenshots/0.6.0-beta.8/overview-light.png)
+
+### Geräteübersicht
+
+![Geräteübersicht](../screenshots/0.6.0-beta.8/devices.png)
+
+### Raumübersicht
+
+![Raumübersicht](../screenshots/0.6.0-beta.8/rooms.png)
+
+### Verbrauchsstatistik
+
+![Verbrauchsstatistik](../screenshots/0.6.0-beta.8/consumption.png)
+
+### Kostenmanager und Prognosen
+
+![Kostenmanager und Prognosen](../screenshots/0.6.0-beta.8/costs.png)
+
+### Strompreise
+
+![Strompreise](../screenshots/0.6.0-beta.8/prices.png)
+
+### Stromvertrag
+
+![Stromvertrag](../screenshots/0.6.0-beta.8/contract.png)
+
+### Dunkelmodus
+
+![Dunkelmodus](../screenshots/0.6.0-beta.8/overview-dark.png)
+
+### Updates
+
+![Updates](../screenshots/0.6.0-beta.8/updates.png)
+
+[Vollständige Galerie inklusive Prognosedetails](../screenshots/0.6.0-beta.8/README.md)
 
 ## Installation
 

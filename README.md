@@ -41,7 +41,45 @@ Local electricity monitoring, tariff and cost analysis, and solar and battery re
 
 ## Screenshots
 
-[Dashboard screenshot gallery](doc/screenshots/0.6.0-beta.8/README.md) — genuine captures from a running development build, dated 26 November 2026. The gallery is being prepared for the 0.6.0 candidate; the screenshots show 0.6.0-beta.8, not the final release.
+Real captures of the running **0.6.0-beta.8** development build on 26 November 2026. Personal labels are redacted. Forecasts remain empty until sufficient recorded data is available.
+
+### Overview and energy flow
+
+![Overview and energy flow](doc/screenshots/0.6.0-beta.8/overview-light.png)
+
+### Devices grouped by room
+
+![Devices grouped by room](doc/screenshots/0.6.0-beta.8/devices.png)
+
+### Room overview
+
+![Room overview](doc/screenshots/0.6.0-beta.8/rooms.png)
+
+### Consumption statistics
+
+![Consumption statistics](doc/screenshots/0.6.0-beta.8/consumption.png)
+
+### Cost manager and forecasts
+
+![Cost manager and forecasts](doc/screenshots/0.6.0-beta.8/costs.png)
+
+### Electricity price intervals
+
+![Electricity price intervals](doc/screenshots/0.6.0-beta.8/prices.png)
+
+### Contract and tariff settings
+
+![Contract and tariff settings](doc/screenshots/0.6.0-beta.8/contract.png)
+
+### Dark mode
+
+![Dark mode](doc/screenshots/0.6.0-beta.8/overview-dark.png)
+
+### Version and updates
+
+![Version and updates](doc/screenshots/0.6.0-beta.8/updates.png)
+
+[Full gallery, including forecast details](doc/screenshots/0.6.0-beta.8/README.md)
 
 ## Installation
 
@@ -183,7 +221,7 @@ Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc
 - Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
 - Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
 
-[Older changelog](CHANGELOG_OLD.md) · [Full bilingual release history](doc/RELEASE-HISTORY.md)
+[Older changelog](CHANGELOG_OLD.md) · [Older release notes](CHANGELOG_OLD.md) · [Full bilingual release history](doc/RELEASE-HISTORY.md)
 
 ## License
 
