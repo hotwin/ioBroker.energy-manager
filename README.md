@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.6.0-beta.7 (development)
+
+- Add aWATTar Austria and selectable public Energy-Charts bidding zones. Energy-Charts market data from Bundesnetzagentur / SMARD via Fraunhofer ISE, licensed CC BY 4.0. [Energy-Charts](https://api.energy-charts.info/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ### 0.6.0-beta.6 (development)
 
 - Show market feed diagnostics and explain the active gross tariff with an itemized breakdown.
