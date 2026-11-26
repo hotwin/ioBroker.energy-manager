@@ -9,9 +9,7 @@
 
 **Responsible: [Böttcher Services](https://hotgame.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
-**Current published beta: 0.3.0-beta.8 (25 November 2026)**
-
-Local energy monitoring and electricity cost analysis for ioBroker, with a responsive dashboard, room and device statistics, and German day-ahead market prices from [aWATTar](https://www.awattar.de/).
+Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker.
 
 [Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](CHANGELOG_OLD.md)
 
@@ -31,7 +29,7 @@ Requires Node.js 22+, ioBroker Admin 7.6.20+ and js-controller 6.0.11+. Measurem
 
 Install Energy Manager from **Adapters** in ioBroker Admin once it is available in your configured repository. The published beta is awaiting admission to the official Latest or Stable repository.
 
-**Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; the beta.9 development version adds an [opt-in import](doc/en/README.md#import-from-a-legacy-instance). Keep the old instance and back up its data.
+**Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; this version supports an [opt-in import](doc/en/README.md#import-from-a-legacy-instance). Keep the old instance and back up its data.
 
 ## Setup and data accuracy
 
@@ -47,13 +45,20 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 - [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
 - [Safe migration of legacy data](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/11)
 
-This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
+Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
 ## VIS Classic and VIS 2
 
-In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
+Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc/vis/energy-manager-vis-2.json) widget templates. In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
 
 ## Changelog
+
+### 0.6.0
+
+- Add a cost dashboard with device-level costs and price coverage, budget warnings, tariff comparisons, CSV export and an investment payback calculator.
+- Select aWATTar DE/AT, supported Energy-Charts bidding zones or a custom ioBroker price feed. Inspect interval coverage, the gross tariff breakdown and the cheapest two-hour window.
+- Show configured solar power, grid feed-in and battery charge in the dashboard.
+- Add consumption columns, responsive device cards, consistent instance settings and importable VIS Classic and VIS 2 widgets.
 
 ### 0.6.0-beta.9 (development)
 

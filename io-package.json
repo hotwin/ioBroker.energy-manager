@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.6.0-beta.9",
+    "version": "0.6.0",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager",
@@ -16,8 +16,8 @@
       "zh-cn": "能源管理器"
     },
     "desc": {
-      "de": "Lokale Energieüberwachung",
-      "en": "Local energy monitoring",
+      "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
+      "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
       "es": "Supervisión local de la energía",
       "fr": "Suivi local de l’énergie",
       "it": "Monitoraggio locale dell’energia",
@@ -46,31 +46,18 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
-      "0.4.0-beta.1": {
-        "en": "Cost dashboard with recorded costs, monthly and annual estimates, advances, local budget, device comparison and CSV export.",
-        "de": "Kostenübersicht mit erfassten Kosten, Monats- und Jahresprognose, Abschlägen, lokalem Budget, Gerätevergleich und CSV-Export.",
-        "es": "Panel de costes con estimaciones mensuales y anuales, presupuesto, comparación de dispositivos y exportación CSV.",
-        "fr": "Tableau des coûts avec estimations mensuelles et annuelles, budget, comparaison des appareils et export CSV.",
-        "it": "Pannello dei costi con stime mensili e annuali, budget, confronto dei dispositivi ed esportazione CSV.",
-        "nl": "Kostenoverzicht met maand- en jaarprognoses, budget, apparaatvergelijking en CSV-export.",
-        "pl": "Panel kosztów z prognozami miesięcznymi i rocznymi, budżetem, porównaniem urządzeń i eksportem CSV.",
-        "pt": "Painel de custos com estimativas mensais e anuais, orçamento, comparação de dispositivos e exportação CSV.",
-        "ru": "Панель затрат с месячными и годовыми прогнозами, бюджетом, сравнением устройств и экспортом CSV.",
-        "uk": "Панель витрат із місячними й річними прогнозами, бюджетом, порівнянням пристроїв та експортом CSV.",
-        "zh-cn": "成本面板包含月度和年度预测、预算、设备对比及 CSV 导出。"
-      },
-      "0.3.0-beta.14": {
-        "de": "Aktuelle Strompreise mit Gültigkeitszeitraum. Die Übersicht unterscheidet fehlende Messwerte, Zählerstände und nicht zugeordnete Leistung.",
-        "en": "Current electricity prices show their validity window. The overview distinguishes missing measurements, meter readings and unassigned power.",
-        "es": "Los precios actuales muestran su período de validez y la vista general distingue las lecturas ausentes.",
-        "fr": "Les prix actuels affichent leur période de validité et la vue d’ensemble signale les mesures manquantes.",
-        "it": "I prezzi attuali indicano il periodo di validità e la panoramica distingue le misure mancanti.",
-        "nl": "Actuele stroomprijzen tonen hun geldigheidsperiode en ontbrekende metingen zijn herkenbaar.",
-        "pl": "Bieżące ceny pokazują okres obowiązywania, a widok ogólny wyróżnia brakujące odczyty.",
-        "pt": "Os preços atuais mostram o período de validade e a vista geral distingue as leituras em falta.",
-        "ru": "Для текущих цен отображается срок действия, а пропущенные измерения выделены в обзоре.",
-        "uk": "Поточні ціни на електроенергію показують період дії. В огляді окремо позначено відсутні вимірювання, показання лічильників і нерозподілену потужність.",
-        "zh-cn": "当前电价显示有效时段，概览单独标记缺失的测量值。"
+      "0.6.0": {
+        "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
+        "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
+        "es": "Supervisión local de la energía",
+        "fr": "Suivi local de l’énergie",
+        "it": "Monitoraggio locale dell’energia",
+        "nl": "Lokale energiemonitoring",
+        "pl": "Lokalne monitorowanie energii",
+        "pt": "Monitorização local da energia",
+        "ru": "Локальный мониторинг энергопотребления",
+        "uk": "Локальний моніторинг енергоспоживання",
+        "zh-cn": "本地能源监测"
       },
       "0.3.0-beta.8": {
         "en": "Configure the standard ioBroker release script.",

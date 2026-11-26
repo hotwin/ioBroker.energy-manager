@@ -9,9 +9,7 @@
 
 **Verantwortlich: [Böttcher Services](https://hotgame.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
-**Aktuell veröffentlichte Beta: 0.3.0-beta.8 (25.11.2026)**
-
-Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker. Er verbindet Messdaten verschiedener Hersteller mit Raumübersichten und dynamischen Börsenpreisen von [aWATTar](https://www.awattar.de/).
+Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker. Er verbindet Messdaten verschiedener Hersteller mit Raumübersichten, Kostenanalyse und auswählbaren Börsenpreisquellen.
 
 [English](../../README.md) · [Ausführliche Einrichtung](SETUP.md) · [Zweisprachiger Versionsverlauf](../RELEASE-HISTORY.md) · [npm](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 
@@ -34,7 +32,7 @@ Sobald der Adapter im konfigurierten ioBroker-Repository verfügbar ist, install
 
 ## Einrichtung
 
-Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür eine neue Instanz an. Bisherige Einstellungen und Verbrauchsdaten bleiben bei der alten Instanz. Die Entwicklungsversion Beta 9 ermöglicht eine [optionale Übernahme](SETUP.md#daten-aus-einer-alten-instanz-übernehmen).
+Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür eine neue Instanz an. Bisherige Einstellungen und Verbrauchsdaten bleiben bei der alten Instanz. Der Adapter ermöglicht eine [optionale Übernahme](SETUP.md#daten-aus-einer-alten-instanz-übernehmen).
 
 1. Lege im ioBroker Admin eine Funktionsaufzählung namens **Strommessung** oder **Energy measurement** an.
 2. Füge die numerischen Messdatenpunkte, deren Kanal oder das Gerät hinzu. **W** oder **kW** liefern die Live-Leistung, ein fortlaufender Zähler in **Wh** oder **kWh** liefert den Verbrauch. Lege Leistung und Energie nach Möglichkeit in denselben Kanal.
@@ -75,6 +73,13 @@ Wähle im jeweiligen VIS-Editor ein Basis-Wertwidget und setze dessen Objekt-ID 
 Für reine Textanzeigen mit bereits enthaltener Einheit stehen `displayPower`, `displayToday`, `displayMarket`, `displayTariff` und `displayCost` bereit.
 
 ## Changelog / Versionsverlauf
+
+### 0.6.0
+
+- Kostenübersicht mit Gerätekosten und Preisabdeckung, Budgetwarnung, Tarifvergleich, CSV-Export und Amortisationsrechner.
+- aWATTar DE/AT, unterstützte Energy-Charts-Gebotszonen und externe Preisreihen auswählen. Preisintervalle, Brutto-Aufschlüsselung und das günstigste Zwei-Stunden-Fenster anzeigen.
+- PV-Leistung, Netzeinspeisung und Batterieladestand nach Datenpunktzuordnung anzeigen.
+- Verbrauchssäulen, responsive Raumkarten, einheitliche Instanzreiter und importierbare Widgets für VIS Classic und VIS 2.
 
 ### 0.6.0-beta.9 (Entwicklung)
 
