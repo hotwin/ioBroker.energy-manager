@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.6.0-beta.2 (Entwicklung)
+
+- Erfasste variable Kosten und Preisabdeckung je Gerät anzeigen. Verbrauchsvergleich und günstige Zeitfenster im lesbaren JSON-Datenpunkt energyInsights für Skripte bereitstellen.
+
 ### 0.6.0-beta.1 (Entwicklung)
 
 - Günstigstes zusammenhängendes Zwei-Stunden-Fenster und optional Live-Messwerte für PV-Erzeugung, Netzeinspeisung und Batterieladestand anzeigen.

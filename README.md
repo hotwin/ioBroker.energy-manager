@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.6.0-beta.2 (development)
+
+- Show recorded variable costs and price coverage by device. Expose consumption comparison and cheap tariff windows as read-only JSON in the energyInsights state.
+
 ### 0.6.0-beta.1 (development)
 
 - Show the cheapest contiguous two-hour gross-price window and optionally display live solar generation, grid feed-in and battery charge from configured states.

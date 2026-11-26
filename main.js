@@ -17,6 +17,7 @@ const states = {
     totalPower: ['Measured power', 'number', 'value.power', 'W'],
     consumption: ['Daily consumption ledger', 'string', 'json'],
     costSummary: ['Cost manager summary', 'string', 'json'],
+    energyInsights: ['Energy insights for scripts', 'string', 'json'],
     displayPower: ['Current power', 'string', 'text'],
     displayToday: ['Consumption today', 'string', 'text'],
     displayMarket: ['Market price', 'string', 'text'],
@@ -149,7 +150,9 @@ class EnergyManager extends utils.Adapter {
         const today = ledger.days[ledger.day];
         const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
         const costs = costManager(ledger, contract, now);
+        const insights = energyInsights(ledger, prices, now);
         const display = {
+            energyInsights: JSON.stringify(insights),
             costSummary: JSON.stringify(costs),
             displayPower: Math.abs(totalPower) >= 1000 ? show(totalPower / 1000, 'kW') : show(totalPower, 'W'),
             displayToday: show(accumulate.recordedKWh(ledger, ledger.day), 'kWh'),
@@ -159,7 +162,7 @@ class EnergyManager extends utils.Adapter {
             totalPower,
             snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, solar, totalPower, marketCt, tariffCt, currentPrice,
                 prices: prices.filter(item => item.end_timestamp > now),
-                insights: energyInsights(ledger, prices, now), costs,
+                insights, costs,
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };

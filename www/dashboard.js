@@ -12,7 +12,7 @@ const translations = {
         compareRate: "Alternative gross energy rate (ct/kWh)",
         budgetHint: "Comparison uses the same priced monthly energy and excludes alternative fixed charges. Inputs are stored only in this browser.",
         deviceComparison: "Device comparison",
-        deviceEnergy: "Energy (kWh)",
+        deviceEnergy: "Energy (kWh)", deviceCost: "Recorded cost (€)", devicePriceCoverage: "Price coverage",
         costExport: "Export daily data as CSV",
         costExportHint: "Export all recorded daily totals. Missing values remain empty.",
         costToday: "Recorded variable cost today",
@@ -119,7 +119,7 @@ const translations = {
         compareRate: "Alternativer Brutto-Arbeitspreis (ct/kWh)",
         budgetHint: "Vergleich auf Basis derselben bewerteten Monatsenergie, ohne alternative Fixkosten. Eingaben werden nur in diesem Browser gespeichert.",
         deviceComparison: "Gerätevergleich",
-        deviceEnergy: "Verbrauch (kWh)",
+        deviceEnergy: "Verbrauch (kWh)", deviceCost: "Erfasste Kosten (€)", devicePriceCoverage: "Preisabdeckung",
         costExport: "Tagesdaten als CSV exportieren",
         costExportHint: "Export aller erfassten Tagessummen. Fehlende Werte bleiben leer.",
         costToday: "Erfasste variable Kosten heute",
@@ -768,11 +768,18 @@ function renderCostDevices() {
         for (const [id, value] of Object.entries(devices)) {
             if (!Number.isFinite(value.kWh)) continue;
             const old = totals.get(id);
-            totals.set(id, { name: names.get(id) || value.name || id, kWh: (old?.kWh || 0) + value.kWh });
+            totals.set(id, {
+                name: names.get(id) || value.name || id,
+                kWh: (old?.kWh || 0) + value.kWh,
+                pricedKWh: (old?.pricedKWh || 0) + (value.pricedKWh || 0),
+                costEUR: (old?.costEUR || 0) + (value.costEUR || 0),
+            });
         }
     }
     rows(el('costDeviceRows'), [...totals.values()].sort((a, b) => b.kWh - a.kWh)
-        .map(item => [item.name, format(item.kWh, 'kWh', 3)]), words.noHistory, 2);
+        .map(item => [item.name, format(item.kWh, 'kWh', 3),
+            format(item.pricedKWh > 0 ? item.costEUR : null, '€'),
+            format(item.kWh > 0 ? item.pricedKWh / item.kWh * 100 : null, '%', 1)]), words.noHistory, 4);
 }
 
 function renderCosts() {
