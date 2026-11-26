@@ -18,15 +18,15 @@
     "desc": {
       "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
       "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
-      "es": "Supervisión local de la energía",
-      "fr": "Suivi local de l’énergie",
-      "it": "Monitoraggio locale dell’energia",
-      "nl": "Lokale energiemonitoring",
-      "pl": "Lokalne monitorowanie energii",
-      "pt": "Monitorização local da energia",
-      "ru": "Локальный мониторинг энергопотребления",
-      "uk": "Локальний моніторинг енергоспоживання",
-      "zh-cn": "本地能源监测"
+      "es": "Medición eléctrica local, análisis de tarifas y costes, y lecturas solares y de batería para ioBroker",
+      "fr": "Suivi local de l’électricité, analyse des tarifs et des coûts, et mesures solaires et de batterie pour ioBroker",
+      "it": "Misurazione elettrica locale, analisi di tariffe e costi e dati di fotovoltaico e batterie per ioBroker",
+      "nl": "Lokale stroommetingen, analyse van tarieven en kosten en gegevens van zonnepanelen en accu’s voor ioBroker",
+      "pl": "Lokalne pomiary energii, analiza taryf i kosztów oraz odczyty fotowoltaiki i akumulatorów dla ioBroker",
+      "pt": "Medição local de eletricidade, análise de tarifas e custos e leituras solares e de baterias para ioBroker",
+      "ru": "Локальный учёт электроэнергии, анализ тарифов и затрат, данные солнечных панелей и батарей для ioBroker",
+      "uk": "Локальний облік електроенергії, аналіз тарифів і витрат, дані сонячних панелей та акумуляторів для ioBroker",
+      "zh-cn": "适用于 ioBroker 的本地用电监测、费率与成本分析，以及光伏和电池读数"
     },
     "authors": [
       "hotwin <hotwin@gmx.net>"
@@ -49,15 +49,15 @@
       "0.6.0": {
         "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
         "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
-        "es": "Supervisión local de la energía",
-        "fr": "Suivi local de l’énergie",
-        "it": "Monitoraggio locale dell’energia",
-        "nl": "Lokale energiemonitoring",
-        "pl": "Lokalne monitorowanie energii",
-        "pt": "Monitorização local da energia",
-        "ru": "Локальный мониторинг энергопотребления",
-        "uk": "Локальний моніторинг енергоспоживання",
-        "zh-cn": "本地能源监测"
+        "es": "Medición eléctrica local, análisis de tarifas y costes, y lecturas solares y de batería para ioBroker",
+        "fr": "Suivi local de l’électricité, analyse des tarifs et des coûts, et mesures solaires et de batterie pour ioBroker",
+        "it": "Misurazione elettrica locale, analisi di tariffe e costi e dati di fotovoltaico e batterie per ioBroker",
+        "nl": "Lokale stroommetingen, analyse van tarieven en kosten en gegevens van zonnepanelen en accu’s voor ioBroker",
+        "pl": "Lokalne pomiary energii, analiza taryf i kosztów oraz odczyty fotowoltaiki i akumulatorów dla ioBroker",
+        "pt": "Medição local de eletricidade, análise de tarifas e custos e leituras solares e de baterias para ioBroker",
+        "ru": "Локальный учёт электроэнергии, анализ тарифов и затрат, данные солнечных панелей и батарей для ioBroker",
+        "uk": "Локальний облік електроенергії, аналіз тарифів і витрат, дані сонячних панелей та акумуляторів для ioBroker",
+        "zh-cn": "适用于 ioBroker 的本地用电监测、费率与成本分析，以及光伏和电池读数"
       },
       "0.3.0-beta.8": {
         "en": "Configure the standard ioBroker release script.",

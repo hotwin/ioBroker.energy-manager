@@ -10,6 +10,7 @@ const { once } = require('node:events');
 const { mock } = require('node:test');
 const { setTimeout: wait } = require('node:timers/promises');
 const { tests } = require('@iobroker/testing');
+const { marketFeed } = require('../lib/prices');
 const { localDay } = require('../lib/consumption');
 
 tests.integration(path.join(__dirname, '..'), {
@@ -225,7 +226,7 @@ tests.integration(path.join(__dirname, '..'), {
                             for (const nextDelay of [60_000, 120_000, 240_000, 480_000, 900_000, 900_000]) {
                                 adapter.nextPricePoll = 0;
                                 const start = Date.now();
-                                await adapter.refreshPrices();
+                                await adapter.refreshPrices(marketFeed('awattar', Date.now()));
                                 assert.ok(adapter.nextPricePoll >= start + nextDelay);
                                 assert.ok(adapter.nextPricePoll <= Date.now() + nextDelay);
                             }
@@ -234,7 +235,7 @@ tests.integration(path.join(__dirname, '..'), {
                             assert.equal(market.mock.callCount(), 7);
                             marketAvailable = true;
                             adapter.nextPricePoll = 0;
-                            await adapter.refreshPrices();
+                            await adapter.refreshPrices(marketFeed('awattar', Date.now()));
                             assert.equal(adapter.priceRetryDelay, 60_000);
                         }
                     } finally {
