@@ -27,5 +27,8 @@
   "settings_fixedCosts": "固定费用与预付款",
   "solarPowerId": "Solar generation power",
   "feedInPowerId": "Grid feed-in power",
-  "batterySocId": "Battery state of charge"
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "合同",
+  "tariffChargesHeading": "净价组成",
+  "tariffVatHeading": "增值税"
 }

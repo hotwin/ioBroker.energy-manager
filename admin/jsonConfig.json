@@ -132,14 +132,15 @@
       "type": "panel",
       "label": "settings_tariff",
       "items": {
-        "tariffConfigured": {
-          "type": "checkbox",
-          "label": "tariffConfigured",
+        "tariffContractHeading": {
+          "type": "header",
+          "text": "tariffContractHeading",
+          "size": 4,
           "xs": 12,
-          "sm": 6,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "contractStart": {
           "type": "text",
@@ -147,28 +148,27 @@
           "xs": 12,
           "sm": 6,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
-        "markupCt": {
-          "type": "number",
-          "label": "markupCt",
-          "min": 0,
+        "tariffConfigured": {
+          "type": "checkbox",
+          "label": "tariffConfigured",
           "xs": 12,
           "sm": 6,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
-        "vatPercent": {
-          "type": "number",
-          "label": "vatPercent",
-          "min": 0,
+        "tariffChargesHeading": {
+          "type": "header",
+          "text": "tariffChargesHeading",
+          "size": 4,
           "xs": 12,
-          "sm": 6,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "electricityTaxCt": {
           "type": "number",
@@ -177,8 +177,8 @@
           "xs": 12,
           "sm": 6,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "networkCt": {
           "type": "number",
@@ -187,8 +187,8 @@
           "xs": 12,
           "sm": 6,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "concessionCt": {
           "type": "number",
@@ -197,8 +197,8 @@
           "xs": 12,
           "sm": 6,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "leviesCt": {
           "type": "number",
@@ -207,8 +207,38 @@
           "xs": 12,
           "sm": 6,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
+        },
+        "markupCt": {
+          "type": "number",
+          "label": "markupCt",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
+        },
+        "tariffVatHeading": {
+          "type": "header",
+          "text": "tariffVatHeading",
+          "size": 4,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "vatPercent": {
+          "type": "number",
+          "label": "vatPercent",
+          "min": 0,
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
         }
       }
     },

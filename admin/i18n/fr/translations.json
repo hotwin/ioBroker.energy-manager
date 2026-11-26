@@ -27,5 +27,8 @@
   "settings_fixedCosts": "Frais fixes et acomptes",
   "solarPowerId": "Solar generation power",
   "feedInPowerId": "Grid feed-in power",
-  "batterySocId": "Battery state of charge"
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Contrat",
+  "tariffChargesHeading": "Composantes du prix hors taxes",
+  "tariffVatHeading": "TVA"
 }

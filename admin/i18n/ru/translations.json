@@ -27,5 +27,8 @@
   "settings_fixedCosts": "Постоянные расходы и авансы",
   "solarPowerId": "Solar generation power",
   "feedInPowerId": "Grid feed-in power",
-  "batterySocId": "Battery state of charge"
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Договор",
+  "tariffChargesHeading": "Составляющие цены без НДС",
+  "tariffVatHeading": "НДС"
 }

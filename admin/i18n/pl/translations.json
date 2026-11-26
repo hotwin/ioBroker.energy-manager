@@ -27,5 +27,8 @@
   "settings_fixedCosts": "Koszty stałe i zaliczki",
   "solarPowerId": "Solar generation power",
   "feedInPowerId": "Grid feed-in power",
-  "batterySocId": "Battery state of charge"
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Umowa",
+  "tariffChargesHeading": "Składniki ceny netto",
+  "tariffVatHeading": "VAT"
 }

@@ -27,5 +27,8 @@
   "settings_fixedCosts": "Fixkosten & Abschläge",
   "solarPowerId": "PV-Erzeugungsleistung",
   "feedInPowerId": "Netzeinspeisung (Leistung)",
-  "batterySocId": "Batterieladestand"
+  "batterySocId": "Batterieladestand",
+  "tariffContractHeading": "Vertrag",
+  "tariffChargesHeading": "Netto-Preisbestandteile",
+  "tariffVatHeading": "Mehrwertsteuer"
 }

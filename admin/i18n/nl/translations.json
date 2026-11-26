@@ -27,5 +27,8 @@
   "settings_fixedCosts": "Vaste kosten en voorschotten",
   "solarPowerId": "Solar generation power",
   "feedInPowerId": "Grid feed-in power",
-  "batterySocId": "Battery state of charge"
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Contract",
+  "tariffChargesHeading": "Nettoprijscomponenten",
+  "tariffVatHeading": "Btw"
 }

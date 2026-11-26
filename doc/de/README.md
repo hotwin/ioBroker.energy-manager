@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.6.0-beta.3 (Entwicklung)
+
+- Die nativen Stromtarif-Einstellungen in Vertrag, Netto-Preisbestandteile und Mehrwertsteuer gliedern.
+
 ### 0.6.0-beta.2 (Entwicklung)
 
 - Erfasste variable Kosten und Preisabdeckung je Gerät anzeigen. Verbrauchsvergleich und günstige Zeitfenster im lesbaren JSON-Datenpunkt energyInsights für Skripte bereitstellen.

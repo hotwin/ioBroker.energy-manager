@@ -27,5 +27,8 @@
   "settings_fixedCosts": "Постійні витрати та аванси",
   "solarPowerId": "Solar generation power",
   "feedInPowerId": "Grid feed-in power",
-  "batterySocId": "Battery state of charge"
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Договір",
+  "tariffChargesHeading": "Складові ціни без ПДВ",
+  "tariffVatHeading": "ПДВ"
 }

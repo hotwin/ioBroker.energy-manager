@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.6.0-beta.3 (development)
+
+- Group the native electricity tariff settings into contract, net price components and VAT.
+
 ### 0.6.0-beta.2 (development)
 
 - Show recorded variable costs and price coverage by device. Expose consumption comparison and cheap tariff windows as read-only JSON in the energyInsights state.
