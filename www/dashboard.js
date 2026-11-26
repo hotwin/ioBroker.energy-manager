@@ -12,6 +12,7 @@ const translations = {
         compareRate: "Alternative gross energy rate (ct/kWh)",
         budgetHint: "Comparison uses the same priced monthly energy and excludes alternative fixed charges. Inputs are stored only in this browser.",
         deviceComparison: "Device comparison",
+        paybackTitle: 'Investment payback', paybackCost: 'Investment (€)', paybackSavings: 'Expected annual net savings (€)', paybackYears: 'Estimated payback', paybackNoSavings: 'Payback requires positive annual savings.', years: 'years',
         deviceEnergy: "Energy (kWh)", deviceCost: "Recorded cost (€)", devicePriceCoverage: "Price coverage",
         costExport: "Export daily data as CSV",
         costExportHint: "Export all recorded daily totals. Missing values remain empty.",
@@ -122,6 +123,7 @@ const translations = {
         compareRate: "Alternativer Brutto-Arbeitspreis (ct/kWh)",
         budgetHint: "Vergleich auf Basis derselben bewerteten Monatsenergie, ohne alternative Fixkosten. Eingaben werden nur in diesem Browser gespeichert.",
         deviceComparison: "Gerätevergleich",
+        paybackTitle: 'Amortisationsrechner', paybackCost: 'Investition (€)', paybackSavings: 'Erwartete jährliche Nettoersparnis (€)', paybackYears: 'Geschätzte Amortisationsdauer', paybackNoSavings: 'Eine Amortisation setzt eine positive jährliche Ersparnis voraus.', years: 'Jahre',
         deviceEnergy: "Verbrauch (kWh)", deviceCost: "Erfasste Kosten (€)", devicePriceCoverage: "Preisabdeckung",
         costExport: "Tagesdaten als CSV exportieren",
         costExportHint: "Export aller erfassten Tagessummen. Fehlende Werte bleiben leer.",
@@ -764,6 +766,23 @@ function costInput(id) {
         ? input.valueAsNumber : null;
 }
 
+function renderPayback() {
+    const cost = costInput('paybackCost');
+    const savings = costInput('paybackSavings');
+    const result = el('paybackResult');
+    if (cost === null || savings === null) {
+        result.textContent = '';
+    } else if (savings === 0) {
+        result.textContent = words.paybackNoSavings;
+    } else {
+        result.textContent = words.paybackYears + ': ' + format(cost / savings, words.years, 1);
+    }
+}
+
+for (const id of ['paybackCost', 'paybackSavings']) {
+    el(id).addEventListener('input', renderPayback);
+}
+
 function renderCostBudget(costs) {
     const budget = costInput('costBudgetInput');
     const alternative = costInput('compareRate');
@@ -807,6 +826,7 @@ function renderCostDevices() {
 }
 
 function renderCosts() {
+    renderPayback();
     const costs = snapshot?.costs;
     const month = costs?.month;
     const sample = costs?.sample;
