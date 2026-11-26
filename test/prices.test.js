@@ -53,3 +53,14 @@ test('accepts a custom EUR/MWh series and rejects overlapping intervals', () => 
     assert.deepEqual(normalizePriceFeed([first, { ...second, start_timestamp: 1 }]), []);
     assert.deepEqual(normalizePriceFeed({ data: null }), []);
 });
+
+test('normalizes Energy-Charts in EUR/MWh and preserves gaps', () => {
+    const { normalizeEnergyCharts } = require('../lib/prices');
+    const timestamp = '2026-11-26T12:00:00+01:00';
+    const feed = { bidding_zone: 'DE-LU', unit: 'EUR/MWh', interval_minutes: 15,
+        series: [{ id: 'price' }], data: [{ timestamp, values: { price: -5 } },
+            { timestamp: '2026-11-26T12:15:00+01:00', values: { price: null } }] };
+    assert.deepEqual(normalizeEnergyCharts(feed, 'DE-LU'), [{ start_timestamp: Date.parse(timestamp),
+        end_timestamp: Date.parse(timestamp) + 900000, marketprice: -5 }]);
+    assert.deepEqual(normalizeEnergyCharts(feed, 'AT'), []);
+});
