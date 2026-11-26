@@ -1,7 +1,7 @@
 # ioBroker Energy Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
-[![npm beta](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/beta?label=npm%20beta)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+[![npm next](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/next?label=npm%20next)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hotwin-energy-manager?label=downloads)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Test and Release (main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
@@ -13,7 +13,7 @@
 
 Local energy monitoring and electricity cost analysis for ioBroker, with a responsive dashboard, room and device statistics, and German day-ahead market prices from [aWATTar](https://www.awattar.de/).
 
-[Deutsch](README.de.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](CHANGELOG_OLD.md)
+[Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](CHANGELOG_OLD.md)
 
 ## Features
 
@@ -29,11 +29,7 @@ Local energy monitoring and electricity cost analysis for ioBroker, with a respo
 
 Requires Node.js 22+, ioBroker Admin 7.6.20+ and js-controller 6.0.11+. Measurement states must be supplied by installed device adapters.
 
-```bash
-iobroker add hotwin-energy-manager@0.3.0-beta.8
-```
-
-The package is published under the npm beta tag, not yet in the official ioBroker Latest or Stable repository.
+Install Energy Manager from **Adapters** in ioBroker Admin once it is available in your configured repository. The published beta is awaiting admission to the official Latest or Stable repository.
 
 **Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; the beta.9 development version adds an [opt-in import](doc/en/README.md#import-from-a-legacy-instance). Keep the old instance and back up its data.
 
@@ -45,7 +41,7 @@ Consumption is calculated from cumulative meter differences after recording begi
 
 ## Development and roadmap
 
-GitHub Actions checks lint, package metadata, dashboard synchronization, unit tests, integration and Compact Mode on Node.js 22/24. The beta.8 npm publish job succeeded. The official release script is configured in the development branch.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 
 - [Main branch integration / Developer Portal](https://github.com/hotwin/ioBroker.hotwin-energy-manager/pull/12)
 - [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
@@ -61,6 +57,8 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ### 0.3.0-beta.14 (development)
 
+- Move the German guide and supporting documentation to the ioBroker documentation layout.
+
 - Refresh dashboard design with automatic light/dark selection, theme-aware charts and a streamlined header with automatic instance selection. Organize native instance configuration into four tabs.
 
 - Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
@@ -72,6 +70,7 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 - A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
 - The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
 - The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+- Use the official ioBroker test-and-release workflow and Trusted Publishing; published GitHub releases remain unchanged.
 - Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
 - Instance settings, adapter metadata and release summaries are available in nine additional languages.
 - The adapter test matrix now includes Node.js 26.
@@ -102,7 +101,7 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 - Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
 - Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
 
-[Full bilingual release history](CHANGELOG_OLD.md)
+[Full bilingual release history](doc/RELEASE-HISTORY.md)
 
 ## License
 

@@ -2,25 +2,18 @@ name: Test and Release
 
 on:
   push:
-    branches: ['*', '**']
-    tags: ['v[0-9]+.[0-9]+.[0-9]+', 'v[0-9]+.[0-9]+.[0-9]+-**']
+    branches:
+      - "main"
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-**"
+  pull_request: {}
   workflow_dispatch:
     inputs:
-      check_repository:
-        description: Run the official repository gate for this candidate
-        type: boolean
-        default: false
       admission_issue:
-        description: GitHub issue or PR documenting an approved ioBroker admission exception
+        description: Documented approved ioBroker admission exception
         type: string
         required: false
-      publish_beta:
-        description: Publish the checked beta package to npm
-        type: boolean
-        default: false
-  pull_request:
-  release:
-    types: [published]
 
 permissions:
   contents: read
@@ -30,57 +23,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # The official composite actions use unpinned nested references, which
-  # conflict with this repository's required full-SHA Actions policy.
-  # Run the same ioBroker package and adapter test commands directly.
   check-and-lint:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ioBroker/testing-action-check@v2
         with:
-          persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: 22
-          cache: npm
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Lint and check dashboard copies
-        run: npm run lint && npm run check:dashboard
-      - name: Official package tests
-        run: npm run test:package
-      - name: Validate package
-        run: npm pack --dry-run
+          node-version: '22.x'
+          lint: true
+      - run: npm run check:dashboard
+      - run: npm pack --dry-run
 
   adapter-tests:
-    needs: check-and-lint
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        node-version: [22, 24, 26]
+        node-version: [22.x, 24.x, 26.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: ioBroker/testing-action-adapter@v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Unit tests
-        run: npm run test:unit
-      - name: Integration and Compact Mode tests
-        env:
-          DEBUG: 'testing:*'
-        run: npm run test:integration
+          os: ${{ matrix.os }}
 
   repository-check:
-    if: >-
-      (github.event_name == 'workflow_dispatch' && (inputs.check_repository || inputs.publish_beta)) ||
-      (github.event_name == 'push' && (github.ref == 'refs/heads/develop/repository-checker-24' || github.ref == 'refs/heads/develop/release-gate-bootstrap-24' || github.ref == 'refs/heads/develop/npm-trusted-publishing' || github.ref == 'refs/heads/develop/checker-remediation-34'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -90,9 +59,13 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
+      - name: Confirm release tag belongs to main
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: git merge-base --is-ancestor HEAD origin/main
       - name: Install official Repository Checker 5.24.3
         run: |
           checker="$RUNNER_TEMP/repochecker"
@@ -108,53 +81,18 @@ jobs:
         run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
 
   deploy:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish_beta && github.ref == 'refs/heads/main'
     needs: [check-and-lint, adapter-tests, repository-check]
+    if: |
+      contains(github.event.head_commit.message, '[skip ci]') == false &&
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: npm-beta
     permissions:
-      contents: write
       id-token: write
+      contents: write
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ioBroker/testing-action-deploy@v1
         with:
-          persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
-      - name: Verify package name and beta version
-        run: |
-          node <<'NODE'
-          const pkg = require('./package.json');
-          const adapter = require('./io-package.json');
-          if (pkg.name !== 'iobroker.hotwin-energy-manager' ||
-              !/^\d+\.\d+\.\d+-beta\.\d+$/.test(pkg.version) ||
-              pkg.version !== adapter.common.version) {
-            throw new Error('Expected matching Energy Manager beta package metadata.');
-          }
-          NODE
-      - name: Verify npm supports trusted publishing
-        run: |
-          node -e "const [major, minor, patch] = process.argv[1].split('.').map(Number); if (major < 11 || (major === 11 && (minor < 5 || (minor === 5 && patch < 1)))) process.exit(1)" "$(npm --version)"
-      - name: Verify immutable version tag and prepare release artifact
-        run: |
-          version="$(node -p "require('./package.json').version")"
-          tag="v$version"
-          git fetch --no-tags origin "refs/tags/$tag:refs/tags/$tag"
-          test "$(git rev-list -n 1 "$tag")" = "$GITHUB_SHA"
-          mkdir -p "$RUNNER_TEMP/energy-release"
-          npm pack --pack-destination "$RUNNER_TEMP/energy-release"
-          node -e "const fs=require('node:fs'); const v=require('./package.json').version; const s=fs.readFileSync('CHANGELOG_OLD.md','utf8'); const start=s.indexOf('## '+v+' '); if(start<0) throw Error('Missing release notes'); const rest=s.slice(start); const next=rest.indexOf('\n## ',1); process.stdout.write(next<0?rest:rest.slice(0,next));" > "$RUNNER_TEMP/energy-release/notes.md"
-          cd "$RUNNER_TEMP/energy-release"
-          sha256sum "iobroker.hotwin-energy-manager-$version.tgz" > SHA256SUMS
-      - name: Publish exact archive to npm under the beta tag using OIDC
-        run: |
-          version="$(node -p "require('./package.json').version")"
-          npm publish "$RUNNER_TEMP/energy-release/iobroker.hotwin-energy-manager-$version.tgz" --tag beta --provenance
-      - name: Archive verified beta on GitHub
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          version="$(node -p "require('./package.json').version")"
-          gh release create "v$version" "$RUNNER_TEMP/energy-release/iobroker.hotwin-energy-manager-$version.tgz" "$RUNNER_TEMP/energy-release/SHA256SUMS" --verify-tag --prerelease --title "Energy Manager $version" --notes-file "$RUNNER_TEMP/energy-release/notes.md"
+          node-version: '24.x'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
