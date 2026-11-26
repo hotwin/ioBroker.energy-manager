@@ -86,12 +86,16 @@ class EnergyManager extends utils.Adapter {
 
     async readExternalPrices() {
         const id = this.config.marketPriceStateId?.trim();
-        if (!id) return [];
+        if (!id) return { status: 'notConfigured', prices: [] };
         try {
             const state = await this.getForeignStateAsync(id);
-            return state?.q || typeof state?.val !== 'string' ? [] : normalizePriceFeed(JSON.parse(state.val));
-        } catch {
-            return [];
+            if (!state) return { status: 'missing', prices: [] };
+            if (state.q) return { status: 'unavailable', prices: [] };
+            if (typeof state.val !== 'string') return { status: 'invalid', prices: [] };
+            const prices = normalizePriceFeed(JSON.parse(state.val));
+            return { status: prices.length ? 'ready' : 'invalid', prices };
+        } catch (error) {
+            return { status: error instanceof SyntaxError ? 'invalid' : 'unavailable', prices: [] };
         }
     }
 
@@ -121,10 +125,16 @@ class EnergyManager extends utils.Adapter {
     async collect() {
         const externalPrices = this.config.marketPriceSource === 'state';
         if (!externalPrices) await this.refreshPrices();
-        const feed = externalPrices ? await this.readExternalPrices() : this.prices;
+        const externalFeed = externalPrices ? await this.readExternalPrices() : null;
+        const feed = externalFeed ? externalFeed.prices : this.prices;
         if (this.stopping) return;
         const now = Date.now();
         const { prices, currentPrice, marketCt, tariffCt, contract } = priceSnapshot(this.config, feed, now);
+        const marketSource = {
+            external: externalPrices,
+            status: externalFeed && externalFeed.status !== 'ready' ? externalFeed.status : currentPrice ? 'ready' : 'noInterval',
+            availableUntil: feed?.at(-1)?.end_timestamp ?? null,
+        };
         await Promise.all([
             this.setStateAsync('info.awattarAvailable', !externalPrices && Boolean(currentPrice), true),
             this.setStateAsync('info.marketPriceAvailable', Boolean(currentPrice), true),
@@ -173,7 +183,7 @@ class EnergyManager extends utils.Adapter {
             displayTariff: show(tariffCt, 'ct/kWh'),
             displayCost: today.pricedKWh > 0 ? show(today.costEUR, 'EUR') : '–',
             totalPower,
-            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, solar, totalPower, marketCt, tariffCt, currentPrice,
+            snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, solar, totalPower, marketSource, marketCt, tariffCt, currentPrice,
                 prices: prices.filter(item => item.end_timestamp > now),
                 insights, costs,
                 daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
