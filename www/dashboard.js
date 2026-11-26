@@ -76,6 +76,9 @@ const translations = {
         noPrices: 'No price data available.', noHistory: 'No consumption recorded for this period.',
         coverage: 'Totals cover the selected measurement points. Exclude overlapping meters in the instance settings.',
         deviceHint: 'Add a meter, channel or device to the Strommessung enum, or configure it manually.',
+        sourceNames: ['aWATTar DE', 'External ioBroker state'], sourceUntil: 'Prices through', tariffBreakdown: 'Gross rate breakdown',
+        sourceStatus: { ready: 'Current interval available', noInterval: 'No current interval', missing: 'State not found', invalid: 'Invalid price JSON or intervals', unavailable: 'State unavailable', notConfigured: 'No state configured' },
+        breakdownLabels: { marketCt: 'Spot price', percentageCt: 'Percentage surcharge', markupCt: 'Other surcharges', electricityTaxCt: 'Electricity tax', networkCt: 'Network charge', concessionCt: 'Concession fee', leviesCt: 'Levies', vatCt: 'VAT', limitCt: 'Price limit adjustment' },
         priceHint: 'Day-ahead market prices, before taxes and surcharges. The gross rate uses your configured contract components. Times shown in Europe/Berlin.',
         costHint: 'Variable costs cover consumption with an attributable tariff. Monthly charges are shown under Electricity contract.',
         contractHint: 'Use the amounts from your contract. Enter 0 for charges that do not apply. Leave optional energy price limits empty if your contract has no limit; 0 is an actual price limit.',
@@ -183,6 +186,9 @@ const translations = {
         noPrices: 'Keine Strompreise verfügbar.', noHistory: 'In diesem Zeitraum wurde kein Verbrauch erfasst.',
         coverage: 'Die Summe umfasst die ausgewählten Messpunkte. Überlappende Zähler lassen sich in der Instanzkonfiguration ausschließen.',
         deviceHint: 'Füge einen Zähler, Kanal oder ein Gerät zur Aufzählung Strommessung hinzu oder hinterlege es manuell.',
+        sourceNames: ['aWATTar DE', 'Externer ioBroker-Datenpunkt'], sourceUntil: 'Preise bis', tariffBreakdown: 'Brutto-Arbeitspreis im Detail',
+        sourceStatus: { ready: 'Aktuelles Intervall verfügbar', noInterval: 'Kein aktuelles Intervall', missing: 'Datenpunkt fehlt', invalid: 'Ungültiges Preis-JSON oder ungültige Intervalle', unavailable: 'Datenpunkt nicht verfügbar', notConfigured: 'Kein Datenpunkt konfiguriert' },
+        breakdownLabels: { marketCt: 'Börsenpreis', percentageCt: 'Prozentualer Aufschlag', markupCt: 'Weitere Aufschläge', electricityTaxCt: 'Stromsteuer', networkCt: 'Netzentgelt', concessionCt: 'Konzessionsabgabe', leviesCt: 'Umlagen', vatCt: 'Mehrwertsteuer', limitCt: 'Anpassung durch Preisgrenze' },
         priceHint: 'Day-Ahead-Börsenpreise vor Steuern und Aufschlägen. Der Bruttopreis basiert auf deinen hinterlegten Vertragsbestandteilen. Uhrzeit in Europe/Berlin.',
         costHint: 'Die variablen Kosten umfassen Verbrauch mit zuordenbarem Tarif. Monatliche Fixkosten stehen unter Stromvertrag.',
         contractHint: 'Übernimm die Beträge aus deinem Vertrag. Gib 0 für entfallende Aufschläge ein. Optionale Energiepreisgrenzen ohne vertragliche Begrenzung leer lassen; 0 ist eine tatsächliche Preisgrenze.',
@@ -713,6 +719,18 @@ function renderLiveOverview(data) {
     const reason = current ? words[data.contract?.status] || '' : '';
     el('summaryTariffStatus').textContent = reason;
     el('summaryTariffStatus').hidden = !reason;
+    const source = data.marketSource;
+    const sourceInfo = el('marketSourceStatus');
+    sourceInfo.textContent = source ? [
+        words.sourceNames[Number(source.external)],
+        words.sourceStatus[source.status === 'ready' && !current ? 'noInterval' : source.status],
+        source.availableUntil > now ? words.sourceUntil + ' ' + dateTime(source.availableUntil) : '',
+    ].filter(Boolean).join(' · ') : '';
+    sourceInfo.hidden = !source;
+    const breakdown = current && data.contract?.breakdown;
+    el('tariffBreakdown').hidden = !breakdown;
+    renderSummary('tariffBreakdownMetrics', Object.entries(breakdown || {}).map(([key, value]) =>
+        [words.breakdownLabels[key], format(value, 'ct/kWh', 3)]));
     const meter = data.houseMeter;
     const meterReason = {
         unconfigured: words.meterUnconfigured, missing: words.meterMissing,
