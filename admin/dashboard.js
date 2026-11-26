@@ -330,7 +330,9 @@ function recordedDay(key) {
 }
 
 function renderStats() {
-    const [from, through] = periodBounds(el('period').value, Date.now());
+    const now = Date.now();
+    const period = el('period').value;
+    const [from, through] = periodBounds(period, now);
     const days = Object.entries(snapshot?.daily || {}).filter(([key]) =>
         key >= from && key <= through && recordedDay(key)).sort();
     const total = key => days.reduce((sum, [, day]) => sum + (day[key] || 0), 0);
@@ -339,16 +341,32 @@ function renderStats() {
         format(total('kWh'), 'kWh', 3),
         priced > 0 && format(total('costEUR'), '€') + ' · ' + format(priced, 'kWh', 3) + ' ' + words.priced,
     ].filter(Boolean).join(' · ') : words.noHistory;
-    const max = Math.max(0.001, ...days.map(([, day]) => day.kWh));
-    el('statsBars').replaceChildren(...days.map(([key, day]) => {
-        const row = node('div', null, 'stat-row');
-        const progress = node('progress');
-        progress.max = max;
-        progress.value = day.kWh;
-        progress.setAttribute('aria-label', key + ': ' + format(day.kWh, 'kWh', 3));
-        row.append(node('small', key), progress, node('small', format(day.kWh, 'kWh', 3)));
-        return row;
-    }));
+    const hours = period === 'today' || period === 'yesterday' ? hourlyPoints(through, now) : [];
+    const points = hours.some(([, value]) => Number.isFinite(value))
+        ? hours
+        : days.map(([key, day]) => [key, day.kWh]);
+    const target = el('statsBars');
+    if (!points.some(([, value]) => Number.isFinite(value))) {
+        target.replaceChildren(node('p', words.noHistory));
+        return;
+    }
+
+    const max = Math.max(0.001, ...points.map(([, value]) => value ?? 0));
+    const chart = node('ul', null, 'stats-columns');
+    for (const [label, value] of points) {
+        const item = node('li', null, 'stats-column');
+        const measured = Number.isFinite(value);
+        const description = measured ? format(value, 'kWh', 3) : words.missingMeasurement;
+        const track = node('div', null, 'stats-track');
+        const bar = node('span', null, 'stats-column-fill');
+        bar.style.height = measured ? (value / max * 100) + '%' : '0%';
+        track.append(bar);
+        item.append(node('small', measured ? format(value, '', 3).trim() : '–'), track, node('small', label));
+        item.title = label + ' · ' + description;
+        item.setAttribute('aria-label', item.title);
+        chart.append(item);
+    }
+    target.replaceChildren(node('small', format(max, 'kWh', 3)), chart);
 }
 
 
@@ -501,18 +519,22 @@ function renderPriceHistory(now) {
     }
 }
 
+function hourlyPoints(hourDay, now) {
+    const utcMidday = Date.parse(hourDay + 'T12:00:00Z');
+    const formatHour = new Intl.DateTimeFormat(language, {
+        timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
+    });
+    return Array.from({ length: 28 }, (_, index) => utcMidday + (index - 14) * hourMs)
+        .filter(time => time <= now && dayKey(time) === hourDay)
+        .map(time => [formatHour.format(time), snapshot?.hourly?.[time]]);
+}
+
 function renderOverviewCharts() {
     const now = Date.now();
     const period = el('flowPeriod').value;
     renderFlow(...periodBounds(period, now));
     const hourDay = periodBounds(period === 'yesterday' ? 'yesterday' : 'today', now)[1];
-    const utcMidday = Date.parse(hourDay + 'T12:00:00Z');
-    const formatHour = new Intl.DateTimeFormat(language, {
-        timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
-    });
-    const hours = Array.from({ length: 28 }, (_, index) => utcMidday + (index - 14) * hourMs)
-        .filter(time => time <= now && dayKey(time) === hourDay)
-        .map(time => [formatHour.format(time), snapshot?.hourly?.[time]]);
+    const hours = hourlyPoints(hourDay, now);
     const [weekStart] = periodBounds('seven', now);
     const formatDay = new Intl.DateTimeFormat(language, { weekday: 'short', month: 'numeric', day: 'numeric', timeZone: 'UTC' });
     const costs = Array.from({ length: 7 }, (_, index) => {

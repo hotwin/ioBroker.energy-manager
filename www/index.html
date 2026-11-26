@@ -55,7 +55,10 @@
         #contractForm fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
         #contractForm button { font: inherit; padding: 8px 16px; }
         #statsBars { display: grid; gap: 5px; max-height: 520px; overflow: auto; }
-        .stat-row { display: grid; grid-template-columns: 85px minmax(20px, 1fr) 95px; gap: 6px; align-items: center; }
+        .stats-columns { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(5rem, 1fr); gap: 8px; overflow-x: auto; padding: 4px 0 8px; margin: 0; list-style: none; }
+        .stats-column { display: grid; grid-template-rows: auto 8rem auto; gap: 4px; text-align: center; }
+        .stats-track { display: flex; align-items: flex-end; justify-content: center; border-bottom: 1px solid var(--line); }
+        .stats-column-fill { width: 70%; max-width: 3rem; background: var(--chart-blue); border-radius: 4px 4px 0 0; }
         progress { width: 100%; accent-color: var(--teal); }
         .note { margin-block: 12px; }
         [hidden] { display: none !important; }

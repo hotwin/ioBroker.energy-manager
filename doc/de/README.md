@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.4.0-beta.2 (Entwicklung)
+
+- Verbrauch als Säulendiagramm pro Stunde oder Tag anzeigen. Fehlende Stundenwerte bleiben als Lücken sichtbar. Die Kostensummen bleiben erhalten.
+
 ### 0.4.0-beta.1 (Entwicklung)
 
 - Neue Kostenseite mit erfassten variablen Kosten, Monats-/Jahreshochrechnung, Abschlagsvergleich, Budget, alternativem Arbeitspreis, Geräteverbrauchsvergleich und Tagesdaten-CSV. Prognosen benötigen ausreichende Historie und zeigen die Preisabdeckung. Budget und Vergleichspreis werden lokal im Browser gespeichert.

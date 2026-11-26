@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.4.0-beta.2 (development)
+
+- Show recorded hourly or daily consumption as vertical columns, with gaps for unmeasured hours and the original cost totals.
+
 ### 0.4.0-beta.1 (development)
 
 - Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
