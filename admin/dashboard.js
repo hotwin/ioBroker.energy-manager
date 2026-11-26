@@ -729,8 +729,14 @@ function renderLiveOverview(data) {
     sourceInfo.hidden = !source;
     const breakdown = current && data.contract?.breakdown;
     el('tariffBreakdown').hidden = !breakdown;
-    renderSummary('tariffBreakdownMetrics', Object.entries(breakdown || {}).map(([key, value]) =>
-        [words.breakdownLabels[key], format(value, 'ct/kWh', 3)]));
+    const breakdownRows = Object.entries(breakdown || {}).filter(([, value]) => Number.isFinite(value) && value !== 0);
+    if (breakdown) breakdownRows.push(['total', data.tariffCt]);
+    el('tariffBreakdownMetrics').replaceChildren(...breakdownRows.map(([key, value]) => {
+        const row = node('div', null, key === 'total' ? 'tariff-breakdown-total' : '');
+        row.append(node('dt', key === 'total' ? words.currentTariff : words.breakdownLabels[key]),
+            node('dd', format(value, '', 3).trim()));
+        return row;
+    }));
     const meter = data.houseMeter;
     const meterReason = {
         unconfigured: words.meterUnconfigured, missing: words.meterMissing,
