@@ -722,7 +722,7 @@ function renderLiveOverview(data) {
     const source = data.marketSource;
     const sourceInfo = el('marketSourceStatus');
     sourceInfo.textContent = source ? [
-        words.sourceNames[Number(source.external)],
+        source.name || words.sourceNames[Number(source.external)],
         words.sourceStatus[source.status === 'ready' && !current ? 'noInterval' : source.status],
         source.availableUntil > now ? words.sourceUntil + ' ' + dateTime(source.availableUntil) : '',
     ].filter(Boolean).join(' · ') : '';
