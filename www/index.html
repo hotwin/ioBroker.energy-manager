@@ -375,6 +375,14 @@
             <div class="scroll"><table><thead><tr><th data-text="deviceComparison"></th><th data-text="deviceEnergy"></th><th data-text="deviceCost"></th><th data-text="devicePriceCoverage"></th></tr></thead><tbody id="costDeviceRows"></tbody></table></div>
         </div>
         <div class="surface overview-chart">
+            <h2 data-text="paybackTitle"></h2>
+            <div class="contract-fields">
+                <label><span data-text="paybackCost"></span><input id="paybackCost" type="number" min="0" step="0.01"></label>
+                <label><span data-text="paybackSavings"></span><input id="paybackSavings" type="number" min="0" step="0.01"></label>
+            </div>
+            <p class="note" id="paybackResult" role="status"></p>
+        </div>
+        <div class="surface overview-chart">
             <button id="costExport" type="button" class="github-button" data-text="costExport"></button>
             <p class="note" data-text="costExportHint"></p>
         </div>
