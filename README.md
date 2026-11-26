@@ -51,6 +51,10 @@ This is an actively developed beta. Report bugs and suggestions via [GitHub Issu
 
 ## Changelog
 
+### 0.4.0-beta.4 (development)
+
+- Show device groups as responsive room cards with device counts and measured room power.
+
 ### 0.4.0-beta.3 (development)
 
 - Show an explicit budget warning if forecast monthly costs exceed the target, and explain when there is insufficient data for a forecast.

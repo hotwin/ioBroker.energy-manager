@@ -571,7 +571,8 @@ function renderOverviewCharts() {
     renderPriceHistory(now);
 }
 
-function renderDevices(devices) {
+function renderDevices(devices, roomTotals) {
+    const powerByRoom = new Map(roomTotals.map(room => [room.name, room.powerW]));
     const target = el('deviceGroups');
     const previous = new Map([...target.querySelectorAll('details')].map(group => [group.dataset.room, group]));
     const focusedRoom = document.activeElement?.closest('#deviceGroups details')?.dataset.room;
@@ -587,8 +588,13 @@ function renderDevices(devices) {
         const members = rooms.get(room);
         group.dataset.room = room;
         group.open = previous.get(room)?.open ?? names.length === 1;
-        group.querySelector('summary').append(node('strong', room || words.unassigned),
-            node('small', words.roomDevices(members.length)));
+        const title = node('span', null, 'device-group-title');
+        title.append(node('strong', room || words.unassigned), node('small', words.roomDevices(members.length), 'note'));
+        const power = powerByRoom.get(room);
+        const reading = node('span', null, 'device-group-reading');
+        reading.append(node('strong', format(power, 'W')),
+            node('small', Number.isFinite(power) ? words.roomPower : words.roomNoReading, 'note'));
+        group.querySelector('summary').append(title, reading);
         for (const header of group.querySelectorAll('[data-text]')) {
             header.textContent = words[header.dataset.text];
         }
@@ -832,7 +838,7 @@ function render() {
         ['todayEnergy', format(today?.kWh, 'kWh', 3), 'statistics'],
         ['todayCost', format(today?.pricedKWh > 0 ? today.costEUR : null, '€'), 'statistics'],
     ]);
-    renderDevices(data.devices || []);
+    renderDevices(data.devices || [], data.rooms || []);
     renderRooms(data.rooms || [], data.devices || []);
     rows(el('priceRows'), (data.prices || []).filter(price => price.end_timestamp > Date.now()).map(price => [
         dateTime(price.start_timestamp), dateTime(price.end_timestamp), format(price.marketprice / 10, 'ct/kWh'),

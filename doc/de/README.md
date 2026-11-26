@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.4.0-beta.4 (Entwicklung)
+
+- Gerätegruppen als responsive Raumkarten mit Geräteanzahl und gemessener Raumleistung anzeigen.
+
 ### 0.4.0-beta.3 (Entwicklung)
 
 - Bei prognostizierter Überschreitung des Monatsbudgets eine Warnung anzeigen. Fehlen Daten für die Prognose, erscheint ein eigener Hinweis.

@@ -75,10 +75,17 @@
         .alias-actions button { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); cursor: pointer; }
         .alias-actions button[type="submit"] { background: var(--teal); color: white; }
         .alias-actions button:disabled { opacity: .55; cursor: wait; }
-        #deviceGroups { display: grid; gap: 10px; }
-        .device-group summary { cursor: pointer; }
-        .device-group summary small { margin-inline-start: 10px; }
-        .device-group[open] summary { margin-bottom: 10px; }
+        #deviceGroups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 12px; align-items: start; }
+        .device-group { min-width: 0; }
+        .device-group summary { display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none; }
+        .device-group summary::-webkit-details-marker { display: none; }
+        .device-group summary::after { content: ''; width: 7px; height: 7px; flex-shrink: 0; border: solid var(--muted); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        .device-group-title, .device-group-reading { display: grid; gap: 4px; }
+        .device-group-title { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+        .device-group-reading { text-align: end; }
+        .device-group[open] { grid-column: 1 / -1; }
+        .device-group[open] summary { margin-bottom: 12px; }
+        .device-group[open] summary::after { transform: rotate(225deg); }
         .device-group td small { display: block; overflow-wrap: anywhere; }
         .overview-chart, .chart-grid { margin-top: 16px; }
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
