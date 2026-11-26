@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.4.0-beta.4",
+    "version": "0.6.0-beta.9",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager",
@@ -150,7 +150,12 @@
     "tariffFormula": "additive",
     "marketMarkupPercent": null,
     "energyMinGrossCt": null,
-    "energyMaxGrossCt": null
+    "energyMaxGrossCt": null,
+    "marketPriceSource": "awattar",
+    "marketPriceStateId": "",
+    "solarPowerId": "",
+    "feedInPowerId": "",
+    "batterySocId": ""
   },
   "instanceObjects": [
     {

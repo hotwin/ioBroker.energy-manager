@@ -24,5 +24,21 @@
   "settings_measurement": "Pomiary i licznik główny",
   "settings_devices": "Urządzenia i punkty danych",
   "settings_tariff": "Taryfa energii",
-  "settings_fixedCosts": "Koszty stałe i zaliczki"
+  "settings_fixedCosts": "Koszty stałe i zaliczki",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Umowa",
+  "tariffChargesHeading": "Składniki ceny netto",
+  "tariffVatHeading": "VAT",
+  "mainMeterHeading": "Licznik główny",
+  "solarSettingsHeading": "Fotowoltaika i akumulator",
+  "discoveryHeading": "Automatyczne wykrywanie",
+  "manualSourcesHeading": "Ręczne punkty danych",
+  "fixedChargesHeading": "Opłaty stałe i pomiarowe",
+  "advanceHeading": "Zaliczka",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

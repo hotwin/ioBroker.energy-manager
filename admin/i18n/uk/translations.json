@@ -24,5 +24,21 @@
   "settings_measurement": "Вимірювання та головний лічильник",
   "settings_devices": "Пристрої та точки даних",
   "settings_tariff": "Тариф на електроенергію",
-  "settings_fixedCosts": "Постійні витрати та аванси"
+  "settings_fixedCosts": "Постійні витрати та аванси",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Договір",
+  "tariffChargesHeading": "Складові ціни без ПДВ",
+  "tariffVatHeading": "ПДВ",
+  "mainMeterHeading": "Головний електролічильник",
+  "solarSettingsHeading": "Сонячна енергія та акумулятор",
+  "discoveryHeading": "Автоматичне виявлення",
+  "manualSourcesHeading": "Ручне налаштування точок даних",
+  "fixedChargesHeading": "Абонплата та облік",
+  "advanceHeading": "Авансовий платіж",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

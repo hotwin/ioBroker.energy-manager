@@ -49,7 +49,47 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 
 This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
 
+## VIS Classic and VIS 2
+
+In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
+
 ## Changelog
+
+### 0.6.0-beta.9 (development)
+
+- Add numeric display states for VIS Classic and VIS 2.
+
+### 0.6.0-beta.8 (development)
+
+- Estimate simple payback from an investment and user-entered annual net savings.
+
+### 0.6.0-beta.7 (development)
+
+- Add aWATTar Austria and selectable public Energy-Charts bidding zones. Energy-Charts market data from Bundesnetzagentur / SMARD via Fraunhofer ISE, licensed CC BY 4.0. [Energy-Charts](https://api.energy-charts.info/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+### 0.6.0-beta.6 (development)
+
+- Show market feed diagnostics and explain the active gross tariff with an itemized breakdown.
+
+### 0.6.0-beta.5 (development)
+
+- Select aWATTar Germany or a custom day-ahead market feed from an ioBroker JSON state. The state accepts an array or an object with a data array. Each interval uses start_timestamp and end_timestamp in Unix milliseconds and marketprice in EUR/MWh. Supply non-overlapping intervals and select a feed that matches your contract and bidding zone.
+
+### 0.6.0-beta.4 (development)
+
+- Apply consistent section headings and responsive field widths across all four instance settings tabs.
+
+### 0.6.0-beta.3 (development)
+
+- Group the native electricity tariff settings into contract, net price components and VAT.
+
+### 0.6.0-beta.2 (development)
+
+- Show recorded variable costs and price coverage by device. Expose consumption comparison and cheap tariff windows as read-only JSON in the energyInsights state.
+
+### 0.6.0-beta.1 (development)
+
+- Show the cheapest contiguous two-hour gross-price window and optionally display live solar generation, grid feed-in and battery charge from configured states.
 
 ### 0.4.0-beta.4 (development)
 

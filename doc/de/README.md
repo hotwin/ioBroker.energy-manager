@@ -57,7 +57,60 @@ Die automatischen Tests und der npm-Upload der Beta 8 waren erfolgreich. Der Ada
 
 Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) oder [ioBroker-Forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
+## VIS Classic und VIS 2
+
+Fertige Kacheln: [VIS Classic](../vis/energy-manager-vis-classic.json) · [VIS 2](../vis/energy-manager-vis-2.json). Im passenden Editor den Widget-Import öffnen und den Inhalt der JSON-Datei einfügen. Die Kacheln nutzen die eingebauten Basiswidgets und sind auf `hotwin-energy-manager.0` eingestellt. Bei abweichender Instanznummer die IDs vor dem Import anpassen.
+
+Wähle im jeweiligen VIS-Editor ein Basis-Wertwidget und setze dessen Objekt-ID beispielsweise auf `hotwin-energy-manager.0.todayEnergy`. Ersetze `.0` bei Bedarf durch deine Instanznummer. Die folgenden numerischen Datenpunkte sind schreibgeschützt und ohne Messwert leer. Die Einheit kannst du im Widget ergänzen.
+
+| Datenpunkt | Wert |
+| --- | --- |
+| `totalPower` | Leistung der erfassten Geräte (W) |
+| `todayEnergy` | Verbrauch der erfassten Geräte heute (kWh) |
+| `todayCost` | Bewertete variable Kosten heute (EUR) |
+| `currentMarketPrice` | Aktueller Börsenpreis (ct/kWh) |
+| `currentGrossPrice` | Aktueller Brutto-Arbeitspreis (ct/kWh) |
+| `houseMeterEnergy` | Gesamtstand des Hauptzählers (kWh) |
+
+Für reine Textanzeigen mit bereits enthaltener Einheit stehen `displayPower`, `displayToday`, `displayMarket`, `displayTariff` und `displayCost` bereit.
+
 ## Changelog / Versionsverlauf
+
+### 0.6.0-beta.9 (Entwicklung)
+
+- Numerische Anzeigedatenpunkte für VIS Classic und VIS 2 ergänzen.
+
+### 0.6.0-beta.8 (Entwicklung)
+
+- Einfache Amortisationsdauer aus Investition und eingegebener jährlicher Nettoersparnis schätzen.
+
+### 0.6.0-beta.7 (Entwicklung)
+
+- aWATTar Österreich und öffentliche Energy-Charts-Gebotszonen ergänzen. Energy-Charts-Marktdaten von Bundesnetzagentur / SMARD über Fraunhofer ISE, CC BY 4.0. [Energy-Charts](https://api.energy-charts.info/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+### 0.6.0-beta.6 (Entwicklung)
+
+- Zustand der Börsenpreisquelle und Bestandteile des aktuellen Brutto-Arbeitspreises anzeigen.
+
+### 0.6.0-beta.5 (Entwicklung)
+
+- Im Reiter Stromtarif zwischen aWATTar Deutschland und einem ioBroker-Datenpunkt für eigene Börsenpreise wählen. Der JSON-String enthält ein Array oder ein Objekt mit data-Array. Pro Intervall werden start_timestamp und end_timestamp in Unix-Millisekunden und marketprice in EUR/MWh erwartet. Die Intervalle dürfen sich nicht überschneiden. Die Preisquelle muss zur Gebotszone und zum Vertrag passen.
+
+### 0.6.0-beta.4 (Entwicklung)
+
+- Einheitliche Abschnittsüberschriften und responsive Feldbreiten in allen vier Reitern der Instanzeinstellungen.
+
+### 0.6.0-beta.3 (Entwicklung)
+
+- Die nativen Stromtarif-Einstellungen in Vertrag, Netto-Preisbestandteile und Mehrwertsteuer gliedern.
+
+### 0.6.0-beta.2 (Entwicklung)
+
+- Erfasste variable Kosten und Preisabdeckung je Gerät anzeigen. Verbrauchsvergleich und günstige Zeitfenster im lesbaren JSON-Datenpunkt energyInsights für Skripte bereitstellen.
+
+### 0.6.0-beta.1 (Entwicklung)
+
+- Günstigstes zusammenhängendes Zwei-Stunden-Fenster und optional Live-Messwerte für PV-Erzeugung, Netzeinspeisung und Batterieladestand anzeigen.
 
 ### 0.4.0-beta.4 (Entwicklung)
 

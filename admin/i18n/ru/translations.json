@@ -24,5 +24,21 @@
   "settings_measurement": "Измерение и основной счётчик",
   "settings_devices": "Устройства и точки данных",
   "settings_tariff": "Тариф на электроэнергию",
-  "settings_fixedCosts": "Постоянные расходы и авансы"
+  "settings_fixedCosts": "Постоянные расходы и авансы",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Договор",
+  "tariffChargesHeading": "Составляющие цены без НДС",
+  "tariffVatHeading": "НДС",
+  "mainMeterHeading": "Главный электросчётчик",
+  "solarSettingsHeading": "Солнечная энергия и аккумулятор",
+  "discoveryHeading": "Автоматическое обнаружение",
+  "manualSourcesHeading": "Ручная настройка точек данных",
+  "fixedChargesHeading": "Абонентская плата и учёт",
+  "advanceHeading": "Авансовый платёж",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

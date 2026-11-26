@@ -24,5 +24,21 @@
   "settings_measurement": "Medição e contador principal",
   "settings_devices": "Dispositivos e pontos de dados",
   "settings_tariff": "Tarifa de eletricidade",
-  "settings_fixedCosts": "Custos fixos e adiantamentos"
+  "settings_fixedCosts": "Custos fixos e adiantamentos",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Contrato",
+  "tariffChargesHeading": "Componentes do preço líquido",
+  "tariffVatHeading": "IVA",
+  "mainMeterHeading": "Contador principal",
+  "solarSettingsHeading": "Solar e bateria",
+  "discoveryHeading": "Deteção automática",
+  "manualSourcesHeading": "Pontos de dados manuais",
+  "fixedChargesHeading": "Custos fixos e de medição",
+  "advanceHeading": "Pagamento por conta",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

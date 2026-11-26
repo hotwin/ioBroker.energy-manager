@@ -1,0 +1,122 @@
+[
+  {
+    "tpl": "tplValueString",
+    "widgetSet": "basic",
+    "data": {
+      "oid": "hotwin-energy-manager.0.displayPower",
+      "html_prepend": "<div style=\"font-size:14px;font-weight:500;color:#52637a;margin-bottom:7px\">Aktuelle Leistung</div>",
+      "html_append": ""
+    },
+    "style": {
+      "left": "12px",
+      "top": "12px",
+      "width": "230px",
+      "height": "82px",
+      "box-sizing": "border-box",
+      "padding": "12px",
+      "border-radius": "12px",
+      "border": "1px solid #d6e0eb",
+      "background-color": "#f4f7fb",
+      "color": "#15283c",
+      "font-family": "system-ui, sans-serif",
+      "font-size": "22px",
+      "font-weight": "700"
+    }
+  },
+  {
+    "tpl": "tplValueString",
+    "widgetSet": "basic",
+    "data": {
+      "oid": "hotwin-energy-manager.0.displayToday",
+      "html_prepend": "<div style=\"font-size:14px;font-weight:500;color:#52637a;margin-bottom:7px\">Verbrauch heute</div>",
+      "html_append": ""
+    },
+    "style": {
+      "left": "262px",
+      "top": "12px",
+      "width": "230px",
+      "height": "82px",
+      "box-sizing": "border-box",
+      "padding": "12px",
+      "border-radius": "12px",
+      "border": "1px solid #d6e0eb",
+      "background-color": "#f4f7fb",
+      "color": "#15283c",
+      "font-family": "system-ui, sans-serif",
+      "font-size": "22px",
+      "font-weight": "700"
+    }
+  },
+  {
+    "tpl": "tplValueString",
+    "widgetSet": "basic",
+    "data": {
+      "oid": "hotwin-energy-manager.0.displayCost",
+      "html_prepend": "<div style=\"font-size:14px;font-weight:500;color:#52637a;margin-bottom:7px\">Variable Kosten heute</div>",
+      "html_append": ""
+    },
+    "style": {
+      "left": "12px",
+      "top": "116px",
+      "width": "230px",
+      "height": "82px",
+      "box-sizing": "border-box",
+      "padding": "12px",
+      "border-radius": "12px",
+      "border": "1px solid #d6e0eb",
+      "background-color": "#f4f7fb",
+      "color": "#15283c",
+      "font-family": "system-ui, sans-serif",
+      "font-size": "22px",
+      "font-weight": "700"
+    }
+  },
+  {
+    "tpl": "tplValueString",
+    "widgetSet": "basic",
+    "data": {
+      "oid": "hotwin-energy-manager.0.displayMarket",
+      "html_prepend": "<div style=\"font-size:14px;font-weight:500;color:#52637a;margin-bottom:7px\">Aktueller Börsenpreis</div>",
+      "html_append": ""
+    },
+    "style": {
+      "left": "262px",
+      "top": "116px",
+      "width": "230px",
+      "height": "82px",
+      "box-sizing": "border-box",
+      "padding": "12px",
+      "border-radius": "12px",
+      "border": "1px solid #d6e0eb",
+      "background-color": "#f4f7fb",
+      "color": "#15283c",
+      "font-family": "system-ui, sans-serif",
+      "font-size": "22px",
+      "font-weight": "700"
+    }
+  },
+  {
+    "tpl": "tplValueString",
+    "widgetSet": "basic",
+    "data": {
+      "oid": "hotwin-energy-manager.0.displayTariff",
+      "html_prepend": "<div style=\"font-size:14px;font-weight:500;color:#52637a;margin-bottom:7px\">Brutto-Arbeitspreis</div>",
+      "html_append": ""
+    },
+    "style": {
+      "left": "12px",
+      "top": "220px",
+      "width": "230px",
+      "height": "82px",
+      "box-sizing": "border-box",
+      "padding": "12px",
+      "border-radius": "12px",
+      "border": "1px solid #d6e0eb",
+      "background-color": "#f4f7fb",
+      "color": "#15283c",
+      "font-family": "system-ui, sans-serif",
+      "font-size": "22px",
+      "font-weight": "700"
+    }
+  }
+]

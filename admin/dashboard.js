@@ -12,7 +12,8 @@ const translations = {
         compareRate: "Alternative gross energy rate (ct/kWh)",
         budgetHint: "Comparison uses the same priced monthly energy and excludes alternative fixed charges. Inputs are stored only in this browser.",
         deviceComparison: "Device comparison",
-        deviceEnergy: "Energy (kWh)",
+        paybackTitle: 'Investment payback', paybackCost: 'Investment (€)', paybackSavings: 'Expected annual net savings (€)', paybackYears: 'Estimated payback', paybackNoSavings: 'Payback requires positive annual savings.', years: 'years',
+        deviceEnergy: "Energy (kWh)", deviceCost: "Recorded cost (€)", devicePriceCoverage: "Price coverage",
         costExport: "Export daily data as CSV",
         costExportHint: "Export all recorded daily totals. Missing values remain empty.",
         costToday: "Recorded variable cost today",
@@ -47,6 +48,8 @@ const translations = {
         priceAwaiting: 'Waiting for prices for the current interval.',
         insightsTitle: 'Energy insights',
         insightsWaiting: 'The comparison needs a reading from yesterday and at least three of the seven preceding days.',
+        twoHourWindow: 'Cheapest two-hour window', solarHeading: 'Solar and battery',
+        solarPower: 'Solar generation', feedInPower: 'Grid feed-in', batterySoc: 'Battery state of charge',
         insightsPriceMissing: 'No upcoming interval with a calculated gross rate in the next 24 hours.',
         insightsTrend: { high: 'Unusually high', low: 'Unusually low', usual: 'Within the usual range' },
         insightsCompare: (day, usage, average, count, trend) =>
@@ -74,7 +77,10 @@ const translations = {
         noPrices: 'No price data available.', noHistory: 'No consumption recorded for this period.',
         coverage: 'Totals cover the selected measurement points. Exclude overlapping meters in the instance settings.',
         deviceHint: 'Add a meter, channel or device to the Strommessung enum, or configure it manually.',
-        priceHint: 'aWATTar day-ahead prices for Germany, before taxes and surcharges. The gross rate uses your configured contract components. Times shown in Europe/Berlin.',
+        sourceNames: ['aWATTar DE', 'External ioBroker state'], sourceUntil: 'Prices through', tariffBreakdown: 'Gross rate breakdown',
+        sourceStatus: { ready: 'Current interval available', noInterval: 'No current interval', missing: 'State not found', invalid: 'Invalid price JSON or intervals', unavailable: 'State unavailable', notConfigured: 'No state configured' },
+        breakdownLabels: { marketCt: 'Spot price', percentageCt: 'Percentage surcharge', markupCt: 'Other surcharges', electricityTaxCt: 'Electricity tax', networkCt: 'Network charge', concessionCt: 'Concession fee', leviesCt: 'Levies', vatCt: 'VAT', limitCt: 'Price limit adjustment' },
+        priceHint: 'Day-ahead market prices, before taxes and surcharges. The gross rate uses your configured contract components. Times shown in Europe/Berlin.',
         costHint: 'Variable costs cover consumption with an attributable tariff. Monthly charges are shown under Electricity contract.',
         contractHint: 'Use the amounts from your contract. Enter 0 for charges that do not apply. Leave optional energy price limits empty if your contract has no limit; 0 is an actual price limit.',
         contractWebHint: 'Open Energy Manager in ioBroker Admin to edit the contract.',
@@ -117,7 +123,8 @@ const translations = {
         compareRate: "Alternativer Brutto-Arbeitspreis (ct/kWh)",
         budgetHint: "Vergleich auf Basis derselben bewerteten Monatsenergie, ohne alternative Fixkosten. Eingaben werden nur in diesem Browser gespeichert.",
         deviceComparison: "Gerätevergleich",
-        deviceEnergy: "Verbrauch (kWh)",
+        paybackTitle: 'Amortisationsrechner', paybackCost: 'Investition (€)', paybackSavings: 'Erwartete jährliche Nettoersparnis (€)', paybackYears: 'Geschätzte Amortisationsdauer', paybackNoSavings: 'Eine Amortisation setzt eine positive jährliche Ersparnis voraus.', years: 'Jahre',
+        deviceEnergy: "Verbrauch (kWh)", deviceCost: "Erfasste Kosten (€)", devicePriceCoverage: "Preisabdeckung",
         costExport: "Tagesdaten als CSV exportieren",
         costExportHint: "Export aller erfassten Tagessummen. Fehlende Werte bleiben leer.",
         costToday: "Erfasste variable Kosten heute",
@@ -152,6 +159,8 @@ const translations = {
         priceAwaiting: 'Warte auf Preise für das laufende Intervall.',
         insightsTitle: 'Stromverbrauch im Blick',
         insightsWaiting: 'Für den Vergleich fehlen Messwerte von gestern oder von mindestens drei der sieben Tage davor.',
+        twoHourWindow: 'Günstigstes Zwei-Stunden-Fenster', solarHeading: 'PV und Speicher',
+        solarPower: 'PV-Erzeugung', feedInPower: 'Netzeinspeisung', batterySoc: 'Batterieladestand',
         insightsPriceMissing: 'Für die nächsten 24 Stunden ist kein kommendes Intervall mit berechnetem Brutto-Arbeitspreis verfügbar.',
         insightsTrend: { high: 'Ungewöhnlich hoch', low: 'Ungewöhnlich niedrig', usual: 'Im üblichen Bereich' },
         insightsCompare: (day, usage, average, count, trend) =>
@@ -179,7 +188,10 @@ const translations = {
         noPrices: 'Keine Strompreise verfügbar.', noHistory: 'In diesem Zeitraum wurde kein Verbrauch erfasst.',
         coverage: 'Die Summe umfasst die ausgewählten Messpunkte. Überlappende Zähler lassen sich in der Instanzkonfiguration ausschließen.',
         deviceHint: 'Füge einen Zähler, Kanal oder ein Gerät zur Aufzählung Strommessung hinzu oder hinterlege es manuell.',
-        priceHint: 'aWATTar-Spotmarktpreise für Deutschland vor Steuern und Aufschlägen. Der Bruttopreis basiert auf deinen hinterlegten Vertragsbestandteilen. Uhrzeit in Europe/Berlin.',
+        sourceNames: ['aWATTar DE', 'Externer ioBroker-Datenpunkt'], sourceUntil: 'Preise bis', tariffBreakdown: 'Brutto-Arbeitspreis im Detail',
+        sourceStatus: { ready: 'Aktuelles Intervall verfügbar', noInterval: 'Kein aktuelles Intervall', missing: 'Datenpunkt fehlt', invalid: 'Ungültiges Preis-JSON oder ungültige Intervalle', unavailable: 'Datenpunkt nicht verfügbar', notConfigured: 'Kein Datenpunkt konfiguriert' },
+        breakdownLabels: { marketCt: 'Börsenpreis', percentageCt: 'Prozentualer Aufschlag', markupCt: 'Weitere Aufschläge', electricityTaxCt: 'Stromsteuer', networkCt: 'Netzentgelt', concessionCt: 'Konzessionsabgabe', leviesCt: 'Umlagen', vatCt: 'Mehrwertsteuer', limitCt: 'Anpassung durch Preisgrenze' },
+        priceHint: 'Day-Ahead-Börsenpreise vor Steuern und Aufschlägen. Der Bruttopreis basiert auf deinen hinterlegten Vertragsbestandteilen. Uhrzeit in Europe/Berlin.',
         costHint: 'Die variablen Kosten umfassen Verbrauch mit zuordenbarem Tarif. Monatliche Fixkosten stehen unter Stromvertrag.',
         contractHint: 'Übernimm die Beträge aus deinem Vertrag. Gib 0 für entfallende Aufschläge ein. Optionale Energiepreisgrenzen ohne vertragliche Begrenzung leer lassen; 0 ist eine tatsächliche Preisgrenze.',
         contractWebHint: 'Öffne den Energy Manager im ioBroker Admin, um den Vertrag zu bearbeiten.',
@@ -674,13 +686,23 @@ function renderInsights(insights, now) {
     el('insightsPrice').textContent = cheapest && cheapest.from > now
         ? words.insightsRate(dateTime(cheapest.from), dateTime(cheapest.to), format(cheapest.rate, 'ct/kWh'))
         : words.insightsPriceMissing;
+    const window = insights.cheapestTwoHours;
+    el('insightsTwoHours').textContent = window && window.from > now
+        ? words.twoHourWindow + ' · ' + dateTime(window.from) + ' – ' + dateTime(window.to) +
+            ' · Ø ' + format(window.rate, 'ct/kWh')
+        : '';
+
 }
 
 function renderSummary(id, metrics) {
     el(id).replaceChildren(...metrics.map(([label, value, page]) => {
         const metric = node(page ? 'a' : 'div', null, 'summary-metric');
         if (page) metric.href = '#' + page;
-        metric.append(node('span', words[label], 'tile-label'), node('strong', value, 'tile-value'));
+        const reading = node('strong', null, 'tile-value');
+        const parts = /^(\S+)\s+(\S+)$/.exec(value);
+        if (parts) reading.append(parts[1], ' ', node('span', parts[2], 'tile-unit'));
+        else reading.textContent = value;
+        metric.append(node('span', words[label], 'tile-label'), reading);
         return metric;
     }));
 }
@@ -703,6 +725,24 @@ function renderLiveOverview(data) {
     const reason = current ? words[data.contract?.status] || '' : '';
     el('summaryTariffStatus').textContent = reason;
     el('summaryTariffStatus').hidden = !reason;
+    const source = data.marketSource;
+    const sourceInfo = el('marketSourceStatus');
+    sourceInfo.textContent = source ? [
+        source.name || words.sourceNames[Number(source.external)],
+        words.sourceStatus[source.status === 'ready' && !current ? 'noInterval' : source.status],
+        source.availableUntil > now ? words.sourceUntil + ' ' + dateTime(source.availableUntil) : '',
+    ].filter(Boolean).join(' · ') : '';
+    sourceInfo.hidden = !source;
+    const breakdown = current && data.contract?.breakdown;
+    el('tariffBreakdown').hidden = !breakdown;
+    const breakdownRows = Object.entries(breakdown || {}).filter(([, value]) => Number.isFinite(value) && value !== 0);
+    if (breakdown) breakdownRows.push(['total', data.tariffCt]);
+    el('tariffBreakdownMetrics').replaceChildren(...breakdownRows.map(([key, value]) => {
+        const row = node('div', null, key === 'total' ? 'tariff-breakdown-total' : '');
+        row.append(node('dt', key === 'total' ? words.currentTariff : words.breakdownLabels[key]),
+            node('dd', format(value, '', 3).trim()));
+        return row;
+    }));
     const meter = data.houseMeter;
     const meterReason = {
         unconfigured: words.meterUnconfigured, missing: words.meterMissing,
@@ -720,7 +760,7 @@ function renderLiveOverview(data) {
     ]);
     renderInsights(data.insights, now);
     const nextChange = Math.min(...[current && interval.end_timestamp, meter?.unassignedUntil,
-        data.insights?.cheapest?.from].filter(time => Number.isFinite(time) && time > now));
+        data.insights?.cheapest?.from, data.insights?.cheapestTwoHours?.from].filter(time => Number.isFinite(time) && time > now));
     if (Number.isFinite(nextChange)) overviewDeadline = setTimeout(() => renderLiveOverview(data), nextChange - now);
 }
 
@@ -728,6 +768,23 @@ function costInput(id) {
     const input = el(id);
     return input.value.trim() && Number.isFinite(input.valueAsNumber) && input.valueAsNumber >= 0 && input.validity.valid
         ? input.valueAsNumber : null;
+}
+
+function renderPayback() {
+    const cost = costInput('paybackCost');
+    const savings = costInput('paybackSavings');
+    const result = el('paybackResult');
+    if (cost === null || savings === null) {
+        result.textContent = '';
+    } else if (savings === 0) {
+        result.textContent = words.paybackNoSavings;
+    } else {
+        result.textContent = words.paybackYears + ': ' + format(cost / savings, words.years, 1);
+    }
+}
+
+for (const id of ['paybackCost', 'paybackSavings']) {
+    el(id).addEventListener('input', renderPayback);
 }
 
 function renderCostBudget(costs) {
@@ -749,6 +806,17 @@ function renderCostBudget(costs) {
     ]);
 }
 
+function formatDeviceCost(value) {
+    if (Number.isFinite(value) && value !== 0 && Math.abs(value) < 0.005) {
+        return (value < 0 ? '−' : '') + '< ' + format(0.01, '€');
+    }
+    return format(value, '€');
+}
+
+function formatPriceCoverage(value) {
+    return value > 0 && value < 0.05 ? '< ' + format(0.1, '%', 1) : format(value, '%', 1);
+}
+
 function renderCostDevices() {
     const [from, through] = periodBounds(el('costDevicePeriod').value, Date.now());
     const totals = new Map();
@@ -758,14 +826,22 @@ function renderCostDevices() {
         for (const [id, value] of Object.entries(devices)) {
             if (!Number.isFinite(value.kWh)) continue;
             const old = totals.get(id);
-            totals.set(id, { name: names.get(id) || value.name || id, kWh: (old?.kWh || 0) + value.kWh });
+            totals.set(id, {
+                name: names.get(id) || value.name || id,
+                kWh: (old?.kWh || 0) + value.kWh,
+                pricedKWh: (old?.pricedKWh || 0) + (value.pricedKWh || 0),
+                costEUR: (old?.costEUR || 0) + (value.costEUR || 0),
+            });
         }
     }
     rows(el('costDeviceRows'), [...totals.values()].sort((a, b) => b.kWh - a.kWh)
-        .map(item => [item.name, format(item.kWh, 'kWh', 3)]), words.noHistory, 2);
+        .map(item => [item.name, format(item.kWh, 'kWh', 3),
+            formatDeviceCost(item.pricedKWh > 0 ? item.costEUR : null),
+            formatPriceCoverage(item.kWh > 0 ? item.pricedKWh / item.kWh * 100 : null)]), words.noHistory, 4);
 }
 
 function renderCosts() {
+    renderPayback();
     const costs = snapshot?.costs;
     const month = costs?.month;
     const sample = costs?.sample;
@@ -830,6 +906,12 @@ el('costExport').addEventListener('click', () => {
 
 function render() {
     const data = snapshot || {};
+    el('solarSection').hidden = !data.solar;
+    cards('solarCards', [
+        [words.solarPower, format(data.solar?.solarW, 'W')],
+        [words.feedInPower, format(data.solar?.feedInW, 'W')],
+        [words.batterySoc, format(data.solar?.batterySoc, '%')],
+    ]);
     const today = recordedDay(dayKey(Date.now()));
     updateStatus();
     renderLiveOverview(data);

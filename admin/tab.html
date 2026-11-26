@@ -92,6 +92,12 @@
         .flow-surface { overflow: auto; }
         .flow-surface canvas { width: 100%; min-width: 620px; display: block; }
         .budget-exceeded { color: var(--chart-amber); font-weight: 700; }
+        #tariffBreakdown { margin-top: 10px; }
+        #tariffBreakdown summary { cursor: pointer; font-weight: 600; }
+        .tariff-breakdown { margin: 8px 0 0; }
+        .tariff-breakdown > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 5px 0; }
+        .tariff-breakdown dd { margin: 0; font-variant-numeric: tabular-nums; text-align: end; }
+        .tariff-breakdown-total { border-top: 1px solid var(--line); margin-top: 4px; font-weight: 700; }
         .price-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
         .price-legend > span { display: inline-flex; align-items: center; gap: 6px; }
         .price-key { width: 18px; height: 4px; border-radius: 2px; }
@@ -163,7 +169,9 @@
         .summary-metrics { gap: 8px; grid-template-columns: repeat(auto-fit, minmax(min(125px, 100%), 1fr)); }
         .summary-metric { background: #f5f7fa; border-radius: 10px; padding: 10px 12px; }
         a.summary-metric:hover { background: #eaf4f8; }
-        .tile-value { font-size: clamp(18px, 2.1vw, 24px); }
+        .summary-metric { container-type: inline-size; }
+        .tile-value { font-size: 18px; font-size: clamp(14px, 15cqi, 24px); white-space: nowrap; }
+        .tile-unit { font-size: .68em; font-weight: 600; }
         .room-icon { color: #005b76; background: #e2f1f7; }
         .room-card summary { color: #005b76; }
         .room-card { box-shadow: 0 2px 8px #24324408; }
@@ -248,12 +256,22 @@
                 <div id="priceMetrics" class="summary-metrics"></div>
                 <small id="priceValidity" class="summary-note"></small>
                 <small id="summaryTariffStatus" class="summary-note" hidden></small>
+                <small id="marketSourceStatus" class="summary-note" hidden></small>
+                <details id="tariffBreakdown" hidden>
+                    <summary><span data-text="tariffBreakdown"></span> <small>(ct/kWh)</small></summary>
+                    <dl id="tariffBreakdownMetrics" class="tariff-breakdown"></dl>
+                </details>
             </section>
         </div>
+        <section id="solarSection" class="surface overview-chart" hidden>
+            <h2 data-text="solarHeading"></h2>
+            <div id="solarCards" class="grid"></div>
+        </section>
         <div id="energyInsights" class="surface overview-chart" hidden>
             <h2 data-text="insightsTitle"></h2>
             <p id="insightsComparison"></p>
             <p id="insightsPrice"></p>
+            <p id="insightsTwoHours"></p>
         </div>
         <div class="surface overview-chart">
             <div class="stats-header">
@@ -356,7 +374,15 @@
                 <h2 data-text="deviceComparison"></h2>
                 <label><span data-text="period"></span> <select id="costDevicePeriod"></select></label>
             </div>
-            <div class="scroll"><table><thead><tr><th data-text="deviceComparison"></th><th data-text="deviceEnergy"></th></tr></thead><tbody id="costDeviceRows"></tbody></table></div>
+            <div class="scroll"><table><thead><tr><th data-text="deviceComparison"></th><th data-text="deviceEnergy"></th><th data-text="deviceCost"></th><th data-text="devicePriceCoverage"></th></tr></thead><tbody id="costDeviceRows"></tbody></table></div>
+        </div>
+        <div class="surface overview-chart">
+            <h2 data-text="paybackTitle"></h2>
+            <div class="contract-fields">
+                <label><span data-text="paybackCost"></span><input id="paybackCost" type="number" min="0" step="0.01"></label>
+                <label><span data-text="paybackSavings"></span><input id="paybackSavings" type="number" min="0" step="0.01"></label>
+            </div>
+            <p class="note" id="paybackResult" role="status"></p>
         </div>
         <div class="surface overview-chart">
             <button id="costExport" type="button" class="github-button" data-text="costExport"></button>

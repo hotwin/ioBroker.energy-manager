@@ -24,5 +24,21 @@
   "settings_measurement": "测量与总电表",
   "settings_devices": "设备与数据点",
   "settings_tariff": "电价方案",
-  "settings_fixedCosts": "固定费用与预付款"
+  "settings_fixedCosts": "固定费用与预付款",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "合同",
+  "tariffChargesHeading": "净价组成",
+  "tariffVatHeading": "增值税",
+  "mainMeterHeading": "总电表",
+  "solarSettingsHeading": "光伏和电池",
+  "discoveryHeading": "自动发现",
+  "manualSourcesHeading": "手动数据点",
+  "fixedChargesHeading": "固定费用及计量费用",
+  "advanceHeading": "预付款",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

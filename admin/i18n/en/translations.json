@@ -24,5 +24,21 @@
   "settings_measurement": "Metering & main meter",
   "settings_devices": "Devices & data points",
   "settings_tariff": "Electricity tariff",
-  "settings_fixedCosts": "Fixed costs & advances"
+  "settings_fixedCosts": "Fixed costs & advances",
+  "solarPowerId": "Solar generation power",
+  "feedInPowerId": "Grid feed-in power",
+  "batterySocId": "Battery state of charge",
+  "tariffContractHeading": "Contract",
+  "tariffChargesHeading": "Net price components",
+  "tariffVatHeading": "VAT",
+  "mainMeterHeading": "Main electricity meter",
+  "solarSettingsHeading": "Solar and battery",
+  "discoveryHeading": "Automatic discovery",
+  "manualSourcesHeading": "Manual data points",
+  "fixedChargesHeading": "Base and metering charges",
+  "advanceHeading": "Advance payment",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }
