@@ -29,7 +29,7 @@ test('chooses the earliest fully upcoming interval at the lowest known gross rat
     });
     const prices = [price(-0.5, -20), price(1, null), price(4, -1), price(2, -1), price(24, -10)];
     assert.deepEqual(energyInsights({}, prices, now), {
-        comparison: null, cheapest: { from: now + 2 * hour, to: now + 3 * hour, rate: -1 },
+        comparison: null, cheapestTwoHours: null, cheapest: { from: now + 2 * hour, to: now + 3 * hour, rate: -1 },
     });
 });
 
