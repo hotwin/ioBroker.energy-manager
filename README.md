@@ -13,7 +13,7 @@
 
 Local energy monitoring and electricity cost analysis for ioBroker, with a responsive dashboard, room and device statistics, and German day-ahead market prices from [aWATTar](https://www.awattar.de/).
 
-[Deutsch](README.de.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](#changelog)
+[Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](#changelog)
 
 ## Features
 
@@ -31,31 +31,31 @@ Screenshots from a running beta.12 instance. Personal details have been partiall
 
 ### Overview and room/device energy distribution
 
-![Overview and room/device energy distribution](docs/screenshots/v0.3.0-beta.12/uebersicht.png)
+![Overview and room/device energy distribution](doc/screenshots/v0.3.0-beta.12/uebersicht.png)
 
 ### Devices grouped by room
 
-![Devices grouped by room](docs/screenshots/v0.3.0-beta.12/geraete.png)
+![Devices grouped by room](doc/screenshots/v0.3.0-beta.12/geraete.png)
 
 ### Room cards and live power
 
-![Room cards and live power](docs/screenshots/v0.3.0-beta.12/raeume.png)
+![Room cards and live power](doc/screenshots/v0.3.0-beta.12/raeume.png)
 
 ### Consumption statistics
 
-![Consumption statistics](docs/screenshots/v0.3.0-beta.12/verbrauchsstatistik.png)
+![Consumption statistics](doc/screenshots/v0.3.0-beta.12/verbrauchsstatistik.png)
 
 ### Electricity price intervals
 
-![Electricity price intervals](docs/screenshots/v0.3.0-beta.12/strompreise.png)
+![Electricity price intervals](doc/screenshots/v0.3.0-beta.12/strompreise.png)
 
 ### Contract configuration
 
-![Contract configuration](docs/screenshots/v0.3.0-beta.12/stromvertrag.png)
+![Contract configuration](doc/screenshots/v0.3.0-beta.12/stromvertrag.png)
 
 ### Hourly consumption, daily costs and price history
 
-![Hourly consumption, daily costs and price history](docs/screenshots/v0.3.0-beta.12/diagramme.png)
+![Hourly consumption, daily costs and price history](doc/screenshots/v0.3.0-beta.12/diagramme.png)
 
 ## Installation
 
@@ -73,14 +73,9 @@ Add measurement states, channels or devices to the Strommessung or Energy measur
 
 Consumption is calculated from cumulative meter differences after recording begins. Resets, long gaps and midnight boundaries reset the baseline. Intervals spanning a price or tariff change are recorded without cost valuation. Exclude overlapping meters to avoid double counting. Market prices may differ from your supplier's index.
 
-## Development and roadmap
+## Support and development
 
-GitHub Actions checks lint, package metadata, dashboard synchronization, unit tests, integration and Compact Mode on Node.js 22, 24, and 26 across Linux, Windows, and macOS. The beta.8 npm publish job succeeded. The official release script is configured in the repository.
-
-- [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
-- [Safe migration of legacy data](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/11)
-
-This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
+Report issues in [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 
 ## Changelog
 

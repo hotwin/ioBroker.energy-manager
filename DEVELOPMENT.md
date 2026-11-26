@@ -41,3 +41,6 @@ Use the standard ioBroker testing actions and the existing @alcalzone/release-sc
 Use the official checker on the exact candidate SHA and document all findings. The checker job uses the official checkout and existing wrapper; no new findings are suppressed. External prerequisites (npm ownership, historical tags, incorrect latest dist-tag and repository admission) must be resolved before publishing. The existing full-SHA-only policy is incompatible with the official composite actions, as stated by the ioBroker maintainer in issue #39. The repository owner disabled the mandatory full-SHA policy on 2026-11-25. The official workflow passed all nine platform combinations in run 45703898371. Retain read-only default workflow permissions and scope write permissions to deploy.
 
 The release workflow is intentionally tested before creating any version tag. Keep the development branch and the 0.4 roadmap separate until the approved 0.3 candidate is integrated and tested.
+
+
+Historical bilingual release notes are retained in [doc/RELEASE-HISTORY.md](doc/RELEASE-HISTORY.md). The root README and changelog archive are English only. User documentation is in doc/en and doc/de; existing beta.12 screenshots are preserved under doc/screenshots.

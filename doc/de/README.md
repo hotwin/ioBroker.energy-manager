@@ -1,5 +1,52 @@
 # Energy Manager einrichten
 
+Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker.
+
+Voraussetzungen: Node.js ab 22, Admin ab 7.6.20, js-controller ab 6.0.11 sowie vorhandene Messdatenpunkte. Installiere den Adapter über **Adapter** im ioBroker Admin, sobald er im eingestellten Repository verfügbar ist. Der Adapter ist noch nicht in ioBroker Latest oder Stable aufgenommen.
+
+## Funktionen
+
+- Herstellerübergreifende Geräteerkennung über Strommessung, manuelle Zuordnung und optionale Shelly-Erkennung.
+- Live-Leistung, Verbrauch, Raumkarten mit aufklappbaren Geräten und bearbeitbare Gerätenamen.
+- Energieflussdiagramm, Stundenverbrauch, Tageskosten und Strompreisverlauf.
+- Statistiken für sieben Tage, Monat, Quartal und Jahr.
+- Bearbeitbare Vertragsdaten, Brutto-Arbeitspreis, Mehrwertsteuer, aWATTar HOURLY-Aufschlag und optionale Preisgrenzen.
+- Responsives deutsch- und englischsprachiges Dashboard im Admin und optional über den Web-Adapter.
+
+## Screenshots – 0.3.0-beta.12
+
+Aufnahmen einer laufenden Beta-12-Instanz. Persönliche Angaben wurden teilweise anonymisiert; die angezeigten Tarifwerte sind noch Gegenstand der Fehlerprüfung (#23).
+
+### Übersicht und Energieverteilung nach Räumen und Geräten
+
+![Übersicht und Energieverteilung nach Räumen und Geräten](../screenshots/v0.3.0-beta.12/uebersicht.png)
+
+### Geräte nach Räumen gruppiert
+
+![Geräte nach Räumen gruppiert](../screenshots/v0.3.0-beta.12/geraete.png)
+
+### Raumkarten mit aktueller Leistung
+
+![Raumkarten mit aktueller Leistung](../screenshots/v0.3.0-beta.12/raeume.png)
+
+### Verbrauchsstatistik
+
+![Verbrauchsstatistik](../screenshots/v0.3.0-beta.12/verbrauchsstatistik.png)
+
+### Strompreisintervalle
+
+![Strompreisintervalle](../screenshots/v0.3.0-beta.12/strompreise.png)
+
+### Stromvertragskonfiguration
+
+![Stromvertragskonfiguration](../screenshots/v0.3.0-beta.12/stromvertrag.png)
+
+### Stundenverbrauch, Tageskosten und Strompreisverlauf
+
+![Stundenverbrauch, Tageskosten und Strompreisverlauf](../screenshots/v0.3.0-beta.12/diagramme.png)
+
+## Einrichtung
+
 Die Adapterkennung lautet jetzt `hotwin-energy-manager`. ioBroker legt dafür eine neue Instanz an. Bisherige Einstellungen und Verbrauchsdaten bleiben bei der alten Instanz.
 
 1. Lege im ioBroker Admin eine Funktionsaufzählung namens **Strommessung** oder **Energy measurement** an.
