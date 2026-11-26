@@ -191,6 +191,50 @@
               "value": "awattar"
             },
             {
+              "label": "aWATTar AT",
+              "value": "awattarAt"
+            },
+            {
+              "label": "Energy-Charts · DE-LU",
+              "value": "energyCharts:DE-LU"
+            },
+            {
+              "label": "Energy-Charts · AT",
+              "value": "energyCharts:AT"
+            },
+            {
+              "label": "Energy-Charts · CH",
+              "value": "energyCharts:CH"
+            },
+            {
+              "label": "Energy-Charts · FR",
+              "value": "energyCharts:FR"
+            },
+            {
+              "label": "Energy-Charts · NL",
+              "value": "energyCharts:NL"
+            },
+            {
+              "label": "Energy-Charts · BE",
+              "value": "energyCharts:BE"
+            },
+            {
+              "label": "Energy-Charts · PL",
+              "value": "energyCharts:PL"
+            },
+            {
+              "label": "Energy-Charts · CZ",
+              "value": "energyCharts:CZ"
+            },
+            {
+              "label": "Energy-Charts · DK1",
+              "value": "energyCharts:DK1"
+            },
+            {
+              "label": "Energy-Charts · DK2",
+              "value": "energyCharts:DK2"
+            },
+            {
               "label": "marketPriceExternal",
               "value": "state"
             }
