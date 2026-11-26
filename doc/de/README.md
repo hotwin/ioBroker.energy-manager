@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.6.0-beta.7 (Entwicklung)
+
+- aWATTar Österreich und öffentliche Energy-Charts-Gebotszonen ergänzen. Energy-Charts-Marktdaten von Bundesnetzagentur / SMARD über Fraunhofer ISE, CC BY 4.0. [Energy-Charts](https://api.energy-charts.info/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ### 0.6.0-beta.6 (Entwicklung)
 
 - Zustand der Börsenpreisquelle und Bestandteile des aktuellen Brutto-Arbeitspreises anzeigen.
