@@ -28,7 +28,7 @@ test('native settings tabs preserve unique configuration fields and translated l
   return Object.entries(panel.items).filter(([, item]) => item.type !== 'header').map(([key]) => key);
  });
  assert.equal(new Set(fields).size, fields.length);
- assert.deepEqual(fields.sort(), ["advanceMonthly","autoShelly","baseMonthly","batterySocId","compareHousePower","concessionCt","contractStart","electricityTaxCt","feedInPowerId","houseEnergyId","housePowerId","leviesCt","markupCt","meterAnnual","networkCt","solarPowerId","sources","tariffConfigured","vatPercent"]);
+ assert.deepEqual(fields.sort(), ["advanceMonthly","autoShelly","baseMonthly","batterySocId","compareHousePower","concessionCt","contractStart","electricityTaxCt","feedInPowerId","houseEnergyId","housePowerId","leviesCt","marketPriceSource","marketPriceStateId","markupCt","meterAnnual","networkCt","solarPowerId","sources","tariffConfigured","vatPercent"]);
  for (const lang of fs.readdirSync(path.join(root, 'admin', 'i18n'))) {
   const translations = JSON.parse(fs.readFileSync(path.join(root, 'admin', 'i18n', lang, 'translations.json'), 'utf8'));
   for (const panel of Object.values(config.items)) {

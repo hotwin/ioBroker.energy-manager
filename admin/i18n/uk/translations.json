@@ -36,5 +36,9 @@
   "discoveryHeading": "Автоматичне виявлення",
   "manualSourcesHeading": "Ручне налаштування точок даних",
   "fixedChargesHeading": "Абонплата та облік",
-  "advanceHeading": "Авансовий платіж"
+  "advanceHeading": "Авансовий платіж",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

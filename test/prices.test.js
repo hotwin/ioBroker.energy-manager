@@ -44,3 +44,12 @@ test('activates a contract on its local start day even during a spanning price i
     assert.equal(active.tariffCt, 20);
     assert.equal(active.prices[0].tariffCt, active.tariffCt);
 });
+
+test('accepts a custom EUR/MWh series and rejects overlapping intervals', () => {
+    const { normalizePriceFeed } = require('../lib/prices');
+    const first = { start_timestamp: 0, end_timestamp: 3600000, marketprice: -15 };
+    const second = { start_timestamp: 3600000, end_timestamp: 7200000, marketprice: 0 };
+    assert.deepEqual(normalizePriceFeed({ data: [second, first] }), [first, second]);
+    assert.deepEqual(normalizePriceFeed([first, { ...second, start_timestamp: 1 }]), []);
+    assert.deepEqual(normalizePriceFeed({ data: null }), []);
+});

@@ -36,5 +36,9 @@
   "discoveryHeading": "Détection automatique",
   "manualSourcesHeading": "Points de données manuels",
   "fixedChargesHeading": "Abonnement et comptage",
-  "advanceHeading": "Acompte"
+  "advanceHeading": "Acompte",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

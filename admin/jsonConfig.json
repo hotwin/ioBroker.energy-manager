@@ -172,6 +172,45 @@
       "type": "panel",
       "label": "settings_tariff",
       "items": {
+        "marketSourceHeading": {
+          "type": "header",
+          "text": "marketSourceHeading",
+          "size": 4,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "marketPriceSource": {
+          "type": "select",
+          "label": "marketPriceSource",
+          "options": [
+            {
+              "label": "aWATTar DE",
+              "value": "awattar"
+            },
+            {
+              "label": "marketPriceExternal",
+              "value": "state"
+            }
+          ],
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
+        },
+        "marketPriceStateId": {
+          "type": "objectId",
+          "label": "marketPriceStateId",
+          "hidden": "data.marketPriceSource !== 'state'",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
+        },
         "tariffContractHeading": {
           "type": "header",
           "text": "tariffContractHeading",

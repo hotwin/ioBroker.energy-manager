@@ -36,5 +36,9 @@
   "discoveryHeading": "Automatische Erkennung",
   "manualSourcesHeading": "Manuelle Datenpunkte",
   "fixedChargesHeading": "Grundpreis und Messstellenbetrieb",
-  "advanceHeading": "Abschlag"
+  "advanceHeading": "Abschlag",
+  "marketSourceHeading": "Börsenpreisquelle",
+  "marketPriceSource": "Preisquelle",
+  "marketPriceExternal": "Externer ioBroker-Datenpunkt",
+  "marketPriceStateId": "JSON-Datenpunkt für Börsenpreise"
 }

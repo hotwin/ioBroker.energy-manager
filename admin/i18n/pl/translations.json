@@ -36,5 +36,9 @@
   "discoveryHeading": "Automatyczne wykrywanie",
   "manualSourcesHeading": "Ręczne punkty danych",
   "fixedChargesHeading": "Opłaty stałe i pomiarowe",
-  "advanceHeading": "Zaliczka"
+  "advanceHeading": "Zaliczka",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

@@ -36,5 +36,9 @@
   "discoveryHeading": "Automatic discovery",
   "manualSourcesHeading": "Manual data points",
   "fixedChargesHeading": "Base and metering charges",
-  "advanceHeading": "Advance payment"
+  "advanceHeading": "Advance payment",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

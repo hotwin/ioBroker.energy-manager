@@ -36,5 +36,9 @@
   "discoveryHeading": "自动发现",
   "manualSourcesHeading": "手动数据点",
   "fixedChargesHeading": "固定费用及计量费用",
-  "advanceHeading": "预付款"
+  "advanceHeading": "预付款",
+  "marketSourceHeading": "Market price source",
+  "marketPriceSource": "Price source",
+  "marketPriceExternal": "External ioBroker state",
+  "marketPriceStateId": "Market price JSON state"
 }

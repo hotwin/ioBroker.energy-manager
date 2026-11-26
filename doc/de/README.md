@@ -59,6 +59,10 @@ Fehler und Vorschläge: [GitHub Issues](https://github.com/hotwin/ioBroker.hotwi
 
 ## Changelog / Versionsverlauf
 
+### 0.6.0-beta.5 (Entwicklung)
+
+- Im Reiter Stromtarif zwischen aWATTar Deutschland und einem ioBroker-Datenpunkt für eigene Börsenpreise wählen. Der JSON-String enthält ein Array oder ein Objekt mit data-Array. Pro Intervall werden start_timestamp und end_timestamp in Unix-Millisekunden und marketprice in EUR/MWh erwartet. Die Intervalle dürfen sich nicht überschneiden. Die Preisquelle muss zur Gebotszone und zum Vertrag passen.
+
 ### 0.6.0-beta.4 (Entwicklung)
 
 - Einheitliche Abschnittsüberschriften und responsive Feldbreiten in allen vier Reitern der Instanzeinstellungen.

@@ -5,7 +5,7 @@ const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
 const energyInsights = require('./lib/energy-insights');
 const costManager = require('./lib/cost-manager');
-const { priceSnapshot } = require('./lib/prices');
+const { priceSnapshot, normalizePriceFeed } = require('./lib/prices');
 const { version } = require('./package.json');
 const { instanceObjects } = require('./io-package.json');
 
@@ -17,6 +17,7 @@ const states = {
     totalPower: ['Measured power', 'number', 'value.power', 'W'],
     consumption: ['Daily consumption ledger', 'string', 'json'],
     costSummary: ['Cost manager summary', 'string', 'json'],
+    'info.marketPriceAvailable': ['Market price source available', 'boolean', 'indicator'],
     energyInsights: ['Energy insights for scripts', 'string', 'json'],
     displayPower: ['Current power', 'string', 'text'],
     displayToday: ['Consumption today', 'string', 'text'],
@@ -80,7 +81,18 @@ class EnergyManager extends utils.Adapter {
     }
 
     async clearStatus() {
-        await Promise.all(['info.connection', 'info.awattarAvailable'].map(id => this.setStateAsync(id, false, true)));
+        await Promise.all(['info.connection', 'info.awattarAvailable', 'info.marketPriceAvailable'].map(id => this.setStateAsync(id, false, true)));
+    }
+
+    async readExternalPrices() {
+        const id = this.config.marketPriceStateId?.trim();
+        if (!id) return [];
+        try {
+            const state = await this.getForeignStateAsync(id);
+            return state?.q || typeof state?.val !== 'string' ? [] : normalizePriceFeed(JSON.parse(state.val));
+        } catch {
+            return [];
+        }
     }
 
     async refreshPrices() {
@@ -90,11 +102,7 @@ class EnergyManager extends utils.Adapter {
         try {
             const response = await fetch('https://api.awattar.de/v1/marketdata', { signal: this.priceRequest.signal });
             if (!response.ok) throw Error('HTTP ' + response.status);
-            const { data } = await response.json();
-            if (!Array.isArray(data)) throw Error('Invalid price data');
-            const prices = data.filter(item => Number.isFinite(item?.marketprice) &&
-                Number.isFinite(item.start_timestamp) && Number.isFinite(item.end_timestamp) &&
-                item.end_timestamp > item.start_timestamp).sort((a, b) => a.start_timestamp - b.start_timestamp);
+            const prices = normalizePriceFeed(await response.json());
             if (prices.length === 0) throw Error('No valid price intervals');
             this.prices = prices;
             this.priceRetryDelay = priceRetryMs;
@@ -111,11 +119,16 @@ class EnergyManager extends utils.Adapter {
     }
 
     async collect() {
-        await this.refreshPrices();
+        const externalPrices = this.config.marketPriceSource === 'state';
+        if (!externalPrices) await this.refreshPrices();
+        const feed = externalPrices ? await this.readExternalPrices() : this.prices;
         if (this.stopping) return;
         const now = Date.now();
-        const { prices, currentPrice, marketCt, tariffCt, contract } = priceSnapshot(this.config, this.prices, now);
-        await this.setStateAsync('info.awattarAvailable', Boolean(currentPrice), true);
+        const { prices, currentPrice, marketCt, tariffCt, contract } = priceSnapshot(this.config, feed, now);
+        await Promise.all([
+            this.setStateAsync('info.awattarAvailable', !externalPrices && Boolean(currentPrice), true),
+            this.setStateAsync('info.marketPriceAvailable', Boolean(currentPrice), true),
+        ]);
         const [devices, meter, solar] = await Promise.all([
             readDevices(this),
             readDevices.readHouseMeter(this),
