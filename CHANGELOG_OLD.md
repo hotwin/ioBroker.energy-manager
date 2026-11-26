@@ -2,8 +2,7 @@
 
 ## 0.4.0-beta.1 – 2026-11-25
 
-- DE: Neue Kostenseite mit erfassten variablen Kosten, Monats-/Jahreshochrechnung, Abschlagsvergleich, Budget, alternativem Arbeitspreis, Geräteverbrauchsvergleich und Tagesdaten-CSV. Prognosen benötigen ausreichende Historie und zeigen die Preisabdeckung. Budget und Vergleichspreis werden lokal im Browser gespeichert.
-- EN: Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
+- Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
 
 ## 0.3.0-beta.14 – 2026-11-25
 
@@ -41,6 +40,7 @@
 ## 0.3.0-beta.12 – 2026-11-25
 
 - Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
+- [Historical installation archive (not an npm publication)](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz) · [Historical dashboard screenshots](https://github.com/hotwin/ioBroker.hotwin-energy-manager/tree/9b89c5a546a2c30afdb0a3e78c6bb4195dd26970/docs/screenshots/v0.3.0-beta.12)
 
 ## 0.3.0-beta.11 – 2026-11-25
 

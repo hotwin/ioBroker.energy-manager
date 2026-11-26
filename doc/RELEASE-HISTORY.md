@@ -154,3 +154,9 @@
 ## 0.1.0 – 2026-11-24
 - DE: Erste Alpha-Version mit Shelly-Erkennung, manuellen Energiequellen, Raumzuordnung, aWATTar-Preisen und Web-Dashboard. Installation und Leistungsberechnung praktisch bestätigt. REST-Endpunkt liefert 404.
 - EN: Initial alpha with Shelly discovery, manual energy sources, room assignment, aWATTar prices and web dashboard. Installation and power calculation confirmed in a practical test. REST endpoint returns 404.
+
+
+## Historical beta.12 archives / Historische Beta.12-Archive
+
+- [Installation package / Installationspaket](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz) (GitHub archive, not an npm release)
+- [Historical dashboard screenshots / Historische Dashboard-Bilder](https://github.com/hotwin/ioBroker.hotwin-energy-manager/tree/9b89c5a546a2c30afdb0a3e78c6bb4195dd26970/docs/screenshots/v0.3.0-beta.12)
