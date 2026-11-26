@@ -49,7 +49,15 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 
 This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
 
+## VIS Classic and VIS 2
+
+In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
+
 ## Changelog
+
+### 0.6.0-beta.9 (development)
+
+- Add numeric display states for VIS Classic and VIS 2.
 
 ### 0.6.0-beta.8 (development)
 
