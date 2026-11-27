@@ -1,6 +1,6 @@
 'use strict';
 
-const { createHash } = require('node:crypto');
+const { historyKey, syncDailyHistory } = require('./lib/daily-history');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -18,10 +18,6 @@ const historyStates = {
     todayEnergy: ['Energy today', 'value', 'kWh'],
     todayCost: ['Recorded variable cost today', 'value', 'EUR'],
 };
-
-function historyKey(key) {
-    return createHash('sha256').update(key).digest('hex').slice(0, 24);
-}
 
 const states = {
     snapshot: ['Energy snapshot', 'string', 'json'],
@@ -103,6 +99,7 @@ class EnergyManager extends utils.Adapter {
         if (this.timer) this.clearTimeout(this.timer);
         this.priceRequest?.abort();
         await this.pending;
+        await this.dailyHistoryTask;
         await this.clearStatus().catch(() => {});
     }
 
@@ -199,6 +196,18 @@ class EnergyManager extends utils.Adapter {
         }
     }
 
+    scheduleDailyHistory(ledger) {
+        if (this.stopping || this.dailyHistoryTask || this.archivedDay === ledger.day ||
+            Date.now() < (this.nextHistoryAttempt || 0)) return;
+        this.nextHistoryAttempt = Date.now() + 300000;
+        this.dailyHistoryTask = syncDailyHistory(this, ledger)
+            .then(synced => {
+                if (synced) this.archivedDay = ledger.day;
+            })
+            .catch(error => this.log.warn('Daily History: ' + error.message))
+            .finally(() => { this.dailyHistoryTask = null; });
+    }
+
     async collect() {
         const externalPrices = this.config.marketPriceSource === 'state';
         const provider = marketFeed(this.config.marketPriceSource, Date.now());
@@ -275,6 +284,7 @@ class EnergyManager extends utils.Adapter {
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
         await this.publishHistory(devices, rooms, ledger);
+        this.scheduleDailyHistory(ledger);
     }
 }
 
