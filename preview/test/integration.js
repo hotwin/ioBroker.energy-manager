@@ -57,6 +57,9 @@ tests.integration(path.join(__dirname, '..'), {
                 await states.setStateAsync(meter, { val: 123, ack: true });
                 await expectState('measuredEnergy', 3);
                 await harness.stopAdapter();
+                // The test harness runs the databases without a host daemon to clear its process flags.
+                await states.setStateAsync('system.adapter.' + namespace + '.alive', { val: false, ack: true });
+                await states.setStateAsync('system.adapter.' + namespace + '.sigKill', { val: 0, ack: true });
                 const installed = path.join(os.tmpdir(), 'test-iobroker.' + adapter,
                     'node_modules', 'iobroker.' + adapter);
                 const restarted = spawn(process.execPath, ['main.js', '--console'], { cwd: installed, stdio: 'inherit' });
