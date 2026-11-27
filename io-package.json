@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.6.1-beta.6",
+    "version": "0.6.1-beta.7",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager",
@@ -46,6 +46,10 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
+      "0.6.1-beta.7": {
+        "de": "Abonniert Messwerte und lädt Objektlisten bei Änderungen neu.",
+        "en": "Subscribes to measurements and reloads object lists when they change."
+      },
       "0.6.1-beta.6": {
         "de": "Korrigiert laufende Schreibvorgänge für History.",
         "en": "Fixes live writes to History."

@@ -2,6 +2,7 @@
 
 const { historyKey, syncDailyHistory, storeLiveHistory } = require('./lib/daily-history');
 const { publishPeriods, publishMonthlyArchive } = require('./lib/period-totals');
+const MeasurementCache = require('./lib/measurement-cache');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -42,6 +43,9 @@ const states = {
 class EnergyManager extends utils.Adapter {
     constructor(options = {}) {
         super({ ...options, name: 'hotwin-energy-manager' });
+        this.measurements = new MeasurementCache(this);
+        this.on('objectChange', id => this.measurements.invalidate(id));
+        this.on('stateChange', (id, state) => this.measurements.update(id, state));
         this.on('ready', () => {
             this.pending = this.start().catch(error => this.log.error(String(error)));
         });
@@ -72,6 +76,7 @@ class EnergyManager extends utils.Adapter {
             .map(row => row.id.slice(this.namespace.length + 1))
             .filter(id => /^(devices|rooms)\.[a-f0-9]{24}$/.test(id))
             .map(id => [id, null]));
+        await this.subscribeForeignObjectsAsync('*');
         await this.clearStatus();
         if (!this.stopping) await this.poll();
     }
@@ -237,14 +242,16 @@ class EnergyManager extends utils.Adapter {
             this.setStateAsync('info.awattarAvailable', !externalPrices && !provider.zone && Boolean(currentPrice), true),
             this.setStateAsync('info.marketPriceAvailable', Boolean(currentPrice), true),
         ]);
+        this.measurements.requested.clear();
         const [devices, meter, solar] = await Promise.all([
-            readDevices(this),
-            readDevices.readHouseMeter(this),
-            readDevices.readSolar(this),
+            readDevices(this.measurements),
+            readDevices.readHouseMeter(this.measurements),
+            readDevices.readSolar(this.measurements),
         ]);
         if (this.stopping) return;
         const difference = meter && this.config.compareHousePower === true
-            ? await readDevices.unassignedPower(this, meter, devices, Date.now()) : null;
+            ? await readDevices.unassignedPower(this.measurements, meter, devices, Date.now()) : null;
+        await this.measurements.finish();
         const houseMeter = difference ? { ...meter, ...difference } : meter;
         if (this.stopping) return;
         const rooms = new Map();
