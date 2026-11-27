@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/hotwin/ioBroker.hotwin-energy-manager)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues)
 
-**Verantwortlich: [Böttcher Services](https://hotgame.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
+**Verantwortlich: [Böttcher Services](http://boettcher-services.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
 Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lokal in ioBroker. Er verbindet Messdaten verschiedener Hersteller mit Raumübersichten, Kostenanalyse und auswählbaren Börsenpreisquellen.
 
@@ -126,3 +126,4 @@ Wähle im jeweiligen VIS-Editor ein Basis-Wertwidget und setze dessen Objekt-ID 
 Für reine Textanzeigen mit bereits enthaltener Einheit stehen `displayPower`, `displayToday`, `displayMarket`, `displayTariff` und `displayCost` bereit.
 
 Versionsverlauf: [Englischer Changelog](../../README.md#changelog).
+

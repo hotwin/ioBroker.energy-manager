@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/hotwin/ioBroker.hotwin-energy-manager)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues)
 
-**Responsible: [Böttcher Services](https://hotgame.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
+**Responsible: [Böttcher Services](http://boettcher-services.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
 Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker.
 
@@ -226,3 +226,4 @@ Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc
 ## License
 
 Copyright (c) 2026 hotwin <hotwin@gmx.net>. MIT. See [LICENSE](LICENSE).
+
