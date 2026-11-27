@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.6.0",
+    "version": "0.6.1-beta.1",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager",
@@ -46,6 +46,10 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
+      "0.6.1-beta.1": {
+        "de": "Numerische Verlaufsdatenpunkte für Geräte und Räume.",
+        "en": "Numeric history states for devices and rooms."
+      },
       "0.6.0": {
         "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
         "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",

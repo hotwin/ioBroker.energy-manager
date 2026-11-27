@@ -1,5 +1,6 @@
 'use strict';
 
+const { createHash } = require('node:crypto');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -11,6 +12,16 @@ const { instanceObjects } = require('./io-package.json');
 
 const priceRetryMs = 60_000;
 const priceRefreshMs = 900_000;
+
+const historyStates = {
+    power: ['Current power', 'value.power', 'W'],
+    todayEnergy: ['Energy today', 'value', 'kWh'],
+    todayCost: ['Recorded variable cost today', 'value', 'EUR'],
+};
+
+function historyKey(key) {
+    return createHash('sha256').update(key).digest('hex').slice(0, 24);
+}
 
 const states = {
     snapshot: ['Energy snapshot', 'string', 'json'],
@@ -54,6 +65,16 @@ class EnergyManager extends utils.Adapter {
         } catch {
             this.ledger = null;
         }
+        for (const id of ['devices', 'rooms']) {
+            await this.setObjectNotExistsAsync(id, { type: 'folder', common: { name: id }, native: {} });
+        }
+        const oldChannels = await this.getObjectViewAsync('system', 'channel', {
+            startkey: this.namespace + '.', endkey: this.namespace + '.\u9999',
+        });
+        this.historyObjects = new Map(oldChannels.rows
+            .map(row => row.id.slice(this.namespace.length + 1))
+            .filter(id => /^(devices|rooms)\.[a-f0-9]{24}$/.test(id))
+            .map(id => [id, null]));
         await this.clearStatus();
         if (!this.stopping) await this.poll();
     }
@@ -125,6 +146,56 @@ class EnergyManager extends utils.Adapter {
         } finally {
             this.clearTimeout(timeout);
             this.priceRequest = null;
+        }
+    }
+
+    async publishHistory(devices, rooms, ledger) {
+        const day = ledger.deviceDays[ledger.day] || {};
+        const roomTotals = new Map();
+        for (const entry of Object.values(day)) {
+            const totals = roomTotals.get(entry.room) || { energy: 0, cost: null };
+            totals.energy += entry.kWh;
+            if (entry.pricedKWh > 0) totals.cost = (totals.cost ?? 0) + entry.costEUR;
+            roomTotals.set(entry.room, totals);
+        }
+
+        const entries = new Map();
+        for (const device of devices) {
+            const key = device.aliasKey || device.id;
+            const entry = day[key];
+            entries.set('devices.' + historyKey(key), {
+                name: device.name,
+                values: [device.powerW, entry?.kWh, entry?.pricedKWh > 0 ? entry.costEUR : null],
+            });
+        }
+        for (const [key, room] of rooms) {
+            const totals = roomTotals.get(key);
+            entries.set('rooms.' + historyKey(key), {
+                name: room.name || 'Unassigned',
+                values: [room.powerW, totals?.energy, totals?.cost],
+            });
+        }
+
+        const known = this.historyObjects ??= new Map();
+        for (const [id, entry] of entries) {
+            if (known.get(id) !== entry.name) {
+                await this.setObjectNotExistsAsync(id, { type: 'channel', common: { name: entry.name }, native: {} });
+                await this.extendObjectAsync(id, { common: { name: entry.name } });
+                for (const [state, [name, role, unit]] of Object.entries(historyStates)) {
+                    await this.setObjectNotExistsAsync(id + '.' + state, {
+                        type: 'state', common: { name, type: 'number', role, unit, read: true, write: false }, native: {},
+                    });
+                }
+                known.set(id, entry.name);
+            }
+            await Promise.all(Object.keys(historyStates).map((state, index) =>
+                this.setStateChangedAsync(id + '.' + state, entry.values[index] ?? null, true)));
+        }
+        for (const id of known.keys()) {
+            if (entries.has(id)) continue;
+            await Promise.all(Object.keys(historyStates).map(state =>
+                this.setStateChangedAsync(id + '.' + state, null, true)));
+            known.delete(id);
         }
     }
 
@@ -203,6 +274,7 @@ class EnergyManager extends utils.Adapter {
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
+        await this.publishHistory(devices, rooms, ledger);
     }
 }
 
