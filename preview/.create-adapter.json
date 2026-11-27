@@ -1,0 +1,39 @@
+{
+    "features": [
+        "adapter"
+    ],
+    "adapterName": "hotwin-energy-manager-preview",
+    "title": "Energy Manager Preview",
+    "language": "JavaScript",
+    "tools": [
+        "ESLint"
+    ],
+    "authorName": "hotwin",
+    "authorGithub": "hotwin",
+    "authorEmail": "hotwin@gmx.net",
+    "replay": "/tmp/em-replay-fixed.json",
+    "description": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
+    "keywords": [
+        "energy",
+        "power",
+        "consumption",
+        "monitoring"
+    ],
+    "expert": "yes",
+    "adminFeatures": [],
+    "type": "energy",
+    "startMode": "daemon",
+    "connectionType": "local",
+    "dataSource": "poll",
+    "connectionIndicator": "yes",
+    "nodeVersion": "20",
+    "adminUi": "json",
+    "eslintConfig": "custom",
+    "releaseScript": "yes",
+    "indentation": "Space (4)",
+    "quotes": "single",
+    "gitRemoteProtocol": "HTTPS",
+    "license": "MIT License",
+    "dependabot": "yes",
+    "creatorVersion": "3.1.5"
+}

@@ -1,0 +1,62 @@
+{
+  "name": "iobroker.hotwin-energy-manager-preview",
+  "version": "0.0.1",
+  "description": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
+  "author": {
+    "name": "hotwin",
+    "email": "hotwin@gmx.net"
+  },
+  "contributors": [],
+  "homepage": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview",
+  "license": "MIT",
+  "keywords": [
+    "energy",
+    "power",
+    "consumption",
+    "monitoring"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview.git"
+  },
+  "engines": {
+    "node": ">= 20"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.4.3"
+  },
+  "devDependencies": {
+    "@alcalzone/release-script": "^5.2.1",
+    "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
+    "@alcalzone/release-script-plugin-license": "^5.2.2",
+    "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
+    "@eslint/js": "^9.39.5",
+    "@iobroker/adapter-dev": "^1.5.0",
+    "@iobroker/testing": "^6.3.3",
+    "eslint": "^9.39.5"
+  },
+  "main": "main.js",
+  "files": [
+    "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
+    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
+    "lib/",
+    "www/",
+    "io-package.json",
+    "LICENSE",
+    "main.js"
+  ],
+  "scripts": {
+    "test:js": "mocha --config test/mocharc.custom.json \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
+    "test:package": "mocha test/package --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package",
+    "lint": "eslint -c eslint.config.mjs .",
+    "translate": "translate-adapter",
+    "release": "release-script"
+  },
+  "bugs": {
+    "url": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview/issues"
+  },
+  "readmeFilename": "README.md",
+  "private": true
+}
