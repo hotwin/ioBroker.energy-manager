@@ -1,6 +1,7 @@
 'use strict';
 
 const { historyKey, syncDailyHistory, storeLiveHistory } = require('./lib/daily-history');
+const { publishPeriods } = require('./lib/period-totals');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -293,6 +294,7 @@ class EnergyManager extends utils.Adapter {
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
         const liveValues = await this.publishHistory(devices, rooms, ledger);
+        await publishPeriods(this, ledger);
         const target = Object.hasOwn(this.config, 'storageInstance') ? this.config.storageInstance : 'history.0';
         if (typeof target !== 'string' || !/^(history|influxdb|sql)\.\d+$/.test(target) || this.stopping) return;
         this.scheduleDailyHistory(ledger, target);

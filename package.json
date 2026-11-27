@@ -1,6 +1,6 @@
 {
   "name": "iobroker.hotwin-energy-manager",
-  "version": "0.6.1-beta.3",
+  "version": "0.6.1-beta.4",
   "description": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
   "main": "main.js",
   "license": "MIT",

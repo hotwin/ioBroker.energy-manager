@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hotwin-energy-manager",
-    "version": "0.6.1-beta.3",
+    "version": "0.6.1-beta.4",
     "titleLang": {
       "de": "Energy Manager",
       "en": "Energy Manager",
@@ -46,6 +46,10 @@
       "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
     },
     "news": {
+      "0.6.1-beta.4": {
+        "de": "Verbrauch, variable Kosten und Messtage für laufende und vorige Wochen, Monate und Jahre.",
+        "en": "Energy, variable costs and measured days for current and previous weeks, months and years."
+      },
       "0.6.1-beta.3": {
         "de": "Wählbare Speicherinstanz für Tageswerte und laufende Messwerte.",
         "en": "Selectable storage instance for daily totals and live measurements."
