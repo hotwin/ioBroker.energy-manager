@@ -3,6 +3,8 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const os = require('node:os');
+const { spawn } = require('node:child_process');
+const { once } = require('node:events');
 const { readFile } = require('node:fs/promises');
 const { setTimeout: wait } = require('node:timers/promises');
 const { tests } = require('@iobroker/testing');
@@ -55,14 +57,21 @@ tests.integration(path.join(__dirname, '..'), {
                 await states.setStateAsync(meter, { val: 123, ack: true });
                 await expectState('measuredEnergy', 3);
                 await harness.stopAdapter();
-                await harness.startAdapterAndWait(true);
-                await expectState('measuredEnergy', 3);
-                await expectState('info.connection', true);
-                await states.setStateAsync(meter, { val: 124, ack: true });
-                await expectState('measuredEnergy', 4);
-                assert.deepEqual((await objects.getObjectAsync(oldInstance)).native, native);
-                assert.equal((await states.getStateAsync(oldHistory)).val, history);
-                await harness.stopAdapter();
+                const installed = path.join(os.tmpdir(), 'test-iobroker.' + adapter,
+                    'node_modules', 'iobroker.' + adapter);
+                const restarted = spawn(process.execPath, ['main.js', '--console'], { cwd: installed, stdio: 'inherit' });
+                const exit = once(restarted, 'exit');
+                try {
+                    await expectState('info.connection', true);
+                    await expectState('measuredEnergy', 3);
+                    await states.setStateAsync(meter, { val: 124, ack: true });
+                    await expectState('measuredEnergy', 4);
+                    assert.deepEqual((await objects.getObjectAsync(oldInstance)).native, native);
+                    assert.equal((await states.getStateAsync(oldHistory)).val, history);
+                } finally {
+                    restarted.kill('SIGTERM');
+                    await exit;
+                }
             });
         });
     },
