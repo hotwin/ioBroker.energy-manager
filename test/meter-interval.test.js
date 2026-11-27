@@ -36,3 +36,10 @@ test('stale and invalid readings preserve the baseline', () => {
     assert.equal(meterInterval(baseline, point(1000, 11), day).baseline, baseline);
     assert.equal(meterInterval(baseline, point(3000, NaN), day).baseline, baseline);
 });
+
+test('a small dip and recovery do not count as new consumption', () => {
+    const original = point(1000, 120);
+    const dip = meterInterval(original, point(2000, 119.99), day, null, 0.02);
+    assert.equal(dip.status, 'jitter');
+    assert.equal(meterInterval(dip.baseline, point(3000, 120), day, null, 0.02).kWh, 0);
+});
