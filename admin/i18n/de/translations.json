@@ -1,4 +1,7 @@
 {
+  "settings_storage": "Datenspeicherung",
+  "storageInstance": "Speicherinstanz",
+  "storageInstanceHelp": "Für MySQL zuerst eine ioBroker-SQL-Instanz mit MySQL einrichten und hier auswählen.",
   "tariffConfigured": "Tarifbestandteile geprüft",
   "markupCt": "Weitere Netto-Aufschläge, ohne separat erfasste Beträge (ct/kWh)",
   "vatPercent": "Mehrwertsteuer (%)",

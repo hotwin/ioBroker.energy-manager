@@ -1,6 +1,6 @@
 'use strict';
 
-const { historyKey, syncDailyHistory } = require('./lib/daily-history');
+const { historyKey, syncDailyHistory, storeLiveHistory } = require('./lib/daily-history');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -100,6 +100,7 @@ class EnergyManager extends utils.Adapter {
         this.priceRequest?.abort();
         await this.pending;
         await this.dailyHistoryTask;
+        await this.liveHistoryTask;
         await this.clearStatus().catch(() => {});
     }
 
@@ -174,6 +175,7 @@ class EnergyManager extends utils.Adapter {
         }
 
         const known = this.historyObjects ??= new Map();
+        const values = {};
         for (const [id, entry] of entries) {
             if (known.get(id) !== entry.name) {
                 await this.setObjectNotExistsAsync(id, { type: 'channel', common: { name: entry.name }, native: {} });
@@ -185,26 +187,33 @@ class EnergyManager extends utils.Adapter {
                 }
                 known.set(id, entry.name);
             }
-            await Promise.all(Object.keys(historyStates).map((state, index) =>
-                this.setStateChangedAsync(id + '.' + state, entry.values[index] ?? null, true)));
+            await Promise.all(Object.keys(historyStates).map((state, index) => {
+                const stateId = id + '.' + state;
+                values[stateId] = entry.values[index] ?? null;
+                return this.setStateChangedAsync(stateId, values[stateId], true);
+            }));
         }
         for (const id of known.keys()) {
             if (entries.has(id)) continue;
-            await Promise.all(Object.keys(historyStates).map(state =>
-                this.setStateChangedAsync(id + '.' + state, null, true)));
+            await Promise.all(Object.keys(historyStates).map(state => {
+                const stateId = id + '.' + state;
+                values[stateId] = null;
+                return this.setStateChangedAsync(stateId, null, true);
+            }));
             known.delete(id);
         }
+        return values;
     }
 
-    scheduleDailyHistory(ledger) {
+    scheduleDailyHistory(ledger, target) {
         if (this.stopping || this.dailyHistoryTask || this.archivedDay === ledger.day ||
             Date.now() < (this.nextHistoryAttempt || 0)) return;
         this.nextHistoryAttempt = Date.now() + 300000;
-        this.dailyHistoryTask = syncDailyHistory(this, ledger)
+        this.dailyHistoryTask = syncDailyHistory(this, ledger, target)
             .then(synced => {
                 if (synced) this.archivedDay = ledger.day;
             })
-            .catch(error => this.log.warn('Daily History: ' + error.message))
+            .catch(error => this.log.warn('Daily storage: ' + error.message))
             .finally(() => { this.dailyHistoryTask = null; });
     }
 
@@ -283,8 +292,16 @@ class EnergyManager extends utils.Adapter {
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
-        await this.publishHistory(devices, rooms, ledger);
-        this.scheduleDailyHistory(ledger);
+        const liveValues = await this.publishHistory(devices, rooms, ledger);
+        const target = Object.hasOwn(this.config, 'storageInstance') ? this.config.storageInstance : 'history.0';
+        if (typeof target !== 'string' || !/^(history|influxdb|sql)\.\d+$/.test(target) || this.stopping) return;
+        this.scheduleDailyHistory(ledger, target);
+        if (!this.liveHistoryTask) {
+            this.liveHistoryTask = storeLiveHistory(this, target, now, {
+                totalPower, todayEnergy: display.todayEnergy, todayCost: display.todayCost, ...liveValues,
+            }).catch(error => this.log.warn('Live storage: ' + error.message))
+                .finally(() => { this.liveHistoryTask = null; });
+        }
     }
 }
 

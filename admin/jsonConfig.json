@@ -2,6 +2,22 @@
   "type": "tabs",
   "i18n": true,
   "items": {
+    "storage": {
+      "type": "panel",
+      "label": "settings_storage",
+      "items": {
+        "storageInstance": {
+          "type": "instance",
+          "adapter": "",
+          "adapters": ["history", "influxdb", "sql"],
+          "allowDeactivate": true,
+          "label": "storageInstance",
+          "help": "storageInstanceHelp",
+          "xs": 12,
+          "md": 8
+        }
+      }
+    },
     "measurement": {
       "type": "panel",
       "label": "settings_measurement",

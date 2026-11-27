@@ -1,4 +1,7 @@
 {
+  "settings_storage": "Gegevensopslag",
+  "storageInstance": "Opslaginstantie",
+  "storageInstanceHelp": "Configureer voor MySQL een ioBroker-SQL-instantie met MySQL en selecteer deze hier.",
   "tariffConfigured": "Tariefcomponenten gecontroleerd",
   "markupCt": "Overige netto toeslagen zonder apart ingevoerde bedragen (ct/kWh)",
   "vatPercent": "Btw (%)",

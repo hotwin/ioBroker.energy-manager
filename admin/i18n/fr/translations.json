@@ -1,4 +1,7 @@
 {
+  "settings_storage": "Stockage des données",
+  "storageInstance": "Instance de stockage",
+  "storageInstanceHelp": "Pour MySQL, configurez une instance SQL ioBroker avec MySQL et sélectionnez-la ici.",
   "tariffConfigured": "Composantes du tarif vérifiées",
   "markupCt": "Autres suppléments hors taxe, hors montants saisis séparément (ct/kWh)",
   "vatPercent": "TVA (%)",

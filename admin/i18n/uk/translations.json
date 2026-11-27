@@ -1,4 +1,7 @@
 {
+  "settings_storage": "Зберігання даних",
+  "storageInstance": "Екземпляр сховища",
+  "storageInstanceHelp": "Для MySQL налаштуйте екземпляр SQL ioBroker на MySQL і виберіть його тут.",
   "tariffConfigured": "Складові тарифу перевірено",
   "markupCt": "Інші надбавки без податку та без окремо введених сум (центів/кВт·год)",
   "vatPercent": "ПДВ (%)",

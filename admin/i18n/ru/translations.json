@@ -1,4 +1,7 @@
 {
+  "settings_storage": "Хранение данных",
+  "storageInstance": "Экземпляр хранилища",
+  "storageInstanceHelp": "Для MySQL настройте экземпляр SQL ioBroker на MySQL и выберите его здесь.",
   "tariffConfigured": "Компоненты тарифа проверены",
   "markupCt": "Прочие надбавки без налога и без отдельно введённых сумм (центов/кВт·ч)",
   "vatPercent": "НДС (%)",
