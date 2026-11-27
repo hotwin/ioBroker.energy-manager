@@ -265,7 +265,7 @@ class EnergyManager extends utils.Adapter {
             }
             rooms.set(device.room, room);
         }
-        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', currentPrice?.start_timestamp ?? null);
+        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', currentPrice?.start_timestamp ?? null, currentPrice?.end_timestamp ?? null);
         const priceHistory = new Map(Object.entries(this.ledger?.priceHistory || {}));
         for (const item of prices) {
             const key = String(item.start_timestamp);
