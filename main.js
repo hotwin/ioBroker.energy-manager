@@ -1,7 +1,7 @@
 'use strict';
 
 const { historyKey, syncDailyHistory, storeLiveHistory } = require('./lib/daily-history');
-const { publishPeriods } = require('./lib/period-totals');
+const { publishPeriods, publishMonthlyArchive } = require('./lib/period-totals');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -272,6 +272,8 @@ class EnergyManager extends utils.Adapter {
         const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
         const costs = costManager(ledger, contract, now);
         const insights = energyInsights(ledger, prices, now);
+        await publishPeriods(this, ledger);
+        const monthlyArchive = await publishMonthlyArchive(this, ledger);
         const display = {
             todayEnergy: accumulate.recordedKWh(ledger, ledger.day),
             todayCost: today.pricedKWh > 0 ? today.costEUR : null,
@@ -289,12 +291,11 @@ class EnergyManager extends utils.Adapter {
             snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, solar, totalPower, marketSource, marketCt, tariffCt, currentPrice,
                 prices: prices.filter(item => item.end_timestamp > now),
                 insights, costs,
-                daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
+                monthlyArchive, daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
         const liveValues = await this.publishHistory(devices, rooms, ledger);
-        await publishPeriods(this, ledger);
         const target = Object.hasOwn(this.config, 'storageInstance') ? this.config.storageInstance : 'history.0';
         if (typeof target !== 'string' || !/^(history|influxdb|sql)\.\d+$/.test(target) || this.stopping) return;
         this.scheduleDailyHistory(ledger, target);

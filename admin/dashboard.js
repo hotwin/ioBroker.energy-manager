@@ -12,6 +12,8 @@ const translations = {
         compareRate: "Alternative gross energy rate (ct/kWh)",
         budgetHint: "Comparison uses the same priced monthly energy and excludes alternative fixed charges. Inputs are stored only in this browser.",
         deviceComparison: "Device comparison",
+        measuredDays: "Measured days",
+        energyPerDay: "kWh per measured day",
         paybackTitle: 'Investment payback', paybackCost: 'Investment (€)', paybackSavings: 'Expected annual net savings (€)', paybackYears: 'Estimated payback', paybackNoSavings: 'Payback requires positive annual savings.', years: 'years',
         deviceEnergy: "Energy (kWh)", deviceCost: "Recorded cost (€)", devicePriceCoverage: "Price coverage",
         costExport: "Export daily data as CSV",
@@ -123,6 +125,8 @@ const translations = {
         compareRate: "Alternativer Brutto-Arbeitspreis (ct/kWh)",
         budgetHint: "Vergleich auf Basis derselben bewerteten Monatsenergie, ohne alternative Fixkosten. Eingaben werden nur in diesem Browser gespeichert.",
         deviceComparison: "Gerätevergleich",
+        measuredDays: "Messtage",
+        energyPerDay: "kWh pro Messtag",
         paybackTitle: 'Amortisationsrechner', paybackCost: 'Investition (€)', paybackSavings: 'Erwartete jährliche Nettoersparnis (€)', paybackYears: 'Geschätzte Amortisationsdauer', paybackNoSavings: 'Eine Amortisation setzt eine positive jährliche Ersparnis voraus.', years: 'Jahre',
         deviceEnergy: "Verbrauch (kWh)", deviceCost: "Erfasste Kosten (€)", devicePriceCoverage: "Preisabdeckung",
         costExport: "Tagesdaten als CSV exportieren",
@@ -285,9 +289,6 @@ function translate() {
         link.href = '#' + page;
         return link;
     }));
-    const costPeriod = el('costDevicePeriod').value || 'month';
-    el('costDevicePeriod').replaceChildren(...['today', 'seven', 'month', 'year'].map(key => new Option(words[key], key)));
-    el('costDevicePeriod').value = costPeriod;
     const period = el('period').value || 'today';
     el('period').replaceChildren(...periods.map(key => new Option(words[key], key)));
     el('period').value = period;
@@ -818,7 +819,24 @@ function formatPriceCoverage(value) {
 }
 
 function renderCostDevices() {
-    const [from, through] = periodBounds(el('costDevicePeriod').value, Date.now());
+    const select = el('costDevicePeriod');
+    const selected = select.value || 'month';
+    const archive = snapshot?.monthlyArchive || {};
+    const months = Object.keys(archive).sort().reverse();
+    const monthFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
+        month: 'long', year: 'numeric', timeZone: 'UTC',
+    });
+    select.replaceChildren(...['today', 'seven', 'month', 'year'].map(key => new Option(words[key], key)),
+        ...months.map(month => new Option(monthFormat.format(new Date(month + '-01T12:00:00Z')), month)));
+    select.value = months.includes(selected) || ['today', 'seven', 'month', 'year'].includes(selected) ? selected : 'month';
+    const average = (energy, days) => format(days > 0 ? energy / days : null, 'kWh', 3);
+    if (archive[select.value]) {
+        rows(el('costDeviceRows'), [...archive[select.value]].sort((a, b) => b.energy - a.energy)
+            .map(item => [item.name, format(item.energy, 'kWh', 3), formatDeviceCost(item.cost),
+                item.measuredDays, average(item.energy, item.measuredDays), formatPriceCoverage(item.coverage)]), words.noHistory, 6);
+        return;
+    }
+    const [from, through] = periodBounds(select.value, Date.now());
     const totals = new Map();
     const names = new Map((snapshot?.devices || []).map(device => [device.aliasKey || device.id, device.name]));
     for (const [day, devices] of Object.entries(snapshot?.deviceDays || {})) {
@@ -829,6 +847,7 @@ function renderCostDevices() {
             totals.set(id, {
                 name: names.get(id) || value.name || id,
                 kWh: (old?.kWh || 0) + value.kWh,
+                measuredDays: (old?.measuredDays || 0) + 1,
                 pricedKWh: (old?.pricedKWh || 0) + (value.pricedKWh || 0),
                 costEUR: (old?.costEUR || 0) + (value.costEUR || 0),
             });
@@ -837,7 +856,8 @@ function renderCostDevices() {
     rows(el('costDeviceRows'), [...totals.values()].sort((a, b) => b.kWh - a.kWh)
         .map(item => [item.name, format(item.kWh, 'kWh', 3),
             formatDeviceCost(item.pricedKWh > 0 ? item.costEUR : null),
-            formatPriceCoverage(item.kWh > 0 ? item.pricedKWh / item.kWh * 100 : null)]), words.noHistory, 4);
+            item.measuredDays, average(item.kWh, item.measuredDays),
+            formatPriceCoverage(item.kWh > 0 ? item.pricedKWh / item.kWh * 100 : null)]), words.noHistory, 6);
 }
 
 function renderCosts() {

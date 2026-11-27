@@ -2,7 +2,7 @@
 
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { summarizePeriods } = require('../lib/period-totals');
+const { publishMonthlyArchive, summarizePeriods } = require('../lib/period-totals');
 const { historyKey } = require('../lib/daily-history');
 
 test('calendar periods cross New Year and room coverage counts distinct days', () => {
@@ -33,4 +33,26 @@ test('calendar periods cross New Year and room coverage counts distinct days', (
     const device = groups.get('devices.' + historyKey('b')).periods;
     assert.equal(device.currentWeek.measuredDays, 2);
     assert.equal(device.previousWeek.energy, null);
+});
+
+test('monthly archive survives restart and loss of older daily records', async () => {
+    const values = {};
+    function adapter() {
+        return {
+            periodObjectNames: new Map(),
+            async getStatesAsync() { return values; },
+            async setObjectNotExistsAsync() {},
+            async extendObjectAsync() {},
+            async setStateChangedAsync(id, val) { values['hotwin-energy-manager.0.' + id] = { val }; },
+        };
+    }
+    const history = {
+        day: '2026-11-01',
+        days: { '2026-10-31': { kWh: 2, pricedKWh: 1, costEUR: 0.3 } },
+        deviceDays: { '2026-10-31': { a: { name: 'A', room: 'Kitchen', kWh: 2, pricedKWh: 1, costEUR: 0.3 } } },
+    };
+    const expected = { '2026-10': [{ name: 'A', energy: 2, cost: 0.3, measuredDays: 1, pricedDays: 1, coverage: 50 }] };
+    assert.deepEqual(await publishMonthlyArchive(adapter(), history), expected);
+    assert.deepEqual(await publishMonthlyArchive(adapter(), { day: '2028-01-01', days: {} }), expected);
+    assert.equal(values['hotwin-energy-manager.0.archive.2026-10.total.totals.energy'].val, 2);
 });
