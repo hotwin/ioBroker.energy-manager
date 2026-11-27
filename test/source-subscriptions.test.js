@@ -2,7 +2,7 @@
 
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { sourceSubscriptions } = require('../lib/source-subscriptions');
+const { sourceSubscriptions } = require('../preview/lib/source-subscriptions');
 
 test('subscribes once, keeps newer live events and releases removed sources', async () => {
     const calls = [];

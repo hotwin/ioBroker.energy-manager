@@ -2,7 +2,7 @@
 
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { importEnergyData } = require('../lib/rebuild-import');
+const { importEnergyData } = require('../preview/lib/rebuild-import');
 
 test('copies old data and counts only the new delta from the matched meter', () => {
     const native = { networkCt: 9.25, deviceAliases: { kitchen: 'Kitchen' } };

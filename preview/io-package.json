@@ -58,16 +58,16 @@
     },
     "platform": "Javascript/Node.js",
     "icon": "hotwin-energy-manager-preview.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager-preview/main/admin/hotwin-energy-manager-preview.png",
-    "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview/blob/main/README.md",
+    "enabled": false,
+    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/develop/unofficial-rebuild/preview/admin/hotwin-energy-manager-preview.png",
+    "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager/tree/develop/unofficial-rebuild/preview/README.md",
     "loglevel": "info",
     "tier": 3,
     "mode": "daemon",
     "type": "energy",
     "compact": true,
     "connectionType": "local",
-    "dataSource": "poll",
+    "dataSource": "push",
     "adminUI": {
       "config": "json"
     },
@@ -83,8 +83,8 @@
     ]
   },
   "native": {
-    "option1": true,
-    "option2": "42"
+    "legacyNamespace": "hotwin-energy-manager.0",
+    "energyStateId": ""
   },
   "objects": [],
   "instanceObjects": [

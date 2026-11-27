@@ -7,7 +7,7 @@
     "email": "hotwin@gmx.net"
   },
   "contributors": [],
-  "homepage": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview",
+  "homepage": "https://github.com/hotwin/ioBroker.hotwin-energy-manager/tree/develop/unofficial-rebuild/preview",
   "license": "MIT",
   "keywords": [
     "energy",
@@ -17,10 +17,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview.git"
+    "url": "git+https://github.com/hotwin/ioBroker.hotwin-energy-manager.git"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">=22"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.3"
@@ -55,7 +55,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/hotwin/ioBroker.hotwin-energy-manager-preview/issues"
+    "url": "https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues"
   },
   "readmeFilename": "README.md",
   "private": true

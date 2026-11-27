@@ -1,26 +1,16 @@
 {
-    "i18n": true,
-    "type": "panel",
-    "items": {
-        "option1": {
-            "type": "checkbox",
-            "label": "option1",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4,
-            "xl": 4
-        },
-        "option2": {
-            "type": "text",
-            "label": "option2",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4,
-            "xl": 4
-        }
+  "type": "panel",
+  "items": {
+    "legacyNamespace": {
+      "type": "text",
+      "label": "Existing Energy Manager instance",
+      "sm": 12
+    },
+    "energyStateId": {
+      "type": "text",
+      "label": "Cumulative energy state from the existing history",
+      "sm": 12
     }
+  },
+  "i18n": true
 }

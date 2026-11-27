@@ -2,7 +2,7 @@
 
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { meterInterval } = require('../lib/meter-interval');
+const { meterInterval } = require('../preview/lib/meter-interval');
 const day = ts => Math.floor(ts / 86400000);
 const point = (ts, kWh) => ({ id: 'meter', ts, kWh });
 
