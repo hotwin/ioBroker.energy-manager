@@ -61,6 +61,8 @@ function reviewReport(report, { sha, packageName, adapterName, version, phase, r
         if (phase === 'preview' && finding === missingTag(version)) return true;
         if (pre && registry?.candidateMissing === true && finding === missingCandidateNews(version)) return true;
         if (bootstrap && (legacyErrors.includes(finding) || pendingReview.includes(finding))) return true;
+        // The unpublished migration cannot match npm latest before its first trusted publication.
+        if (bootstrap && finding === `[W2002] Version of package.json (${version}) doesn't match latest version on NPM (${oldLatest})`) return true;
         // Admission is a separate documented step after npm publication.
         if (migration && (bootstrap || phase === 'postpublish') && finding === unlisted(adapterName)) return true;
         return false;
