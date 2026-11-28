@@ -1,8 +1,96 @@
 # Changelog / Änderungsprotokoll
 
-## 0.3.0-beta.12 – 2026-11-25
+## 0.6.1-beta.8 (development / Entwicklung)
 
-[Installationspaket / Installation package (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz)
+- DE: Erhält gemessenen Verbrauch bei Tages- und Tarifwechseln.
+- EN: Preserves measured consumption across day and tariff boundaries.
+
+## 0.6.1-beta.7 (development / Entwicklung)
+
+- DE: Abonniert Messwerte und lädt Objektlisten bei Änderungen neu.
+- EN: Subscribes to measurements and reloads object lists when they change.
+
+## 0.6.1-beta.6 (development / Entwicklung)
+
+- DE: Korrigiert laufende Schreibvorgänge für History.
+- EN: Fixes live writes to History.
+
+## 0.6.1-beta.5 (development / Entwicklung)
+
+- DE: Monatsarchiv und Gerätevergleich mit Verbrauch pro Messtag.
+- EN: Monthly archive and device comparison with usage per measured day.
+
+## 0.6.1-beta.4 (development / Entwicklung)
+
+- DE: Verbrauch, variable Kosten und Messtage für laufende und vorige Wochen, Monate und Jahre.
+- EN: Energy, variable costs and measured days for current and previous weeks, months and years.
+
+## 0.6.1-beta.3 (development / Entwicklung)
+
+- DE: Wählbare Speicherinstanz für Tageswerte und laufende Messwerte.
+- EN: Selectable storage instance for daily totals and live measurements.
+
+## 0.6.1-beta.2 (development / Entwicklung)
+
+- DE: Überträgt vorhandene und künftige abgeschlossene Tageswerte an history.0.
+- EN: Archives existing and future completed daily totals in history.0.
+
+## 0.6.1-beta.1 (development / Entwicklung)
+
+- DE: Numerische Verlaufsdatenpunkte für Geräte und Räume.
+- EN: Numeric history states for devices and rooms.
+
+## 0.3.0-beta.14 – 2026-11-25
+
+- DE: Helles und dunkles Dashboard mit automatischer Theme-Erkennung, schlankem Header ohne Auswahlfelder, angepassten Diagrammen und vier Registern in der Instanzkonfiguration.
+- EN: Light and dark dashboard themes with automatic detection, a streamlined header without selectors, theme-aware charts and four native configuration tabs.
+
+- DE: Offizielle ioBroker-Testaktionen, Betriebssystem-Testmatrix und Dependabot vorbereitet.
+- EN: Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
+
+- DE: GitHub-Schaltfläche, Projektlinks und Fußzeile mit Verantwortlichkeit in Admin- und Webansicht ergänzt; GitHub-Badge in beiden README-Dateien.
+- EN: Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.
+
+- DE: Migrations-CLI setzt den Exit-Status, statt den Prozess erzwungen zu beenden (Repository Checker E5050).
+- EN: Migration CLI sets its exit status instead of forcibly terminating the process (Repository Checker E5050).
+
+- DE: npm-Veröffentlichung auf Trusted Publishing (OIDC) vorbereitet; Repository-Links an den neuen Namen angepasst.
+- EN: Prepare npm publication via Trusted Publishing (OIDC) and update repository links to the new name.
+
+- DE: Vertragsformular erklärt ausdrücklich, dass optionale Energiepreisgrenzen ohne vertragliche Begrenzung leer bleiben müssen; 0 ist eine wirksame Preisgrenze. Regressionstest für den Praxistest #23.
+- EN: The contract form explicitly distinguishes empty optional energy price limits from a real zero-price limit. Regression test for field report #23.
+
+- DE: Aktueller Börsen- und Brutto-Arbeitspreis zeigen ihr gemeinsames Gültigkeitsintervall. Abgelaufene Werte werden bis zur nächsten passenden Messung ausgeblendet.
+- EN: The current spot and gross contract prices display their shared validity window. Expired values are hidden until a matching snapshot arrives.
+- DE: Kompaktere Übersicht mit Zählerdiagnose, optionaler nicht zugeordneter Leistung und eigenen Gerätenamen mit separaten technischen Details. Fehlende Verbrauchswerte erscheinen nicht als null Kilowattstunden.
+- EN: A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
+- DE: Der offizielle ioBroker Repository Checker prüft den konkreten Release-Commit und muss vor der npm-Veröffentlichung erfolgreich sein.
+- EN: The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
+
+- DE: Die Freigabeprüfung bestätigt auch die geprüfte Paketkennung und protokolliert eng begrenzte Ausnahmen für die Erstaufnahme.
+- EN: The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+
+- DE: Die Adapter-Metadaten begrenzen die Kurzmeldungen auf sieben Versionen. Zählerfelder sind für alle Admin-Bildschirmgrößen konfiguriert.
+- EN: Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
+
+- DE: Die Instanzkonfiguration, Adapterbeschreibung und Versionsmeldungen stehen in neun weiteren Sprachen bereit.
+- EN: Instance settings, adapter metadata and release summaries are available in nine additional languages.
+
+- DE: Die Adapter-Tests laufen zusätzlich auf Node.js 26.
+- EN: The adapter test matrix now includes Node.js 26.
+- DE: Die deutsche Anleitung und die begleitende Dokumentation liegen im ioBroker-Dokumentationsordner.
+- EN: The German guide and supporting documentation use the ioBroker documentation directory.
+- DE: Offizieller ioBroker-Release-Workflow mit Trusted Publishing; veröffentlichte GitHub-Releases bleiben unverändert.
+- EN: Official ioBroker release workflow with Trusted Publishing; published GitHub releases remain unchanged.
+- DE: Die Freigabeprüfung dokumentiert den fehlenden npm-Eintrag der bevorstehenden Version als Vorab-Befund.
+- EN: The release gate records the upcoming version’s absence from npm as a prepublication finding.
+
+## 0.3.0-beta.13 – 2026-11-25
+
+- DE: Die lokale Messwerterfassung und die Verfügbarkeit eines aktuellen aWATTar-Preises haben getrennte Statusdatenpunkte. Nach API-Fehlern verlängert sich der Wiederholungsabstand auf bis zu 15 Minuten.
+- EN: Local data collection and current aWATTar price availability have separate status states. Retry delays increase to up to 15 minutes after API failures.
+
+## 0.3.0-beta.12 – 2026-11-25
 
 - DE: Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.
 - EN: Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
@@ -106,3 +194,9 @@
 ## 0.1.0 – 2026-11-24
 - DE: Erste Alpha-Version mit Shelly-Erkennung, manuellen Energiequellen, Raumzuordnung, aWATTar-Preisen und Web-Dashboard. Installation und Leistungsberechnung praktisch bestätigt. REST-Endpunkt liefert 404.
 - EN: Initial alpha with Shelly discovery, manual energy sources, room assignment, aWATTar prices and web dashboard. Installation and power calculation confirmed in a practical test. REST endpoint returns 404.
+
+
+## Historical beta.12 archives / Historische Beta.12-Archive
+
+- [Installation package / Installationspaket](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz) (GitHub archive, not an npm release)
+- [Historical dashboard screenshots / Historische Dashboard-Bilder](https://github.com/hotwin/ioBroker.hotwin-energy-manager/tree/9b89c5a546a2c30afdb0a3e78c6bb4195dd26970/docs/screenshots/v0.3.0-beta.12)

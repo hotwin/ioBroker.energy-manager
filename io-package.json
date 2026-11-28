@@ -1,146 +1,193 @@
 {
-  "common": {
-    "name": "hotwin-energy-manager",
-    "version": "0.3.0-beta.12",
-    "titleLang": {
-      "de": "Energy Manager",
-      "en": "Energy Manager"
+    "common": {
+        "name": "hotwin-energy-manager",
+        "version": "0.6.1",
+        "titleLang": {
+            "de": "Energy Manager",
+            "en": "Energy Manager",
+            "es": "Gestor de energía",
+            "fr": "Gestionnaire d’énergie",
+            "it": "Gestore dell’energia",
+            "nl": "Energiebeheer",
+            "pl": "Menedżer energii",
+            "pt": "Gestor de energia",
+            "ru": "Менеджер энергии",
+            "uk": "Менеджер енергії",
+            "zh-cn": "能源管理器"
+        },
+        "desc": {
+            "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
+            "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
+            "es": "Medición eléctrica local, análisis de tarifas y costes, y lecturas solares y de batería para ioBroker",
+            "fr": "Suivi local de l’électricité, analyse des tarifs et des coûts, et mesures solaires et de batterie pour ioBroker",
+            "it": "Misurazione elettrica locale, analisi di tariffe e costi e dati di fotovoltaico e batterie per ioBroker",
+            "nl": "Lokale stroommetingen, analyse van tarieven en kosten en gegevens van zonnepanelen en accu’s voor ioBroker",
+            "pl": "Lokalne pomiary energii, analiza taryf i kosztów oraz odczyty fotowoltaiki i akumulatorów dla ioBroker",
+            "pt": "Medição local de eletricidade, análise de tarifas e custos e leituras solares e de baterias para ioBroker",
+            "ru": "Локальный учёт электроэнергии, анализ тарифов и затрат, данные солнечных панелей и батарей для ioBroker",
+            "uk": "Локальний облік електроенергії, аналіз тарифів і витрат, дані сонячних панелей та акумуляторів для ioBroker",
+            "zh-cn": "适用于 ioBroker 的本地用电监测、费率与成本分析，以及光伏和电池读数"
+        },
+        "authors": [
+            "hotwin <hotwin@gmx.net>"
+        ],
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "type": "energy",
+        "enabled": false,
+        "connectionType": "local",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json",
+            "tab": "html"
+        },
+        "wwwDontUpload": false,
+        "localLinks": {
+            "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
+        },
+        "news": {
+            "0.6.1": {
+                "de": "Wählbare Verlaufsspeicherung, Zeitraumvergleiche und Korrekturen für Messwertabonnements, doppelte Aliase sowie Tages- und Tarifwechsel.",
+                "en": "Selectable history storage, period comparisons, and fixes for measurement subscriptions, duplicate aliases and day and tariff boundaries.",
+                "ru": "Выбор хранилища истории, сравнение периодов и исправления подписок на измерения, дублирующихся псевдонимов и границ суток и тарифов.",
+                "pt": "Armazenamento de histórico selecionável, comparação de períodos e correções nas subscrições de medições, aliases duplicados e mudanças de dia e tarifa.",
+                "nl": "Selecteerbare historieopslag, periodevergelijkingen en correcties voor meetabonnementen, dubbele aliassen en dag- en tariefwisselingen.",
+                "fr": "Stockage de l’historique configurable, comparaisons de périodes et corrections des abonnements aux mesures, alias en double et changements de jour et de tarif.",
+                "it": "Archivio storico selezionabile, confronti tra periodi e correzioni per sottoscrizioni alle misure, alias duplicati e cambi di giorno e tariffa.",
+                "es": "Almacenamiento histórico configurable, comparaciones de periodos y correcciones de suscripciones a mediciones, alias duplicados y cambios de día y tarifa.",
+                "pl": "Wybór magazynu historii, porównania okresów oraz poprawki subskrypcji pomiarów, zduplikowanych aliasów i zmian dnia i taryfy.",
+                "uk": "Вибір сховища історії, порівняння періодів та виправлення підписок на вимірювання, дубльованих псевдонімів і меж днів та тарифів.",
+                "zh-cn": "可选历史存储、时段比较，并修复测量订阅、重复别名及日期和电价时段切换问题。"
+            },
+            "0.3.0-beta.8": {
+                "en": "Configure the standard ioBroker release script.",
+                "de": "Das standardmäßige ioBroker-Release-Script eingerichtet.",
+                "es": "Configuración del script de publicación estándar de ioBroker.",
+                "fr": "Configuration du script de publication standard d’ioBroker.",
+                "it": "Configurazione dello script di pubblicazione standard di ioBroker.",
+                "nl": "Het standaard publicatiescript van ioBroker is geconfigureerd.",
+                "pl": "Skonfigurowano standardowy skrypt publikacji ioBroker.",
+                "pt": "Configuração do script de publicação padrão do ioBroker.",
+                "ru": "Настроен стандартный скрипт публикации ioBroker.",
+                "uk": "Налаштовано стандартний скрипт публікації ioBroker.",
+                "zh-cn": "配置了标准的 ioBroker 发布脚本。"
+            }
+        },
+        "adminTab": {
+            "name": {
+                "de": "Energy Manager",
+                "en": "Energy Manager"
+            },
+            "singleton": false,
+            "icon": "energy-manager.png"
+        },
+        "icon": "energy-manager.png",
+        "compact": true,
+        "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/main/admin/energy-manager.png",
+        "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager#readme",
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ],
+        "docs": {
+            "en": [
+                "doc/en/README.md"
+            ],
+            "de": [
+                "doc/de/README.md"
+            ]
+        },
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "tier": 3,
+        "keywords": [
+            "energy",
+            "power",
+            "consumption",
+            "monitoring"
+        ],
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ]
     },
-    "desc": {
-      "de": "Lokale Energieüberwachung",
-      "en": "Local energy monitoring"
+    "native": {
+        "storageInstance": "history.0",
+        "markupCt": null,
+        "vatPercent": null,
+        "tariffConfigured": false,
+        "sources": [],
+        "housePowerId": "",
+        "houseEnergyId": "",
+        "compareHousePower": false,
+        "autoShelly": true,
+        "baseMonthly": null,
+        "meterAnnual": null,
+        "electricityTaxCt": null,
+        "networkCt": null,
+        "concessionCt": null,
+        "leviesCt": null,
+        "advanceMonthly": null,
+        "contractStart": "",
+        "provider": "",
+        "tariffName": "",
+        "tariffFormula": "additive",
+        "marketMarkupPercent": null,
+        "energyMinGrossCt": null,
+        "energyMaxGrossCt": null,
+        "marketPriceSource": "awattar",
+        "marketPriceStateId": "",
+        "solarPowerId": "",
+        "feedInPowerId": "",
+        "batterySocId": ""
     },
-    "authors": [
-      "hotwin"
-    ],
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "type": "energy",
-    "enabled": false,
-    "connectionType": "local",
-    "dataSource": "poll",
-    "adminUI": {
-      "config": "json",
-      "tab": "html"
-    },
-    "wwwDontUpload": false,
-    "localLinks": {
-      "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
-    },
-    "news": {
-      "0.3.0-beta.12": {
-        "de": "Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.",
-        "en": "Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard."
-      },
-      "0.3.0-beta.11": {
-        "de": "Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.",
-        "en": "The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices."
-      },
-      "0.3.0-beta.10": {
-        "de": "Hausstromzähler mit frei wählbaren Datenpunkten für Leistung und Zählerstand.",
-        "en": "House electricity meter with selectable data points for power and meter reading."
-      },
-      "0.3.0-beta.9": {
-        "de": "Optionale Migration von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf.",
-        "en": "Opt-in migration of settings, tariff, device aliases and consumption history."
-      },
-      "0.3.0-beta.8": {
-        "en": "Configure the standard ioBroker release script.",
-        "de": "Das standardmäßige ioBroker-Release-Script eingerichtet."
-      },
-      "0.3.0-beta.7": {
-        "de": "Übersichtlicher Dialog für Gerätenamen und aufgeräumte Leistungsanzeige.",
-        "en": "Clearer device rename dialog and a clean power column."
-      },
-      "0.3.0-beta.6": {
-        "de": "Übersichtlichere Raumkarten mit aufklappbaren Gerätelisten.",
-        "en": "Clearer room cards with expandable device lists."
-      },
-      "0.3.0-beta.5": {
-        "de": "Energiefluss und Verlaufsdiagramme direkt auf der Startseite.",
-        "en": "Energy flow and historical charts on the dashboard overview."
-      },
-      "0.3.0-beta.4": {
-        "de": "Bearbeitbare Gerätenamen und nachvollziehbare Leistungsdatenpunkte.",
-        "en": "Editable device names and transparent power data sources."
-      },
-      "0.3.0-beta.3": {
-        "de": "Bearbeitbarer Stromvertrag und Brutto-Arbeitspreis mit aWATTar-HOURLY-Formel.",
-        "en": "Editable electricity contract and gross rate with the aWATTar HOURLY formula."
-      },
-      "0.3.0-beta.2": {
-        "de": "Anklickbare Übersichtskacheln und Brutto-Arbeitspreise für jedes verfügbare Preisintervall.",
-        "en": "Clickable dashboard tiles and gross contract rates for each available price interval."
-      },
-      "0.3.0-beta.1": {
-        "de": "Responsives Admin-Dashboard, herstellerunabhängige Strommessung, Verbrauchsstatistik und neues Adapter-Icon.",
-        "en": "Responsive Admin dashboard, vendor-independent meter discovery, consumption statistics and new adapter icon."
-      }
-    },
-    "adminTab": {
-      "name": {
-        "de": "Energy Manager",
-        "en": "Energy Manager"
-      },
-      "singleton": false,
-      "icon": "energy-manager.png"
-    },
-    "icon": "energy-manager.png",
-    "compact": true,
-    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/main/admin/energy-manager.png",
-    "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager#readme",
-    "globalDependencies": [
-      {
-        "admin": ">=7.6.20"
-      }
-    ],
-    "docs": {
-      "en": [
-        "doc/en/README.md"
-      ],
-      "de": [
-        "doc/de/README.md"
-      ]
-    },
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "tier": 3,
-    "keywords": [
-      "energy",
-      "power",
-      "consumption",
-      "monitoring"
-    ],
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "de": "Adapterinformationen",
+                    "en": "Adapter information"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": {
+                    "de": "Lokale Messwerterfassung",
+                    "en": "Local source access"
+                },
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.awattarAvailable",
+            "type": "state",
+            "common": {
+                "name": {
+                    "de": "Aktueller aWATTar-Preis verfügbar",
+                    "en": "Current aWATTar price available"
+                },
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
     ]
-  },
-  "native": {
-    "markupCt": null,
-    "vatPercent": null,
-    "tariffConfigured": false,
-    "sources": [],
-    "housePowerId": "",
-    "houseEnergyId": "",
-    "autoShelly": true,
-    "baseMonthly": null,
-    "meterAnnual": null,
-    "electricityTaxCt": null,
-    "networkCt": null,
-    "concessionCt": null,
-    "leviesCt": null,
-    "advanceMonthly": null,
-    "contractStart": "",
-    "provider": "",
-    "tariffName": "",
-    "tariffFormula": "additive",
-    "marketMarkupPercent": null,
-    "energyMinGrossCt": null,
-    "energyMaxGrossCt": null
-  },
-  "instanceObjects": []
 }

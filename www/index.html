@@ -8,12 +8,12 @@
         :root { color-scheme: light; --ink: #183135; --muted: #50666b; --teal: #08796e; --line: #d6e5e3; --paper: #fff; }
         * { box-sizing: border-box; }
         body { margin: 0; color: var(--ink); background: #f0f6f5; font: 15px/1.5 system-ui, sans-serif; }
-        main { margin: auto; max-width: 1260px; padding: clamp(16px, 4vw, 44px); }
+        main { margin: auto; max-width: 1260px; padding: clamp(10px, 2.5vw, 32px); }
         header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
         h1, h2, h3, p { margin: 0; }
         h1 { font-size: clamp(25px, 5vw, 38px); letter-spacing: -.045em; }
         h2 { font-size: 22px; margin-bottom: 14px; }
-        nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 24px; }
+        nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 16px; }
         nav a { padding: 8px 11px; border-radius: 8px; text-decoration: none; font-weight: 600; }
         a { color: var(--teal); }
         nav a[aria-current] { background: #dff1ed; color: #075b52; }
@@ -22,8 +22,8 @@
         article, .surface { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
         article p, small, #status, .note { color: var(--muted); }
         .value { display: block; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 25px; overflow-wrap: anywhere; }
-        .summary-grid { display: flex; flex-wrap: wrap; gap: 12px; }
-        .summary-panel { flex: 1 1 275px; min-width: 0; }
+        .summary-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .summary-panel { flex: 1 1 270px; min-width: 0; padding: 12px; }
         .summary-panel h3 { font-size: 16px; margin-bottom: 10px; }
         .summary-metrics {
             display: grid;
@@ -39,8 +39,7 @@
             overflow-wrap: anywhere;
         }
         a.summary-metric:hover .tile-value { color: var(--teal); text-decoration: underline; }
-        #summaryTariffStatus { display: block; margin-top: 6px; }
-        #summaryTariffStatus[hidden] { display: none; }
+        .summary-note { display: block; margin-top: 4px; }
         .tile-label { display: block; color: var(--muted); font-size: 13px; line-height: 1.3; }
         .tile-value { display: block; margin-top: 3px; font-size: 19px; font-variant-numeric: tabular-nums; }
         .scroll { overflow: auto; }
@@ -56,7 +55,10 @@
         #contractForm fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
         #contractForm button { font: inherit; padding: 8px 16px; }
         #statsBars { display: grid; gap: 5px; max-height: 520px; overflow: auto; }
-        .stat-row { display: grid; grid-template-columns: 85px minmax(20px, 1fr) 95px; gap: 6px; align-items: center; }
+        .stats-columns { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(5rem, 1fr); gap: 8px; overflow-x: auto; padding: 4px 0 8px; margin: 0; list-style: none; }
+        .stats-column { display: grid; grid-template-rows: auto 8rem auto; gap: 4px; text-align: center; }
+        .stats-track { display: flex; align-items: flex-end; justify-content: center; border-bottom: 1px solid var(--line); }
+        .stats-column-fill { width: 70%; max-width: 3rem; background: var(--chart-blue); border-radius: 4px 4px 0 0; }
         progress { width: 100%; accent-color: var(--teal); }
         .note { margin-block: 12px; }
         [hidden] { display: none !important; }
@@ -73,20 +75,40 @@
         .alias-actions button { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); cursor: pointer; }
         .alias-actions button[type="submit"] { background: var(--teal); color: white; }
         .alias-actions button:disabled { opacity: .55; cursor: wait; }
-        #deviceGroups { display: grid; gap: 10px; }
-        .device-group summary { cursor: pointer; }
-        .device-group summary small { margin-inline-start: 10px; }
-        .device-group[open] summary { margin-bottom: 10px; }
+        #deviceGroups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 12px; align-items: start; }
+        .device-group { min-width: 0; }
+        .device-group summary { display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none; }
+        .device-group summary::-webkit-details-marker { display: none; }
+        .device-group summary::after { content: ''; width: 7px; height: 7px; flex-shrink: 0; border: solid var(--muted); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        .device-group-title, .device-group-reading { display: grid; gap: 4px; }
+        .device-group-title { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+        .device-group-reading { text-align: end; }
+        .device-group[open] { grid-column: 1 / -1; }
+        .device-group[open] summary { margin-bottom: 12px; }
+        .device-group[open] summary::after { transform: rotate(225deg); }
         .device-group td small { display: block; overflow-wrap: anywhere; }
         .overview-chart, .chart-grid { margin-top: 16px; }
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr)); gap: 12px; }
         .flow-surface { overflow: auto; }
         .flow-surface canvas { width: 100%; min-width: 620px; display: block; }
+        .budget-exceeded { color: var(--chart-amber); font-weight: 700; }
+        #tariffBreakdown { margin-top: 10px; }
+        #tariffBreakdown summary { cursor: pointer; font-weight: 600; }
+        .tariff-breakdown { margin: 8px 0 0; }
+        .tariff-breakdown > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 5px 0; }
+        .tariff-breakdown dd { margin: 0; font-variant-numeric: tabular-nums; text-align: end; }
+        .tariff-breakdown-total { border-top: 1px solid var(--line); margin-top: 4px; font-weight: 700; }
+        .price-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+        .price-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+        .price-key { width: 18px; height: 4px; border-radius: 2px; }
+        .price-key-spot { background: var(--chart-blue); }
+        .price-key-gross { background: var(--chart-green); }
         #priceChart { width: 100%; display: block; }
         #priceChart[hidden] { display: none; }
         .flow-detail summary { cursor: pointer; }
-        .history-row { display: grid; grid-template-columns: 7.5em minmax(20px, 1fr) 6.5em; gap: 8px; align-items: center; }
+        .history-row { display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr) minmax(0, 6em); gap: 8px; align-items: center; }
         .history-row progress { width: 100%; accent-color: var(--teal); }
+        .history-row small { overflow-wrap: anywhere; }
         .history-row small:last-child { text-align: end; }
         .room-grid {
             display: grid;
@@ -119,14 +141,102 @@
         .room-device-list li > span:first-child { overflow-wrap: anywhere; }
         .room-device-list small { display: block; }
         .room-device-power { white-space: nowrap; font-variant-numeric: tabular-nums; }
+        .header-actions, .project-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+        .github-button { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; background: var(--paper); color: var(--ink); font-weight: 600; text-decoration: none; }
+        .github-button:hover { border-color: var(--teal); color: var(--teal); }
+        .project-footer { border-top: 1px solid var(--line); margin-top: 24px; padding: 16px 0; color: var(--muted); font-size: 13px; text-align: center; }
+        .project-footer .project-links { justify-content: center; margin-top: 8px; }
+        /* Light, compact application layout. The same stylesheet serves Admin and Web. */
+        :root { --ink: #243244; --muted: #526276; --teal: #006d8b; --line: #dbe3ec; --paper: #fff; }
+        body { background: #f5f7fa; }
+        main { max-width: 1480px; padding: clamp(12px, 2.4vw, 30px); }
+        header { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 0 2px 8px #24324408; }
+        h1 { font-size: clamp(24px, 4vw, 32px); letter-spacing: -.035em; }
+        h2 { font-size: 20px; letter-spacing: -.02em; }
+        #status { font-size: 13px; margin-top: 4px; }
+        nav { gap: 5px; padding: 6px; overflow-x: auto; flex-wrap: nowrap; }
+        nav a { flex: 0 0 auto; color: var(--muted); white-space: nowrap; padding: 10px 14px; }
+        nav a:hover { background: #f0f5f9; color: var(--ink); }
+        nav a[aria-current] { background: #e2f1f7; color: #005b76; }
+        article, .surface { border-radius: 16px; padding: 18px; box-shadow: 0 2px 8px #24324406; }
+        .summary-grid { gap: 14px; }
+        .summary-panel { padding: 16px; flex-basis: 290px; }
+        .summary-panel h3 { display: flex; align-items: center; gap: 9px; }
+        .summary-panel h3::before { content: ''; width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: #007da1; }
+        #meterSummary h3::before { background: #007da1; }
+        .summary-panel:nth-child(2) h3::before { background: #33865e; }
+        .summary-panel:nth-child(3) h3::before { background: #b76b13; }
+        .summary-metrics { gap: 8px; grid-template-columns: repeat(auto-fit, minmax(min(125px, 100%), 1fr)); }
+        .summary-metric { background: #f5f7fa; border-radius: 10px; padding: 10px 12px; }
+        a.summary-metric:hover { background: #eaf4f8; }
+        .summary-metric { container-type: inline-size; }
+        .tile-value { font-size: 18px; font-size: clamp(14px, 15cqi, 24px); white-space: nowrap; }
+        .tile-unit { font-size: .68em; font-weight: 600; }
+        .room-icon { color: #005b76; background: #e2f1f7; }
+        .room-card summary { color: #005b76; }
+        .room-card { box-shadow: 0 2px 8px #24324408; }
+        th { color: var(--muted); font-size: 12px; background: #f5f7fa; }
+        select, .contract-fields input, .contract-fields select { border: 1px solid #a9b8c8; border-radius: 9px; background: var(--paper); color: var(--ink); }
+        #contractForm button[type="submit"] { border: 0; border-radius: 9px; background: var(--teal); color: white; font-weight: 600; cursor: pointer; }
+        #contractForm button:disabled { opacity: .6; cursor: default; }
+        .project-footer { margin-top: 24px; }
+        @media (max-width: 600px) {
+            header { padding: 14px; }
+            .header-actions { width: 100%; justify-content: space-between; }
+            nav a { padding: 9px 12px; }
+            article, .surface { padding: 13px; }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            a.summary-metric, nav a, .github-button { transition: background-color .15s, color .15s; }
+        }
+        :root { --chart-blue: #4169a7; --chart-green: #08796e; --chart-amber: #925e25; --chart-purple: #83538d; }
+        :root[data-theme="dark"] { color-scheme: dark; --ink: #edf2f8; --muted: #b5c3d4; --teal: #70d2ed; --line: #405064; --paper: #202b39; --chart-blue: #8ab5ff; --chart-green: #66d7b3; --chart-amber: #f1be78; --chart-purple: #d9a5ed; }
+        :root[data-theme="dark"] body { background: #141c27; }
+        :root[data-theme="dark"] nav a:hover, :root[data-theme="dark"] a.summary-metric:hover, :root[data-theme="dark"] .device-edit:hover { background: #35485c; color: var(--ink); }
+        :root[data-theme="dark"] nav a[aria-current], :root[data-theme="dark"] .room-icon { background: #24475c; color: #a1e6fa; }
+        :root[data-theme="dark"] .room-card summary { color: var(--teal); }
+        :root[data-theme="dark"] .summary-metric, :root[data-theme="dark"] th { background: #293748; }
+        :root[data-theme="dark"] select, :root[data-theme="dark"] input { border-color: #63768c; }
+        :root[data-theme="dark"] #contractForm button[type="submit"], :root[data-theme="dark"] .alias-actions button[type="submit"] { color: #102331; }
+        :root[data-theme="dark"] dialog { background: var(--paper); border-color: var(--line); border-radius: 14px; }
+        :root[data-theme="dark"] #aliasInput { background: #293748; color: var(--ink); }
+        :root[data-theme="dark"] .room-card, :root[data-theme="dark"] .surface, :root[data-theme="dark"] header { box-shadow: none; }
+        .theme-control { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+        .app-header { min-height: 88px; padding: 18px 22px; gap: 14px; }
+        .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+        .brand-icon { flex: 0 0 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; color: #005b76; background: #e2f1f7; }
+        .brand-copy { min-width: 0; }
+        .brand-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+        .app-header h1 { line-height: 1.2; }
+        .app-header .header-actions { justify-content: flex-end; }
+        .app-header #status { margin: 0; font-size: 12px; overflow-wrap: anywhere; }
+        #status[data-state="ready"]::before, #status[data-state="offline"]::before, #status[data-state="waiting"]::before, #status[data-state="stale"]::before, #status[data-state="connectionError"]::before, #status[data-state="socketError"]::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-inline-end: 7px; background: #b7791f; }
+        #status[data-state="ready"]::before { background: #238453; }
+        #status[data-state="offline"]::before, #status[data-state="connectionError"]::before, #status[data-state="socketError"]::before { background: #c34b4b; }
+        :root[data-theme="dark"] .brand-icon { background: #24475c; color: #a1e6fa; }
+        @media (max-width: 600px) {
+            .app-header { padding: 14px; }
+            .brand-icon { flex-basis: 44px; height: 44px; }
+            .app-header .header-actions { width: 100%; justify-content: space-between; }
+        }
+        .brand-icon img { width: 92%; height: 92%; object-fit: contain; }
     </style>
-    <script defer src="dashboard.js?v=0.3.0-beta.12"></script>
+    <script defer src="dashboard.js?v=0.4.0-beta.1"></script>
 </head>
 <body>
 <main>
-    <header>
-        <div><h1>Energy Manager</h1><p id="status" role="status"></p></div>
-        <label>ioBroker <select id="instance" aria-label="ioBroker instance"></select></label>
+    <header class="app-header">
+        <div class="brand">
+            <span class="brand-icon" aria-hidden="true"><img src="energy-manager.png" alt="" width="48" height="48"></span>
+            <div class="brand-copy">
+                <h1>Energy Manager</h1>
+                <p class="brand-subtitle" data-text="headerSubtitle">Energy monitoring &amp; electricity costs</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <p id="status" role="status"></p>
+            <a class="github-button" href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
     </header>
     <nav id="navigation" aria-label="Energy Manager"></nav>
     <section id="overview" data-page>
@@ -135,6 +245,7 @@
             <section id="meterSummary" class="surface summary-panel" hidden>
                 <h3 data-text="houseMeter"></h3>
                 <div id="meterMetrics" class="summary-metrics"></div>
+                <small id="meterStatus" class="summary-note" hidden></small>
             </section>
             <section class="surface summary-panel">
                 <h3 data-text="measuredDevices"></h3>
@@ -143,13 +254,24 @@
             <section class="surface summary-panel">
                 <h3 data-text="prices"></h3>
                 <div id="priceMetrics" class="summary-metrics"></div>
-                <small id="summaryTariffStatus" hidden></small>
+                <small id="priceValidity" class="summary-note"></small>
+                <small id="summaryTariffStatus" class="summary-note" hidden></small>
+                <small id="marketSourceStatus" class="summary-note" hidden></small>
+                <details id="tariffBreakdown" hidden>
+                    <summary><span data-text="tariffBreakdown"></span> <small>(ct/kWh)</small></summary>
+                    <dl id="tariffBreakdownMetrics" class="tariff-breakdown"></dl>
+                </details>
             </section>
         </div>
+        <section id="solarSection" class="surface overview-chart" hidden>
+            <h2 data-text="solarHeading"></h2>
+            <div id="solarCards" class="grid"></div>
+        </section>
         <div id="energyInsights" class="surface overview-chart" hidden>
             <h2 data-text="insightsTitle"></h2>
             <p id="insightsComparison"></p>
             <p id="insightsPrice"></p>
+            <p id="insightsTwoHours"></p>
         </div>
         <div class="surface overview-chart">
             <div class="stats-header">
@@ -164,7 +286,11 @@
         </div>
         <div class="surface overview-chart">
             <h2 data-text="priceHistory"></h2>
-            <p class="note" data-text="priceChartLegend"></p>
+            <p class="note price-legend">
+                <span><i class="price-key price-key-spot" aria-hidden="true"></i><span data-text="priceSpotLegend"></span></span>
+                <span><i class="price-key price-key-gross" aria-hidden="true"></i><span data-text="priceGrossLegend"></span></span>
+                <span>ct/kWh</span>
+            </p>
             <canvas id="priceChart" width="900" height="220" role="img"></canvas>
             <p id="priceHistoryStatus" class="note"></p>
         </div>
@@ -213,6 +339,56 @@
             <tbody id="priceRows"></tbody>
         </table></div>
     </section>
+    <section id="costs" data-page hidden>
+        <h2 data-text="costs"></h2>
+        <p class="note" data-text="costScope"></p>
+        <div class="grid" id="costCards"></div>
+        <div class="surface overview-chart">
+            <h2 data-text="costProjection"></h2>
+            <p id="costCoverage" class="note"></p>
+            <div class="grid" id="costForecastCards"></div>
+            <p class="note" data-text="forecastHint"></p>
+        </div>
+        <div class="chart-grid">
+            <div class="surface">
+                <h2 data-text="costSeven"></h2>
+                <div id="costSevenBars"></div>
+            </div>
+            <div class="surface">
+                <h2 data-text="energySeven"></h2>
+                <div id="energySevenBars"></div>
+            </div>
+        </div>
+        <div class="surface overview-chart">
+            <h2 data-text="costBudget"></h2>
+            <div class="contract-fields">
+                <label><span data-text="costBudgetInput"></span><input id="costBudgetInput" type="number" min="0" max="1000000" step="0.01"></label>
+                <label><span data-text="compareRate"></span><input id="compareRate" type="number" min="0" max="10000" step="0.01"></label>
+            </div>
+            <p class="note" data-text="budgetHint"></p>
+            <div class="grid" id="costBudgetCards"></div>
+            <p class="note" id="costBudgetStatus" role="status" hidden></p>
+        </div>
+        <div class="surface overview-chart">
+            <div class="stats-header">
+                <h2 data-text="deviceComparison"></h2>
+                <label><span data-text="period"></span> <select id="costDevicePeriod"></select></label>
+            </div>
+            <div class="scroll"><table><thead><tr><th data-text="deviceComparison"></th><th data-text="deviceEnergy"></th><th data-text="deviceCost"></th><th data-text="measuredDays"></th><th data-text="energyPerDay"></th><th data-text="devicePriceCoverage"></th></tr></thead><tbody id="costDeviceRows"></tbody></table></div>
+        </div>
+        <div class="surface overview-chart">
+            <h2 data-text="paybackTitle"></h2>
+            <div class="contract-fields">
+                <label><span data-text="paybackCost"></span><input id="paybackCost" type="number" min="0" step="0.01"></label>
+                <label><span data-text="paybackSavings"></span><input id="paybackSavings" type="number" min="0" step="0.01"></label>
+            </div>
+            <p class="note" id="paybackResult" role="status"></p>
+        </div>
+        <div class="surface overview-chart">
+            <button id="costExport" type="button" class="github-button" data-text="costExport"></button>
+            <p class="note" data-text="costExportHint"></p>
+        </div>
+    </section>
     <section id="contract" data-page hidden>
         <h2 data-text="contract"></h2><div id="contractCards" class="grid"></div>
         <p class="note" id="tariffStatus" role="status"></p>
@@ -251,9 +427,21 @@
     <section id="updates" data-page hidden>
         <h2 data-text="updates"></h2>
         <div class="surface"><p id="installed"></p>
-            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/releases" target="_blank" rel="noopener noreferrer" data-text="releases"></a>
+            <div class="project-links">
+                <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/releases" target="_blank" rel="noopener noreferrer" data-text="releases"></a>
+                <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/README.md#changelog" target="_blank" rel="noopener noreferrer" data-text="projectChangelog"></a>
+                <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues" target="_blank" rel="noopener noreferrer" data-text="projectIssues"></a>
+            </div>
         </div>
     </section>
+    <footer class="project-footer">
+        <p><span data-text="projectResponsible"></span> <strong><a href="https://hotgame.duckdns.org/" target="_blank" rel="noopener noreferrer">Böttcher Services</a></strong></p>
+        <div class="project-links">
+            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues" target="_blank" rel="noopener noreferrer" data-text="projectIssues"></a>
+            <a href="https://github.com/hotwin/ioBroker.hotwin-energy-manager/releases" target="_blank" rel="noopener noreferrer" data-text="projectReleases"></a>
+        </div>
+    </footer>
 </main>
 </body>
 </html>

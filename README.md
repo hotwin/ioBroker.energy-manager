@@ -1,203 +1,270 @@
 # ioBroker Energy Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
-[![npm beta](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/beta?label=npm%20beta)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+[![npm latest](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager?label=npm%20latest)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hotwin-energy-manager?label=downloads)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Test and Release (main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/hotwin/ioBroker.hotwin-energy-manager)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues)
 
-**Responsible: [Böttcher Services](http://boettcher-services.duckdns.org/)**
+**Responsible: [Böttcher Services](http://boettcher-services.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
-**Current GitHub beta: 0.3.0-beta.12 (25 November 2026)**
+Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker.
 
-Local energy monitoring and electricity cost analysis for ioBroker, with a responsive dashboard, room and device statistics, and German day-ahead market prices from [aWATTar](https://www.awattar.de/).
+**Release status:** See the npm version badge and GitHub releases for publication status. Official ioBroker repository admission is a separate step.
 
-[Deutsch](README.de.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](CHANGELOG.md)
+[Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](#changelog)
 
 ## Features
 
-- Vendor-independent discovery via the Strommessung / Energy measurement function enum, manual mappings and optional Shelly discovery.
-- Live power in W/kW and cumulative energy in Wh/kWh; room assignments from ioBroker enums.
-- Responsive Admin dashboard with overview, devices, expandable room cards, statistics, prices and contract settings.
-- Editable device aliases, energy flow from recorded total to rooms and devices, hourly consumption, daily costs and price history.
-- Seven-day, monthly, quarterly and annual statistics; up to 400 daily records.
-- Editable tariff components, VAT, aWATTar HOURLY percentage surcharge and optional gross energy price limits. Fixed charges and advance payments are shown separately.
-- German and English interface; optional Web adapter dashboard.
+### Energy monitoring
+- Vendor-independent measurement discovery through ioBroker function enums, manual mappings and optional Shelly discovery.
+- Live power, cumulative energy, independent main-meter readings, room assignments and editable device aliases.
+- Expandable room/device cards, energy flow from monitored total to rooms and devices, hourly and daily consumption charts, and up to 400 daily records.
+- Separate collection and market feed status, meter diagnostics and optional unassigned power when readings are valid and non-overlapping.
 
-## Screenshots – 0.3.0-beta.12
+### Historical data and storage
+- Numeric room and device history states; optional configured History, InfluxDB or SQL instance for daily totals and live measurements.
+- Period comparisons for current and previous weeks, months and years, monthly archives and device comparisons using measured days.
 
-Screenshots from a running beta.12 instance. Personal details have been partially anonymized; the displayed tariff values are still under investigation (#23).
+### Costs and consumption analysis
+- Recorded variable costs and priced-energy coverage, including per-device costs; unpriced energy stays unvalued.
+- Monthly and annual run-rate forecasts, fixed charges, advance-payment comparisons, budget warnings, seven-day history and device rankings.
+- Alternative energy-rate comparison, daily CSV export and simple investment payback from user-entered cost and annual net savings.
 
-### Overview and room/device energy distribution
+### Electricity prices and contracts
+- [aWATTar Germany](https://www.awattar.de/), [aWATTar Austria](https://www.awattar.at/), [Energy-Charts](https://api.energy-charts.info/) bidding zones (DE-LU, AT, CH, FR, NL, BE, PL, CZ, DK1, DK2) and custom ioBroker JSON price feeds.
+- Current spot and gross rates with validity intervals, feed diagnostics, tariff breakdown, cheapest available interval and contiguous two-hour window.
+- Configurable net tariff components, VAT, percentage surcharge, optional energy price limits and separate fixed charges.
 
-![Overview and room/device energy distribution](docs/screenshots/v0.3.0-beta.12/uebersicht.png)
+### Solar, battery and visualization
+- Optional live PV generation, grid feed-in and battery state of charge from mapped states; monitoring only.
+- Responsive German/English Admin and optional Web dashboard, automatic light/dark theme and native configuration tabs, including optional storage settings.
+- Read-only states for scripts and Blockly, plus importable VIS Classic and VIS 2 widgets.
+- Optional legacy-instance migration with preview and backup.
+
+## Screenshots
+
+Real captures of the running **0.6.0-beta.8** development build on 26 November 2026. Personal labels are redacted. Forecasts remain empty until sufficient recorded data is available.
+
+### Overview and energy flow
+
+![Overview and energy flow](doc/screenshots/0.6.0-beta.8/overview-light.png)
 
 ### Devices grouped by room
 
-![Devices grouped by room](docs/screenshots/v0.3.0-beta.12/geraete.png)
+![Devices grouped by room](doc/screenshots/0.6.0-beta.8/devices.png)
 
-### Room cards and live power
+### Room overview
 
-![Room cards and live power](docs/screenshots/v0.3.0-beta.12/raeume.png)
+![Room overview](doc/screenshots/0.6.0-beta.8/rooms.png)
 
 ### Consumption statistics
 
-![Consumption statistics](docs/screenshots/v0.3.0-beta.12/verbrauchsstatistik.png)
+![Consumption statistics](doc/screenshots/0.6.0-beta.8/consumption.png)
+
+### Cost manager and forecasts
+
+![Cost manager and forecasts](doc/screenshots/0.6.0-beta.8/costs.png)
 
 ### Electricity price intervals
 
-![Electricity price intervals](docs/screenshots/v0.3.0-beta.12/strompreise.png)
+![Electricity price intervals](doc/screenshots/0.6.0-beta.8/prices.png)
 
-### Contract configuration
+### Contract and tariff settings
 
-![Contract configuration](docs/screenshots/v0.3.0-beta.12/stromvertrag.png)
+![Contract and tariff settings](doc/screenshots/0.6.0-beta.8/contract.png)
 
-### Hourly consumption, daily costs and price history
+### Dark mode
 
-![Hourly consumption, daily costs and price history](docs/screenshots/v0.3.0-beta.12/diagramme.png)
+![Dark mode](doc/screenshots/0.6.0-beta.8/overview-dark.png)
+
+### Version and updates
+
+![Version and updates](doc/screenshots/0.6.0-beta.8/updates.png)
+
+[Full gallery, including forecast details](doc/screenshots/0.6.0-beta.8/README.md)
 
 ## Installation
 
 Requires Node.js 22+, ioBroker Admin 7.6.20+ and js-controller 6.0.11+. Measurement states must be supplied by installed device adapters.
 
-[Download beta.12 (.tgz)](https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/packages/0.3.0-beta.12/iobroker.hotwin-energy-manager-0.3.0-beta.12.tgz). Paste the download URL into **Adapters → Install from custom URL** in ioBroker Admin.
+Install Energy Manager from **Adapters** in ioBroker Admin once it is available in your configured repository. The published beta is awaiting admission to the official Latest or Stable repository.
 
-The earlier npm beta.8 can still be installed:
-
-```bash
-iobroker add hotwin-energy-manager@0.3.0-beta.8
-```
-
-The adapter is currently outside the official ioBroker Latest and Stable repositories.
-
-**Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; beta.9 and later support an [opt-in import](doc/en/README.md#import-from-a-legacy-instance). Keep the old instance and back up its data.
+**Migration warning:** the previous adapter ID was energy-manager. The new ID is hotwin-energy-manager. Existing settings and history remain in the old namespace; this version supports an [opt-in import](doc/en/README.md#import-from-a-legacy-instance). Keep the old instance and back up its data.
 
 ## Setup and data accuracy
-
-Select the main meter’s power and cumulative reading states in the instance settings to show them in the overview. Expand rooms under **Devices** to see individual readings.
 
 Add measurement states, channels or devices to the Strommessung or Energy measurement function enum. Assign rooms, configure manual sources and exclusions as needed, and enter verified contract components. Open Energy Manager in the Admin sidebar. The optional Web dashboard is available at /hotwin-energy-manager/index.html with integrated socket and WebSockets.
 
 Consumption is calculated from cumulative meter differences after recording begins. Resets, long gaps and midnight boundaries reset the baseline. Intervals spanning a price or tariff change are recorded without cost valuation. Exclude overlapping meters to avoid double counting. Market prices may differ from your supplier's index.
 
+## Limitations and data coverage
+
+Forecasts need at least seven recorded days and 95% priced-energy coverage. They assume similar usage, prices and current fixed charges, and are not bills or guarantees. The alternative tariff comparison covers priced energy only; alternative fixed charges are excluded. Budget and comparison inputs are browser-local. PV and battery values require configured states; no automated hardware control is provided. See the [cost guide](doc/en/cost-manager.md).
+
 ## Development and roadmap
 
-GitHub Actions checks lint, package metadata, dashboard synchronization, unit tests, integration and Compact Mode on Node.js 22/24. The beta.8 npm publish job succeeded. The official release script is configured in the repository.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for development and release procedures.
 
+- [Main branch integration / Developer Portal](https://github.com/hotwin/ioBroker.hotwin-energy-manager/pull/12)
 - [Official Latest admission preparation](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/10)
 - [Safe migration of legacy data](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/11)
 
-This is an actively developed beta. Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4). Ongoing maintenance is intended; beta features may change.
+Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues) or the [ioBroker forum](https://forum.iobroker.net/topic/85923/test-adapter-energy-manager/4).
 
-## Changelog / Release history
+## VIS Classic and VIS 2
+
+Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc/vis/energy-manager-vis-2.json) widget templates. In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
+
+## Changelog
+
+### 0.6.1
+
+- Consolidate the energy monitoring, cost, tariff, solar and battery dashboard features developed for 0.6.0.
+- Add selectable History, InfluxDB and SQL storage, numeric device and room history, period comparisons and monthly archives.
+- Subscribe to measurements, avoid duplicate alias measurements and redundant display writes, and preserve consumption across short day and tariff boundaries.
+
+### 0.6.1-beta.8 (development)
+
+- Preserves measured consumption across day and tariff boundaries.
+
+### 0.6.1-beta.7 (development)
+
+- Subscribes to measurements and reloads object lists when they change.
+
+### 0.6.1-beta.6 (development)
+
+- Fixes live writes to History.
+
+### 0.6.1-beta.5 (development)
+
+- Monthly archive and device comparison with usage per measured day.
+
+### 0.6.1-beta.4 (development)
+
+- Energy, variable costs and measured days for current and previous weeks, months and years.
+
+### 0.6.1-beta.3 (development)
+
+- Selectable storage instance for daily totals and live measurements.
+
+### 0.6.1-beta.2 (development)
+
+- Archives existing and future completed daily totals in history.0.
+
+### 0.6.1-beta.1 (development)
+
+- Numeric history states for devices and rooms.
+
+### 0.6.0 (unreleased)
+
+- Add a cost dashboard with device-level costs and price coverage, budget warnings, tariff comparisons, CSV export and an investment payback calculator.
+- Select aWATTar DE/AT, supported Energy-Charts bidding zones or a custom ioBroker price feed. Inspect interval coverage, the gross tariff breakdown and the cheapest two-hour window.
+- Show configured solar power, grid feed-in and battery charge in the dashboard.
+- Add consumption columns, responsive device cards, consistent instance settings and importable VIS Classic and VIS 2 widgets.
+
+### 0.6.0-beta.9 (development)
+
+- Add numeric display states for VIS Classic and VIS 2.
+
+### 0.6.0-beta.8 (development)
+
+- Estimate simple payback from an investment and user-entered annual net savings.
+
+### 0.6.0-beta.7 (development)
+
+- Add aWATTar Austria and selectable public Energy-Charts bidding zones. Energy-Charts market data from Bundesnetzagentur / SMARD via Fraunhofer ISE, licensed CC BY 4.0. [Energy-Charts](https://api.energy-charts.info/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+### 0.6.0-beta.6 (development)
+
+- Show market feed diagnostics and explain the active gross tariff with an itemized breakdown.
+
+### 0.6.0-beta.5 (development)
+
+- Select aWATTar Germany or a custom day-ahead market feed from an ioBroker JSON state. The state accepts an array or an object with a data array. Each interval uses start_timestamp and end_timestamp in Unix milliseconds and marketprice in EUR/MWh. Supply non-overlapping intervals and select a feed that matches your contract and bidding zone.
+
+### 0.6.0-beta.4 (development)
+
+- Apply consistent section headings and responsive field widths across all four instance settings tabs.
+
+### 0.6.0-beta.3 (development)
+
+- Group the native electricity tariff settings into contract, net price components and VAT.
+
+### 0.6.0-beta.2 (development)
+
+- Show recorded variable costs and price coverage by device. Expose consumption comparison and cheap tariff windows as read-only JSON in the energyInsights state.
+
+### 0.6.0-beta.1 (development)
+
+- Show the cheapest contiguous two-hour gross-price window and optionally display live solar generation, grid feed-in and battery charge from configured states.
+
+### 0.4.0-beta.4 (development)
+
+- Show device groups as responsive room cards with device counts and measured room power.
+
+### 0.4.0-beta.3 (development)
+
+- Show an explicit budget warning if forecast monthly costs exceed the target, and explain when there is insufficient data for a forecast.
+
+### 0.4.0-beta.2 (development)
+
+- Show recorded hourly or daily consumption as vertical columns, with gaps for unmeasured hours and the original cost totals.
+- Label the spot price and gross energy rate with colored legend markers and show Berlin time on the price chart.
+
+### 0.4.0-beta.1 (development)
+
+- Add the Costs page with recorded variable costs, monthly and annual run-rate estimates, advance comparisons, budget, alternative energy rate, device energy ranking and daily CSV. Forecasts require sufficient recorded history and disclose price coverage. Budget and comparison inputs are browser-local.
+
+### 0.3.0-beta.14 (development)
+
+- Move the German guide and supporting documentation to the ioBroker documentation layout.
+
+- Refresh dashboard design with automatic light/dark selection, theme-aware charts and a streamlined header with automatic instance selection. Organize native instance configuration into four tabs.
+
+- Prepare official ioBroker test actions, cross-platform test matrix and Dependabot.
+- Add GitHub button, project links and responsibility footer to Admin and Web dashboards, plus GitHub badges in both README files.
+- Migration CLI sets its exit status instead of forcibly terminating the process (Repository Checker E5050).
+- Prepare npm publication via Trusted Publishing (OIDC) and update repository links to the new name.
+- The contract form explicitly distinguishes empty optional energy price limits from a real zero-price limit. Regression test for field report #23.
+- The current spot and gross contract prices display their shared validity window. Expired values are hidden until a matching snapshot arrives.
+- A more compact overview adds meter diagnostics, optional unassigned power, and custom device names with separate technical details. Missing consumption readings no longer appear as zero kilowatt-hours.
+- The official ioBroker Repository Checker validates the exact release commit and must pass before npm publication.
+- The release gate confirms the checked package name and records narrowly scoped exceptions for initial admission.
+- Use the official ioBroker test-and-release workflow and Trusted Publishing; published GitHub releases remain unchanged.
+- Adapter metadata keeps seven version summaries. Meter settings specify widths for all Admin screen sizes.
+- Instance settings, adapter metadata and release summaries are available in nine additional languages.
+- The adapter test matrix now includes Node.js 26.
+
+### 0.3.0-beta.13 – 2026-11-25
+
+- Local data collection and current aWATTar price availability have separate status states. Retry delays increase to up to 15 minutes after API failures.
 
 ### 0.3.0-beta.12 – 2026-11-25
 
-- DE: Geräte werden nach Räumen in aufklappbaren Gruppen angezeigt. Der Schnellzugriff verlinkt das Web-Dashboard des Energy Managers.
-- EN: Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
+- Devices appear in expandable groups by room. Quick access links to the Energy Manager web dashboard.
 
 ### 0.3.0-beta.11 – 2026-11-25
 
-- DE: Die Übersicht gruppiert Hausstromzähler, erfasste Geräte und Strompreise in drei Bereichen. Der Hinweis zu überlappenden Messpunkten steht unter Geräte.
-- EN: The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.
+- The overview groups the main electricity meter, monitored devices, and electricity prices into three panels. The note about overlapping measurement points moved to Devices.
 
 ### 0.3.0-beta.10 – 2026-11-25
 
-- DE: Datenpunkte für Zählerstand und aktuelle Leistung des Hausstromzählers lassen sich einzeln in der Instanzkonfiguration auswählen und erscheinen in der Übersicht.
-- EN: Select the house meter's reading and current power independently in the instance settings to display them in the overview.
+- Select the house meter's reading and current power independently in the instance settings to display them in the overview.
 
 ### 0.3.0-beta.9 – 2026-11-25
 
-- DE: Lokale Verbrauchsauswertung mit Vergleich zum Durchschnitt erfasster Vortage und günstigstem verfügbaren Tarifintervall der nächsten 24 Stunden.
-- EN: Local consumption insights compare yesterday with recorded prior days and highlight the cheapest available tariff interval in the next 24 hours.
-- DE: Optionale Übernahme von Einstellungen, Tarif, Gerätealiasen und Verbrauchsverlauf mit Probelauf und Sicherung.
-- EN: Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
+- Local consumption insights compare yesterday with recorded prior days and highlight the cheapest available tariff interval in the next 24 hours.
+- Opt-in import of settings, tariff, device aliases and consumption history with preview and backup.
 
 ### 0.3.0-beta.8 – 2026-11-24
 
-- DE: Adapterkennung auf `hotwin-energy-manager` geändert, um den npm-Namenskonflikt zu lösen.
-- EN: Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
-- DE: Offizielles ioBroker-Release-Script für Versionsabgleich, Changelog und Git-Tags eingerichtet.
-- EN: Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
+- Rename the adapter ID to `hotwin-energy-manager` to resolve the npm package name conflict.
+- Configure the official ioBroker release script for version synchronization, changelog entries, and Git tags.
 
-### 0.3.0-beta.7 – 2026-11-24
-
-- DE: Gerätenamen über ein dezentes Stiftsymbol und einen klareren Dialog bearbeiten. „Aktuelle Leistung“ zeigt nur Messwert und Einheit. Details zum Messpunkt stehen beim Gerätenamen.
-- EN: Edit device names with a pencil button and a clearer dialog. Current power displays only the reading and unit. Power source details appear under the device name.
-
-### 0.3.0-beta.6 – 2026-11-24
-
-- DE: Die Raumübersicht zeigt aktuelle Leistung und Geräteanzahl in kompakten Karten. Die Geräteliste mit Einzelwerten lässt sich je Raum aufklappen.
-- EN: Compact room cards show current power and device count. Expand each card to see individual device readings.
-
-### 0.3.0-beta.5 – 2026-11-24
-
-- DE: Energiefluss von der erfassten Gesamtenergie über Räume zu Geräten sowie Verlauf für Stundenverbrauch, Tageskosten und Strompreise auf der Startseite. Die neuen Messreihen beginnen mit der Aufzeichnung nach dem Update.
-- EN: Energy flow from recorded total to rooms and devices, with hourly usage, daily costs and electricity price history on the overview. New measurement series start recording after the update.
-
-### 0.3.0-beta.4 – 2026-11-24
-
-- DE: Gerätenamen im Admin speichern. Die Geräteliste zeigt Leistungsdatenpunkte und Einheiten an und bevorzugt aktuelle Messwerte.
-- EN: Store device aliases in Admin. The device list shows power state IDs and units and prefers live measurements.
-
-### 0.3.0-beta.3 – 2026-11-24
-
-#### Deutsch
-
-- Vertragsdaten im ioBroker Admin bearbeiten und dauerhaft in der Instanz speichern.
-- Brutto-Arbeitspreis anhand der gewählten Formel berechnen. aWATTar HOURLY unterstützt den prozentualen Aufschlag auf den Betrag des Börsenpreises und optionale Bruttopreisgrenzen für die Energie.
-- Fehlende Vertragsbeträge, einen späteren Vertragsstart und fehlende aktuelle Börsenpreise im Dashboard anzeigen.
-
-#### English
-
-- Edit contract details in ioBroker Admin and persist them in the instance configuration.
-- Calculate gross rates with the selected formula. aWATTar HOURLY supports a percentage surcharge on the absolute spot price and optional gross energy price limits.
-- Explain missing contract inputs, future start dates and unavailable market prices in the dashboard.
-
-### 0.3.0-beta.2 – 2026-11-24
-
-#### Deutsch
-
-- Anklickbare Kacheln für Leistung, Verbrauch, Kosten, Börsenpreis und Brutto-Arbeitspreis.
-- Die Preisübersicht zeigt Börsenpreis und den berechneten Brutto-Arbeitspreis je verfügbarem Preisintervall.
-
-#### English
-
-- Clickable tiles for power, consumption, costs, market price and gross contract rate.
-- The price view displays the market price and calculated gross contract rate for each available interval.
-
-### 0.3.0-beta.1 – 2026-11-24
-
-#### Deutsch
-
-- Responsives Dashboard im ioBroker Admin mit Übersicht, Geräten, Räumen, Verbrauchsstatistik, Preisen, Vertrag und Updates.
-- Geräteerkennung über die Aufzählung Strommessung, mit manueller Zuordnung und optionaler Shelly-Erkennung.
-- Neues PNG-Icon sowie deutsche und englische Texte im Dashboard und in der Konfiguration.
-- Auswertungen für sieben Tage, Monat, Quartal und Jahr. Tarifgrenzen und Fixkosten werden separat behandelt.
-- ESLint, ioBroker-Paketprüfung sowie Integrations- und Compact-Mode-Tests in der abgesicherten GitHub-Workflow-Matrix.
-
-#### English
-
-- Responsive ioBroker Admin dashboard covering overview, devices, rooms, statistics, prices, contract and updates.
-- Energy measurement enum discovery across vendors, with manual mappings and optional Shelly discovery.
-- New PNG icon and English and German dashboard and configuration text.
-- Seven-day, monthly, quarterly and annual statistics. Tariff boundaries and fixed charges are handled separately.
-- ESLint, ioBroker package validation, and integration and Compact Mode tests in the pinned GitHub workflow matrix.
-
-### 0.2.1 – 2026-11-24
-- DE: WebSocket-Transport ausdrücklich gewählt, um HTTP-Polling bei erzwungenen WebSockets zu vermeiden. Live-Anzeige im Praxistest bestätigt.
-- EN: Explicit WebSocket transport avoids HTTP polling when WebSockets are forced. Live display confirmed in practical test.
-
-### 0.2.0 – 2026-11-24
-- DE: Experimentelle Socket.IO-Live-Anbindung ersetzt REST-Abfrage. Weboberfläche erreichbar; Verbindung meldet `xhr poll error` bei erzwungenen WebSockets.
-- EN: Experimental Socket.IO live connection replaces REST polling. Dashboard loads; connection reports `xhr poll error` with forced WebSockets.
-
-### 0.1.0 – 2026-11-24
-- DE: Erste Alpha-Version mit Shelly-Erkennung, manuellen Energiequellen, Raumzuordnung, aWATTar-Preisen und Web-Dashboard. Installation und Leistungsberechnung praktisch bestätigt. REST-Endpunkt liefert 404.
-- EN: Initial alpha with Shelly discovery, manual energy sources, room assignment, aWATTar prices and web dashboard. Installation and power calculation confirmed in a practical test. REST endpoint returns 404.
-
+[Older changelog](CHANGELOG_OLD.md) · [Full bilingual release history](doc/RELEASE-HISTORY.md)
 
 ## License
 
-Copyright (c) 2026 hotwin. MIT. See [LICENSE](LICENSE).
+Copyright (c) 2026 hotwin <hotwin@gmx.net>. MIT. See [LICENSE](LICENSE).

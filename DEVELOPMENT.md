@@ -28,21 +28,16 @@ Repository Checker 5.24.3 completed against `f599957`. Its CLI returned `OK` but
 - Release and repository settings: npm package missing (E2000), beta.6 tag missing (E3032), author and copyright email metadata missing (E4048, E4050, E4051), and repository topics missing (E8002).
 - The inline README changelog now includes beta.6 (commit `af06c72`, addressing W6030). The separate changelog still triggers W6017 and W6032; consolidate the layout before the final repository check.
 
-## First npm beta from GitHub Actions
+## npm Trusted Publishing
 
-The Test and Release workflow includes a manual beta publish option. GitHub requires the workflow to be on the default branch before the manual option is available. The workflow is available on the default branch. The publish job runs only when explicitly requested on `develop/0.3.0-beta.1` and after both validation jobs succeed. A push, tag, or GitHub Release does not trigger npm publishing through this job.
+Configure npm Trusted Publishing for `iobroker.hotwin-energy-manager`, owner `hotwin`, repository `ioBroker.hotwin-energy-manager`, workflow `test-and-release.yml`, environment `npm-beta`. No npm token is required. The official ioBroker deploy action uses the npm `next` dist-tag for prereleases and the default tag for stable versions. Enable immutable GitHub releases before publication. Configure the environment to permit approved version tags and restrict deployment to maintainers where supported.
 
-1. Create the GitHub Actions environment `npm-beta`. Allow deployments from the development branch and store a short-lived granular npm token as the environment secret `NPM_TOKEN`. The token must permit creating the unscoped package and have Bypass 2FA enabled. Keep the token in GitHub Secrets.
-2. Under **Actions → Test and Release → Run workflow**, select the development branch. First run with the publish checkbox cleared to exercise validation only. Verify the version and select the publish checkbox only when ready to release.
-3. Confirm the published version with `npm view iobroker.hotwin-energy-manager@beta version`. Revoke the bootstrap token after use. Subsequent releases can use npm Trusted Publishing after configuring an OIDC workflow and its npm package settings.
+## Standard release procedure
 
+Use the standard ioBroker testing actions and the existing @alcalzone/release-script plugins. The release script must run on main; verify changelog entries, version and tag before publishing. The standard tag-triggered workflow performs check/lint, unit, integration and compact-mode tests across Node.js 22/24/26 and Linux/Windows/macOS. The repository checker is an additional release gate; its tagged candidate must belong to main. A manual workflow dispatch runs validation only, not publication. Never create a release tag merely to test npm authentication. The official deploy action creates the npm publication and GitHub release. Do not edit a GitHub release after npm publication. The npm tarball is the canonical package; separate custom archive publishing is no longer part of this workflow.
 
-## Prepare a beta with the ioBroker release script
+## Repository Checker
 
-The `release` npm script uses the ioBroker Creator plugin configuration (ioBroker, license, manual review). Run it from an up-to-date development branch. The manual npm workflow remains the publication gate. Version tags trigger CI validation without publishing.
+Use the official checker on the exact candidate SHA and document all findings. The checker job uses the official checkout and existing wrapper; no new findings are suppressed. External prerequisites (npm ownership, historical tags, incorrect latest dist-tag and repository admission) must be resolved before publishing. The existing full-SHA-only policy is incompatible with the official composite actions, as stated by the ioBroker maintainer in issue #39. The repository owner disabled the mandatory full-SHA policy on 2026-11-25. The official workflow passed all nine platform combinations in run 45703898371. Retain read-only default workflow permissions and scope write permissions to deploy.
 
-1. Add a `## **WORK IN PROGRESS**` section at the top of `CHANGELOG.md` with both German and English entries. Add the localized release summary under `common.news.NEXT` in `io-package.json` so the script can reuse the supplied text without calling a translation service. Commit the release notes.
-2. Run `npm run release prerelease beta -- --dry`. Review the next version and proposed tag. The script updates the npm manifest and lockfile, adapter metadata, and bilingual changelog together during a real release.
-3. When approved, run `npm run release prerelease beta` and review the resulting changes at the manual review prompt. Verify the tagged commit's CI results before requesting publication through the manual workflow above.
-
-The Developer Portal reads the default branch. Its detection can be verified after this configuration is approved for the default branch. Release preparation is scoped to development branches. The portal must support targeting a development branch for execution with this configuration.
+The release workflow is intentionally tested before creating any version tag. Keep the development branch and the 0.4 roadmap separate until the approved 0.3 candidate is integrated and tested.

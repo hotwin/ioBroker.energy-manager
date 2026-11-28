@@ -89,3 +89,68 @@ test('keeps live power and aliases distinct for identically named channels in on
         assert.equal(dryer.powerW, 1250);
     }
 });
+
+test('reports the main meter reading separately from power and diagnoses a missing or invalid reading', async () => {
+    const objects = { power: { type: 'state', common: { unit: 'kW' } },
+        energy: { type: 'state', common: { unit: 'Wh' } } };
+    const states = { power: { val: 2.89, ts: 30 }, energy: { val: 15000, ts: 25 } };
+    const adapter = {
+        config: { housePowerId: 'power' },
+        getForeignObjectAsync: async id => objects[id],
+        getForeignStateAsync: async id => states[id],
+    };
+    assert.deepEqual(await readDevices.readHouseMeter(adapter), {
+        powerW: 2890, powerTs: 30, energyStatus: 'unconfigured',
+    });
+    adapter.config.houseEnergyId = 'wrongId';
+    assert.equal((await readDevices.readHouseMeter(adapter)).energyStatus, 'missing');
+    adapter.config.houseEnergyId = 'energy';
+    assert.equal((await readDevices.readHouseMeter(adapter)).energyKWh, 15);
+    states.energy.q = 1;
+    assert.equal((await readDevices.readHouseMeter(adapter)).energyStatus, 'unavailable');
+    objects.energy.common.unit = 'W';
+    assert.equal((await readDevices.readHouseMeter(adapter)).energyStatus, 'unit');
+});
+
+test('only compares fresh, distinct main and submeter power readings', async () => {
+    const now = 100000;
+    const meter = { powerW: 2890, powerTs: now - 5000 };
+    const device = { powerId: 'device', powerW: 2570, powerTs: now - 10000 };
+    const adapter = {
+        config: { housePowerId: 'main' },
+        getForeignObjectAsync: async id => ({ type: 'state', common: id.startsWith('alias.')
+            ? { alias: { id: { read: id === 'alias.main' ? 'main' : 'device' } } } : {} }),
+    };
+    const difference = (...devices) => readDevices.unassignedPower(adapter, meter, devices, now);
+    assert.deepEqual(await difference(device, { ...device, exclude: true }), {
+        unassignedW: 320, unassignedUntil: now + 50000,
+    });
+    for (const changed of [
+        { powerTs: now - 60000 }, { powerTs: now - 35001 }, { powerTs: now + 1 },
+        { powerW: null }, { powerW: 3000 }, { powerW: -1 }, { powerId: 'alias.main' },
+    ]) {
+        assert.equal(await difference({ ...device, ...changed }), null);
+    }
+    assert.equal(await difference(device, { ...device, powerId: 'alias.device' }), null);
+    assert.equal(await difference({ ...device, exclude: true }), null);
+});
+
+test('alias chains cannot count a main meter or another selected meter twice', async () => {
+    const state = (alias) => ({ type: 'state', common: { type: 'number', unit: 'W', ...(alias && { alias: { id: alias } }) } });
+    const objects = {
+        'meter.0.main.power': state(),
+        'meter.0.device.power': state(),
+        'alias.0.main.power': state({ read: 'meter.0.main.power' }),
+        'alias.0.device.power': state({ read: 'alias.0.second.power' }),
+        'alias.0.second.power': state('meter.0.device.power'),
+        'alias.0.loop.power': state('alias.0.loop.power'),
+    };
+    const ids = ['alias.0.main.power', 'alias.0.device.power', 'meter.0.device.power', 'alias.0.loop.power'];
+    const devices = await readDevices({
+        config: { autoShelly: false, housePowerId: 'meter.0.main.power', sources: ids.map(powerId => ({ powerId })) },
+        getForeignObjectsAsync: async () => ({}),
+        getForeignObjectAsync: async id => objects[id],
+        getForeignStateAsync: async () => ({ val: 50 }),
+    });
+    assert.deepEqual(devices.map(device => device.powerId), ['alias.0.device.power']);
+});

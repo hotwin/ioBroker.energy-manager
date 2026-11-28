@@ -27,12 +27,14 @@ test('changed tariff records energy without assigning uncertain cost',()=>{
  assert.equal(b.days[b.day].kWh,1);
  assert.equal(b.days[b.day].pricedKWh,0);
 });
-test('midnight establishes a new daily baseline',()=>{
+test('midnight allocates the short measured interval to both days',()=>{
  const midnight=Date.parse('2026-11-24T23:00:00Z');
  const a=accumulate(null,meter(100),midnight-30000,30);
  const b=accumulate(a,meter(101),midnight+30000,30);
  assert.notEqual(a.day,b.day);
- assert.equal(b.days[b.day].kWh,0);
+ assert.equal(b.days[a.day].kWh,0.5);
+ assert.equal(b.days[b.day].kWh,0.5);
+ assert.equal(b.days[b.day].estimatedKWh,0.5);
 });
 
 test('an equal price in a different slot leaves the interval unpriced', () => {
@@ -41,4 +43,24 @@ test('an equal price in a different slot leaves the interval unpriced', () => {
  assert.equal(b.days[b.day].kWh, 1);
  assert.equal(b.days[b.day].pricedKWh, 0);
  assert.equal(a.days[a.day].kWh, 0);
+});
+
+test('adjacent tariff slots price the estimated consumption on each side of the boundary', () => {
+ const a = accumulate(null, meter(10), t - 30000, 20, 'Europe/Berlin', t - 900000, t);
+ const b = accumulate(a, meter(11), t + 30000, 40, 'Europe/Berlin', t, t + 900000);
+ assert.equal(b.days[b.day].pricedKWh, 1);
+ assert.ok(Math.abs(b.days[b.day].costEUR - 0.3) < 1e-12);
+ assert.equal(b.days[b.day].estimatedKWh, 1);
+});
+
+test('persisted ledger resumes once after a short restart without double counting', () => {
+    const a = accumulate(null, meter(100), t, 30);
+    const b = accumulate(a, meter(101), t + 30000, 30);
+    const restored = JSON.parse(JSON.stringify(b));
+    const resumed = accumulate(restored, meter(102), t + 60000, 30);
+    assert.equal(resumed.days[resumed.day].kWh, 2);
+    const unchanged = accumulate(resumed, meter(102), t + 90000, 30);
+    assert.equal(unchanged.days[unchanged.day].kWh, 2);
+    const afterLongGap = accumulate(unchanged, meter(105), t + 360000, 30);
+    assert.equal(afterLongGap.days[afterLongGap.day].kWh, 2);
 });
