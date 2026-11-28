@@ -1,5 +1,8 @@
 'use strict';
 
+const { historyKey, syncDailyHistory, storeLiveHistory } = require('./lib/daily-history');
+const { publishPeriods, publishMonthlyArchive } = require('./lib/period-totals');
+const MeasurementCache = require('./lib/measurement-cache');
 const utils = require('@iobroker/adapter-core');
 const accumulate = require('./lib/consumption');
 const readDevices = require('./lib/sources');
@@ -11,6 +14,12 @@ const { instanceObjects } = require('./io-package.json');
 
 const priceRetryMs = 60_000;
 const priceRefreshMs = 900_000;
+
+const historyStates = {
+    power: ['Current power', 'value.power', 'W'],
+    todayEnergy: ['Energy today', 'value', 'kWh'],
+    todayCost: ['Recorded variable cost today', 'value', 'EUR'],
+};
 
 const states = {
     snapshot: ['Energy snapshot', 'string', 'json'],
@@ -34,6 +43,9 @@ const states = {
 class EnergyManager extends utils.Adapter {
     constructor(options = {}) {
         super({ ...options, name: 'hotwin-energy-manager' });
+        this.measurements = new MeasurementCache(this);
+        this.on('objectChange', id => this.measurements.invalidate(id));
+        this.on('stateChange', (id, state) => this.measurements.update(id, state));
         this.on('ready', () => {
             this.pending = this.start().catch(error => this.log.error(String(error)));
         });
@@ -54,6 +66,17 @@ class EnergyManager extends utils.Adapter {
         } catch {
             this.ledger = null;
         }
+        for (const id of ['devices', 'rooms']) {
+            await this.setObjectNotExistsAsync(id, { type: 'folder', common: { name: id }, native: {} });
+        }
+        const oldChannels = await this.getObjectViewAsync('system', 'channel', {
+            startkey: this.namespace + '.', endkey: this.namespace + '.\u9999',
+        });
+        this.historyObjects = new Map(oldChannels.rows
+            .map(row => row.id.slice(this.namespace.length + 1))
+            .filter(id => /^(devices|rooms)\.[a-f0-9]{24}$/.test(id))
+            .map(id => [id, null]));
+        await this.subscribeForeignObjectsAsync('*');
         await this.clearStatus();
         if (!this.stopping) await this.poll();
     }
@@ -82,6 +105,8 @@ class EnergyManager extends utils.Adapter {
         if (this.timer) this.clearTimeout(this.timer);
         this.priceRequest?.abort();
         await this.pending;
+        await this.dailyHistoryTask;
+        await this.liveHistoryTask;
         await this.clearStatus().catch(() => {});
     }
 
@@ -128,6 +153,76 @@ class EnergyManager extends utils.Adapter {
         }
     }
 
+    async publishHistory(devices, rooms, ledger) {
+        const day = ledger.deviceDays[ledger.day] || {};
+        const roomTotals = new Map();
+        for (const entry of Object.values(day)) {
+            const totals = roomTotals.get(entry.room) || { energy: 0, cost: null };
+            totals.energy += entry.kWh;
+            if (entry.pricedKWh > 0) totals.cost = (totals.cost ?? 0) + entry.costEUR;
+            roomTotals.set(entry.room, totals);
+        }
+
+        const entries = new Map();
+        for (const device of devices) {
+            const key = device.aliasKey || device.id;
+            const entry = day[key];
+            entries.set('devices.' + historyKey(key), {
+                name: device.name,
+                values: [device.powerW, entry?.kWh, entry?.pricedKWh > 0 ? entry.costEUR : null],
+            });
+        }
+        for (const [key, room] of rooms) {
+            const totals = roomTotals.get(key);
+            entries.set('rooms.' + historyKey(key), {
+                name: room.name || 'Unassigned',
+                values: [room.powerW, totals?.energy, totals?.cost],
+            });
+        }
+
+        const known = this.historyObjects ??= new Map();
+        const values = {};
+        for (const [id, entry] of entries) {
+            if (known.get(id) !== entry.name) {
+                await this.setObjectNotExistsAsync(id, { type: 'channel', common: { name: entry.name }, native: {} });
+                await this.extendObjectAsync(id, { common: { name: entry.name } });
+                for (const [state, [name, role, unit]] of Object.entries(historyStates)) {
+                    await this.setObjectNotExistsAsync(id + '.' + state, {
+                        type: 'state', common: { name, type: 'number', role, unit, read: true, write: false }, native: {},
+                    });
+                }
+                known.set(id, entry.name);
+            }
+            await Promise.all(Object.keys(historyStates).map((state, index) => {
+                const stateId = id + '.' + state;
+                values[stateId] = entry.values[index] ?? null;
+                return this.setStateChangedAsync(stateId, values[stateId], true);
+            }));
+        }
+        for (const id of known.keys()) {
+            if (entries.has(id)) continue;
+            await Promise.all(Object.keys(historyStates).map(state => {
+                const stateId = id + '.' + state;
+                values[stateId] = null;
+                return this.setStateChangedAsync(stateId, null, true);
+            }));
+            known.delete(id);
+        }
+        return values;
+    }
+
+    scheduleDailyHistory(ledger, target) {
+        if (this.stopping || this.dailyHistoryTask || this.archivedDay === ledger.day ||
+            Date.now() < (this.nextHistoryAttempt || 0)) return;
+        this.nextHistoryAttempt = Date.now() + 300000;
+        this.dailyHistoryTask = syncDailyHistory(this, ledger, target)
+            .then(synced => {
+                if (synced) this.archivedDay = ledger.day;
+            })
+            .catch(error => this.log.warn('Daily storage: ' + error.message))
+            .finally(() => { this.dailyHistoryTask = null; });
+    }
+
     async collect() {
         const externalPrices = this.config.marketPriceSource === 'state';
         const provider = marketFeed(this.config.marketPriceSource, Date.now());
@@ -147,14 +242,16 @@ class EnergyManager extends utils.Adapter {
             this.setStateAsync('info.awattarAvailable', !externalPrices && !provider.zone && Boolean(currentPrice), true),
             this.setStateAsync('info.marketPriceAvailable', Boolean(currentPrice), true),
         ]);
+        this.measurements.requested.clear();
         const [devices, meter, solar] = await Promise.all([
-            readDevices(this),
-            readDevices.readHouseMeter(this),
-            readDevices.readSolar(this),
+            readDevices(this.measurements),
+            readDevices.readHouseMeter(this.measurements),
+            readDevices.readSolar(this.measurements),
         ]);
         if (this.stopping) return;
         const difference = meter && this.config.compareHousePower === true
-            ? await readDevices.unassignedPower(this, meter, devices, Date.now()) : null;
+            ? await readDevices.unassignedPower(this.measurements, meter, devices, Date.now()) : null;
+        await this.measurements.finish();
         const houseMeter = difference ? { ...meter, ...difference } : meter;
         if (this.stopping) return;
         const rooms = new Map();
@@ -168,7 +265,7 @@ class EnergyManager extends utils.Adapter {
             }
             rooms.set(device.room, room);
         }
-        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', currentPrice?.start_timestamp ?? null);
+        const ledger = accumulate(this.ledger, devices, now, tariffCt, 'Europe/Berlin', currentPrice?.start_timestamp ?? null, currentPrice?.end_timestamp ?? null);
         const priceHistory = new Map(Object.entries(this.ledger?.priceHistory || {}));
         for (const item of prices) {
             const key = String(item.start_timestamp);
@@ -182,6 +279,8 @@ class EnergyManager extends utils.Adapter {
         const show = (value, unit) => Number.isFinite(value) ? value.toFixed(2) + ' ' + unit : '–';
         const costs = costManager(ledger, contract, now);
         const insights = energyInsights(ledger, prices, now);
+        await publishPeriods(this, ledger);
+        const monthlyArchive = await publishMonthlyArchive(this, ledger);
         const display = {
             todayEnergy: accumulate.recordedKWh(ledger, ledger.day),
             todayCost: today.pricedKWh > 0 ? today.costEUR : null,
@@ -199,10 +298,20 @@ class EnergyManager extends utils.Adapter {
             snapshot: JSON.stringify({ ts: now, version, devices, houseMeter, solar, totalPower, marketSource, marketCt, tariffCt, currentPrice,
                 prices: prices.filter(item => item.end_timestamp > now),
                 insights, costs,
-                daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
+                monthlyArchive, daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
         await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
+        const liveValues = await this.publishHistory(devices, rooms, ledger);
+        const target = Object.hasOwn(this.config, 'storageInstance') ? this.config.storageInstance : 'history.0';
+        if (typeof target !== 'string' || !/^(history|influxdb|sql)\.\d+$/.test(target) || this.stopping) return;
+        this.scheduleDailyHistory(ledger, target);
+        if (!this.liveHistoryTask) {
+            this.liveHistoryTask = storeLiveHistory(this, target, now, {
+                totalPower, todayEnergy: display.todayEnergy, todayCost: display.todayCost, ...liveValues,
+            }).catch(error => this.log.warn('Live storage: ' + error.message))
+                .finally(() => { this.liveHistoryTask = null; });
+        }
     }
 }
 

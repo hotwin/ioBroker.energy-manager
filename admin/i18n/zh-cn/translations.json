@@ -1,4 +1,7 @@
 {
+  "settings_storage": "数据存储",
+  "storageInstance": "存储实例",
+  "storageInstanceHelp": "如需 MySQL，请先将 ioBroker SQL 实例配置为使用 MySQL，然后在此选择。",
   "tariffConfigured": "已核对电价组成",
   "markupCt": "其他未单独填写的税前附加费（欧分/千瓦时）",
   "vatPercent": "增值税 (%)",

@@ -7,11 +7,11 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/hotwin/ioBroker.hotwin-energy-manager)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues)
 
-**Responsible: [Böttcher Services](https://hotgame.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
+**Responsible: [Böttcher Services](http://boettcher-services.duckdns.org/)** · [hotwin@gmx.net](mailto:hotwin@gmx.net)
 
 Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker.
 
-**Development status:** 0.6.0 release candidate, not yet published to npm or admitted to the official ioBroker repositories. The currently published beta is 0.3.0-beta.8.
+**Development status:** Integration candidate based on 0.6.1-beta.8. A regular release is not yet confirmed. The repository checker and publication prerequisites must be resolved before release.
 
 [Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](#changelog)
 

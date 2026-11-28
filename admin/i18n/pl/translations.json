@@ -1,4 +1,7 @@
 {
+  "settings_storage": "Przechowywanie danych",
+  "storageInstance": "Instancja przechowywania",
+  "storageInstanceHelp": "Dla MySQL skonfiguruj instancję SQL ioBroker z MySQL i wybierz ją tutaj.",
   "tariffConfigured": "Zweryfikowane składniki taryfy",
   "markupCt": "Pozostałe dopłaty netto bez kwot wpisanych osobno (ct/kWh)",
   "vatPercent": "VAT (%)",
