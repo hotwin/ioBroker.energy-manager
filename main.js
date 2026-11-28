@@ -84,11 +84,11 @@ class EnergyManager extends utils.Adapter {
     async poll() {
         try {
             await this.collect();
-            if (!this.stopping) await this.setStateAsync('info.connection', true, true);
+            if (!this.stopping) await this.setStateChangedAsync('info.connection', true, true);
         } catch (error) {
             if (!this.stopping) {
                 this.log.warn(String(error));
-                await this.setStateAsync('info.connection', false, true).catch(() => {});
+                await this.setStateChangedAsync('info.connection', false, true).catch(() => {});
             }
         } finally {
             if (!this.stopping) {
@@ -239,8 +239,8 @@ class EnergyManager extends utils.Adapter {
             availableUntil: feed?.at(-1)?.end_timestamp ?? null,
         };
         await Promise.all([
-            this.setStateAsync('info.awattarAvailable', !externalPrices && !provider.zone && Boolean(currentPrice), true),
-            this.setStateAsync('info.marketPriceAvailable', Boolean(currentPrice), true),
+            this.setStateChangedAsync('info.awattarAvailable', !externalPrices && !provider.zone && Boolean(currentPrice), true),
+            this.setStateChangedAsync('info.marketPriceAvailable', Boolean(currentPrice), true),
         ]);
         this.measurements.requested.clear();
         const [devices, meter, solar] = await Promise.all([
@@ -301,7 +301,9 @@ class EnergyManager extends utils.Adapter {
                 monthlyArchive, daily: ledger.days, deviceDays: ledger.deviceDays, hourly: ledger.hourly,
                 priceHistory: Object.values(ledger.priceHistory), contract, rooms: [...rooms.values()] }),
         };
-        await Promise.all(Object.entries(display).map(([id, value]) => this.setStateAsync(id, value, true)));
+        // The snapshot timestamp is a heartbeat; other display states need only change writes.
+        await Promise.all(Object.entries(display).map(([id, value]) => id === 'snapshot'
+            ? this.setStateAsync(id, value, true) : this.setStateChangedAsync(id, value, true)));
         const liveValues = await this.publishHistory(devices, rooms, ledger);
         const target = Object.hasOwn(this.config, 'storageInstance') ? this.config.storageInstance : 'history.0';
         if (typeof target !== 'string' || !/^(history|influxdb|sql)\.\d+$/.test(target) || this.stopping) return;

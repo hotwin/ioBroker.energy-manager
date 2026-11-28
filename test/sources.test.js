@@ -134,3 +134,23 @@ test('only compares fresh, distinct main and submeter power readings', async () 
     assert.equal(await difference(device, { ...device, powerId: 'alias.device' }), null);
     assert.equal(await difference({ ...device, exclude: true }), null);
 });
+
+test('alias chains cannot count a main meter or another selected meter twice', async () => {
+    const state = (alias) => ({ type: 'state', common: { type: 'number', unit: 'W', ...(alias && { alias: { id: alias } }) } });
+    const objects = {
+        'meter.0.main.power': state(),
+        'meter.0.device.power': state(),
+        'alias.0.main.power': state({ read: 'meter.0.main.power' }),
+        'alias.0.device.power': state({ read: 'alias.0.second.power' }),
+        'alias.0.second.power': state('meter.0.device.power'),
+        'alias.0.loop.power': state('alias.0.loop.power'),
+    };
+    const ids = ['alias.0.main.power', 'alias.0.device.power', 'meter.0.device.power', 'alias.0.loop.power'];
+    const devices = await readDevices({
+        config: { autoShelly: false, housePowerId: 'meter.0.main.power', sources: ids.map(powerId => ({ powerId })) },
+        getForeignObjectsAsync: async () => ({}),
+        getForeignObjectAsync: async id => objects[id],
+        getForeignStateAsync: async () => ({ val: 50 }),
+    });
+    assert.deepEqual(devices.map(device => device.powerId), ['alias.0.device.power']);
+});
