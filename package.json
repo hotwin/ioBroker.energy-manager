@@ -43,7 +43,7 @@
     "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
     "@eslint/js": "^9.39.5",
     "@iobroker/testing": "^6.3.3",
-    "eslint": "^9.39.5",
+    "eslint": "^10.15.0",
     "globals": "^16.5.0"
   },
   "files": [
