@@ -44,7 +44,7 @@
     "@eslint/js": "^9.39.5",
     "@iobroker/testing": "^6.3.3",
     "eslint": "^9.39.5",
-    "globals": "^16.5.0"
+    "globals": "^17.14.0"
   },
   "files": [
     "main.js",
