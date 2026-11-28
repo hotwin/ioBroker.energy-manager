@@ -54,3 +54,31 @@ test('postpublish does not defer historical errors and requires npm latest to ma
     assert.equal(reviewReport(report, { ...post, registry }).unresolved.length, 1);
     assert.deepEqual(reviewReport({ ...report, warnings: [unlisted] }, { ...post, phase: 'strict' }).unresolved, [unlisted]);
 });
+
+const versionMismatch = "[W2002] Version of package.json (0.6.1) doesn't match latest version on NPM (0.3.0-beta.8)";
+
+test('W2002 is deferred only for the exact unpublished migration before publication', () => {
+    const observed = { ...report, warnings: [versionMismatch] };
+    for (const phase of ['preview', 'prepublish']) {
+        const result = reviewReport(observed, { ...candidate, phase });
+        assert.deepEqual(result.unresolved, []);
+        assert.deepEqual(result.deferred, [versionMismatch]);
+    }
+    for (const context of [
+        { phase: 'strict' },
+        { phase: 'postpublish', registry: { latest: version, candidateMissing: false } },
+        { registry: { latest: '0.3.0-beta.7', candidateMissing: true } },
+        { registry: { latest: '0.3.0-beta.8', candidateMissing: false } },
+        { version: '0.6.2' },
+        { packageName: 'iobroker.other', adapterName: 'other' },
+        { registry: undefined },
+    ]) {
+        assert.ok(reviewReport(observed, { ...candidate, ...context }).unresolved.includes(versionMismatch));
+    }
+    const unrelated = versionMismatch.replace('0.3.0-beta.8', '0.3.0-beta.7');
+    assert.deepEqual(reviewReport({ ...report, warnings: [unrelated] }, candidate).unresolved, [unrelated]);
+    const wrongSha = reviewReport({ ...observed, lastCommitSha: '1'.repeat(40) }, candidate);
+    assert.equal(wrongSha.verified, false);
+    assert.deepEqual(wrongSha.deferred, []);
+    assert.deepEqual(wrongSha.unresolved, [versionMismatch]);
+});
