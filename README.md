@@ -23,6 +23,10 @@ Local electricity monitoring, tariff and cost analysis, and solar and battery re
 - Expandable room/device cards, energy flow from monitored total to rooms and devices, hourly and daily consumption charts, and up to 400 daily records.
 - Separate collection and market feed status, meter diagnostics and optional unassigned power when readings are valid and non-overlapping.
 
+### Historical data and storage
+- Numeric room and device history states; optional configured History, InfluxDB or SQL instance for daily totals and live measurements.
+- Period comparisons for current and previous weeks, months and years, monthly archives and device comparisons using measured days.
+
 ### Costs and consumption analysis
 - Recorded variable costs and priced-energy coverage, including per-device costs; unpriced energy stays unvalued.
 - Monthly and annual run-rate forecasts, fixed charges, advance-payment comparisons, budget warnings, seven-day history and device rankings.
@@ -35,7 +39,7 @@ Local electricity monitoring, tariff and cost analysis, and solar and battery re
 
 ### Solar, battery and visualization
 - Optional live PV generation, grid feed-in and battery state of charge from mapped states; monitoring only.
-- Responsive German/English Admin and optional Web dashboard, automatic light/dark theme and four native configuration tabs.
+- Responsive German/English Admin and optional Web dashboard, automatic light/dark theme and native configuration tabs, including optional storage settings.
 - Read-only states for scripts and Blockly, plus importable VIS Classic and VIS 2 widgets.
 - Optional legacy-instance migration with preview and backup.
 
@@ -114,6 +118,38 @@ Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBrok
 Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc/vis/energy-manager-vis-2.json) widget templates. In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
 
 ## Changelog
+
+### 0.6.1-beta.8 (development)
+
+- Preserves measured consumption across day and tariff boundaries.
+
+### 0.6.1-beta.7 (development)
+
+- Subscribes to measurements and reloads object lists when they change.
+
+### 0.6.1-beta.6 (development)
+
+- Fixes live writes to History.
+
+### 0.6.1-beta.5 (development)
+
+- Monthly archive and device comparison with usage per measured day.
+
+### 0.6.1-beta.4 (development)
+
+- Energy, variable costs and measured days for current and previous weeks, months and years.
+
+### 0.6.1-beta.3 (development)
+
+- Selectable storage instance for daily totals and live measurements.
+
+### 0.6.1-beta.2 (development)
+
+- Archives existing and future completed daily totals in history.0.
+
+### 0.6.1-beta.1 (development)
+
+- Numeric history states for devices and rooms.
 
 ### 0.6.0 (unreleased)
 

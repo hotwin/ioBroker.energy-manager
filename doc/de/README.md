@@ -21,6 +21,10 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 - Aufklappbare Gerätekarten, Energieflussdiagramm, stündliche und tägliche Verbrauchssäulen sowie bis zu 400 Tageswerte.
 - Getrennte Statusanzeigen für lokale Datenerfassung und Börsenpreisquelle; Hauptzählerdiagnose und optionale nicht zugeordnete Leistung.
 
+### Historie und Datenspeicherung
+- Numerische Verlaufsdatenpunkte für Räume und Geräte; wählbare History-, InfluxDB- oder SQL-Instanz für Tageswerte und laufende Messwerte.
+- Vergleiche laufender und vorheriger Wochen, Monate und Jahre, Monatsarchiv sowie Gerätevergleich anhand erfasster Messtage.
+
 ### Kosten und Verbrauchsanalyse
 - Erfasste variable Kosten und Preisabdeckung auch je Gerät, Monats- und Jahreshochrechnung, Abschlagsvergleich, Fixkosten, Budgetwarnung und Sieben-Tage-Übersicht.
 - Vergleich mit alternativem Arbeitspreis, Geräte-Rangliste, Tagesdaten als CSV und einfacher Amortisationsrechner mit selbst eingegebener jährlicher Nettoersparnis.
@@ -32,7 +36,7 @@ Der Energy Manager erfasst Stromverbrauch, Leistung und variable Stromkosten lok
 
 ### PV, Speicher und Visualisierung
 - Optionale Live-Anzeige für PV-Erzeugung, Netzeinspeisung und Batterieladestand; keine Anlagensteuerung.
-- Responsives Dashboard in Deutsch und Englisch, automatischer Hell-/Dunkelmodus und vier einheitliche Konfigurationsreiter.
+- Responsives Dashboard in Deutsch und Englisch, automatischer Hell-/Dunkelmodus und einheitliche Konfigurationsreiter einschließlich Speicher-Einstellungen.
 - Lesbare Datenpunkte für Skripte und Blockly, importierbare VIS-Classic- und VIS-2-Widgets sowie optionale Übernahme einer alten Instanz mit Probelauf und Sicherung.
 
 ## Screenshots

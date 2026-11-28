@@ -1,5 +1,45 @@
 # Changelog / Änderungsprotokoll
 
+## 0.6.1-beta.8 (development / Entwicklung)
+
+- DE: Erhält gemessenen Verbrauch bei Tages- und Tarifwechseln.
+- EN: Preserves measured consumption across day and tariff boundaries.
+
+## 0.6.1-beta.7 (development / Entwicklung)
+
+- DE: Abonniert Messwerte und lädt Objektlisten bei Änderungen neu.
+- EN: Subscribes to measurements and reloads object lists when they change.
+
+## 0.6.1-beta.6 (development / Entwicklung)
+
+- DE: Korrigiert laufende Schreibvorgänge für History.
+- EN: Fixes live writes to History.
+
+## 0.6.1-beta.5 (development / Entwicklung)
+
+- DE: Monatsarchiv und Gerätevergleich mit Verbrauch pro Messtag.
+- EN: Monthly archive and device comparison with usage per measured day.
+
+## 0.6.1-beta.4 (development / Entwicklung)
+
+- DE: Verbrauch, variable Kosten und Messtage für laufende und vorige Wochen, Monate und Jahre.
+- EN: Energy, variable costs and measured days for current and previous weeks, months and years.
+
+## 0.6.1-beta.3 (development / Entwicklung)
+
+- DE: Wählbare Speicherinstanz für Tageswerte und laufende Messwerte.
+- EN: Selectable storage instance for daily totals and live measurements.
+
+## 0.6.1-beta.2 (development / Entwicklung)
+
+- DE: Überträgt vorhandene und künftige abgeschlossene Tageswerte an history.0.
+- EN: Archives existing and future completed daily totals in history.0.
+
+## 0.6.1-beta.1 (development / Entwicklung)
+
+- DE: Numerische Verlaufsdatenpunkte für Geräte und Räume.
+- EN: Numeric history states for devices and rooms.
+
 ## 0.3.0-beta.14 – 2026-11-25
 
 - DE: Helles und dunkles Dashboard mit automatischer Theme-Erkennung, schlankem Header ohne Auswahlfelder, angepassten Diagrammen und vier Registern in der Instanzkonfiguration.

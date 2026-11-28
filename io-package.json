@@ -1,225 +1,193 @@
 {
-  "common": {
-    "name": "hotwin-energy-manager",
-    "version": "0.6.1-beta.8",
-    "titleLang": {
-      "de": "Energy Manager",
-      "en": "Energy Manager",
-      "es": "Gestor de energía",
-      "fr": "Gestionnaire d’énergie",
-      "it": "Gestore dell’energia",
-      "nl": "Energiebeheer",
-      "pl": "Menedżer energii",
-      "pt": "Gestor de energia",
-      "ru": "Менеджер энергии",
-      "uk": "Менеджер енергії",
-      "zh-cn": "能源管理器"
+    "common": {
+        "name": "hotwin-energy-manager",
+        "version": "0.6.1-beta.8",
+        "titleLang": {
+            "de": "Energy Manager",
+            "en": "Energy Manager",
+            "es": "Gestor de energía",
+            "fr": "Gestionnaire d’énergie",
+            "it": "Gestore dell’energia",
+            "nl": "Energiebeheer",
+            "pl": "Menedżer energii",
+            "pt": "Gestor de energia",
+            "ru": "Менеджер энергии",
+            "uk": "Менеджер енергії",
+            "zh-cn": "能源管理器"
+        },
+        "desc": {
+            "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
+            "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
+            "es": "Medición eléctrica local, análisis de tarifas y costes, y lecturas solares y de batería para ioBroker",
+            "fr": "Suivi local de l’électricité, analyse des tarifs et des coûts, et mesures solaires et de batterie pour ioBroker",
+            "it": "Misurazione elettrica locale, analisi di tariffe e costi e dati di fotovoltaico e batterie per ioBroker",
+            "nl": "Lokale stroommetingen, analyse van tarieven en kosten en gegevens van zonnepanelen en accu’s voor ioBroker",
+            "pl": "Lokalne pomiary energii, analiza taryf i kosztów oraz odczyty fotowoltaiki i akumulatorów dla ioBroker",
+            "pt": "Medição local de eletricidade, análise de tarifas e custos e leituras solares e de baterias para ioBroker",
+            "ru": "Локальный учёт электроэнергии, анализ тарифов и затрат, данные солнечных панелей и батарей для ioBroker",
+            "uk": "Локальний облік електроенергії, аналіз тарифів і витрат, дані сонячних панелей та акумуляторів для ioBroker",
+            "zh-cn": "适用于 ioBroker 的本地用电监测、费率与成本分析，以及光伏和电池读数"
+        },
+        "authors": [
+            "hotwin <hotwin@gmx.net>"
+        ],
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "type": "energy",
+        "enabled": false,
+        "connectionType": "local",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json",
+            "tab": "html"
+        },
+        "wwwDontUpload": false,
+        "localLinks": {
+            "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
+        },
+        "news": {
+            "0.6.1-beta.8": {
+                "de": "Erhält gemessenen Verbrauch bei Tages- und Tarifwechseln.",
+                "en": "Preserves measured consumption across day and tariff boundaries.",
+                "ru": "Сохраняет измеренное потребление при смене дня и тарифа.",
+                "pt": "Preserva o consumo medido nas mudanças de dia e de tarifa.",
+                "nl": "Behoudt gemeten verbruik bij dag- en tariefwisselingen.",
+                "fr": "Conserve la consommation mesurée lors des changements de jour et de tarif.",
+                "it": "Conserva il consumo misurato al cambio di giorno e di tariffa.",
+                "es": "Conserva el consumo medido al cambiar de día y de tarifa.",
+                "pl": "Zachowuje zmierzone zużycie przy zmianie dnia i taryfy.",
+                "uk": "Зберігає виміряне споживання під час зміни дня та тарифу.",
+                "zh-cn": "在日期和电价时段切换时保留已测量的用电量。"
+            },
+            "0.3.0-beta.8": {
+                "en": "Configure the standard ioBroker release script.",
+                "de": "Das standardmäßige ioBroker-Release-Script eingerichtet.",
+                "es": "Configuración del script de publicación estándar de ioBroker.",
+                "fr": "Configuration du script de publication standard d’ioBroker.",
+                "it": "Configurazione dello script di pubblicazione standard di ioBroker.",
+                "nl": "Het standaard publicatiescript van ioBroker is geconfigureerd.",
+                "pl": "Skonfigurowano standardowy skrypt publikacji ioBroker.",
+                "pt": "Configuração do script de publicação padrão do ioBroker.",
+                "ru": "Настроен стандартный скрипт публикации ioBroker.",
+                "uk": "Налаштовано стандартний скрипт публікації ioBroker.",
+                "zh-cn": "配置了标准的 ioBroker 发布脚本。"
+            }
+        },
+        "adminTab": {
+            "name": {
+                "de": "Energy Manager",
+                "en": "Energy Manager"
+            },
+            "singleton": false,
+            "icon": "energy-manager.png"
+        },
+        "icon": "energy-manager.png",
+        "compact": true,
+        "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/main/admin/energy-manager.png",
+        "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager#readme",
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ],
+        "docs": {
+            "en": [
+                "doc/en/README.md"
+            ],
+            "de": [
+                "doc/de/README.md"
+            ]
+        },
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "tier": 3,
+        "keywords": [
+            "energy",
+            "power",
+            "consumption",
+            "monitoring"
+        ],
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ]
     },
-    "desc": {
-      "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
-      "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
-      "es": "Medición eléctrica local, análisis de tarifas y costes, y lecturas solares y de batería para ioBroker",
-      "fr": "Suivi local de l’électricité, analyse des tarifs et des coûts, et mesures solaires et de batterie pour ioBroker",
-      "it": "Misurazione elettrica locale, analisi di tariffe e costi e dati di fotovoltaico e batterie per ioBroker",
-      "nl": "Lokale stroommetingen, analyse van tarieven en kosten en gegevens van zonnepanelen en accu’s voor ioBroker",
-      "pl": "Lokalne pomiary energii, analiza taryf i kosztów oraz odczyty fotowoltaiki i akumulatorów dla ioBroker",
-      "pt": "Medição local de eletricidade, análise de tarifas e custos e leituras solares e de baterias para ioBroker",
-      "ru": "Локальный учёт электроэнергии, анализ тарифов и затрат, данные солнечных панелей и батарей для ioBroker",
-      "uk": "Локальний облік електроенергії, аналіз тарифів і витрат, дані сонячних панелей та акумуляторів для ioBroker",
-      "zh-cn": "适用于 ioBroker 的本地用电监测、费率与成本分析，以及光伏和电池读数"
+    "native": {
+        "storageInstance": "history.0",
+        "markupCt": null,
+        "vatPercent": null,
+        "tariffConfigured": false,
+        "sources": [],
+        "housePowerId": "",
+        "houseEnergyId": "",
+        "compareHousePower": false,
+        "autoShelly": true,
+        "baseMonthly": null,
+        "meterAnnual": null,
+        "electricityTaxCt": null,
+        "networkCt": null,
+        "concessionCt": null,
+        "leviesCt": null,
+        "advanceMonthly": null,
+        "contractStart": "",
+        "provider": "",
+        "tariffName": "",
+        "tariffFormula": "additive",
+        "marketMarkupPercent": null,
+        "energyMinGrossCt": null,
+        "energyMaxGrossCt": null,
+        "marketPriceSource": "awattar",
+        "marketPriceStateId": "",
+        "solarPowerId": "",
+        "feedInPowerId": "",
+        "batterySocId": ""
     },
-    "authors": [
-      "hotwin <hotwin@gmx.net>"
-    ],
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "type": "energy",
-    "enabled": false,
-    "connectionType": "local",
-    "dataSource": "poll",
-    "adminUI": {
-      "config": "json",
-      "tab": "html"
-    },
-    "wwwDontUpload": false,
-    "localLinks": {
-      "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
-    },
-    "news": {
-      "0.6.1-beta.8": {
-        "de": "Erhält gemessenen Verbrauch bei Tages- und Tarifwechseln.",
-        "en": "Preserves measured consumption across day and tariff boundaries."
-      },
-      "0.6.1-beta.7": {
-        "de": "Abonniert Messwerte und lädt Objektlisten bei Änderungen neu.",
-        "en": "Subscribes to measurements and reloads object lists when they change."
-      },
-      "0.6.1-beta.6": {
-        "de": "Korrigiert laufende Schreibvorgänge für History.",
-        "en": "Fixes live writes to History."
-      },
-      "0.6.1-beta.5": {
-        "de": "Monatsarchiv und Gerätevergleich mit Verbrauch pro Messtag.",
-        "en": "Monthly archive and device comparison with usage per measured day."
-      },
-      "0.6.1-beta.4": {
-        "de": "Verbrauch, variable Kosten und Messtage für laufende und vorige Wochen, Monate und Jahre.",
-        "en": "Energy, variable costs and measured days for current and previous weeks, months and years."
-      },
-      "0.6.1-beta.3": {
-        "de": "Wählbare Speicherinstanz für Tageswerte und laufende Messwerte.",
-        "en": "Selectable storage instance for daily totals and live measurements."
-      },
-      "0.6.1-beta.2": {
-        "de": "Überträgt vorhandene und künftige abgeschlossene Tageswerte an history.0.",
-        "en": "Archives existing and future completed daily totals in history.0."
-      },
-      "0.6.1-beta.1": {
-        "de": "Numerische Verlaufsdatenpunkte für Geräte und Räume.",
-        "en": "Numeric history states for devices and rooms."
-      },
-      "0.6.0": {
-        "de": "Lokale Strommessung, Tarif- und Kostenanalyse sowie PV- und Speicherwerte für ioBroker",
-        "en": "Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker",
-        "es": "Medición eléctrica local, análisis de tarifas y costes, y lecturas solares y de batería para ioBroker",
-        "fr": "Suivi local de l’électricité, analyse des tarifs et des coûts, et mesures solaires et de batterie pour ioBroker",
-        "it": "Misurazione elettrica locale, analisi di tariffe e costi e dati di fotovoltaico e batterie per ioBroker",
-        "nl": "Lokale stroommetingen, analyse van tarieven en kosten en gegevens van zonnepanelen en accu’s voor ioBroker",
-        "pl": "Lokalne pomiary energii, analiza taryf i kosztów oraz odczyty fotowoltaiki i akumulatorów dla ioBroker",
-        "pt": "Medição local de eletricidade, análise de tarifas e custos e leituras solares e de baterias para ioBroker",
-        "ru": "Локальный учёт электроэнергии, анализ тарифов и затрат, данные солнечных панелей и батарей для ioBroker",
-        "uk": "Локальний облік електроенергії, аналіз тарифів і витрат, дані сонячних панелей та акумуляторів для ioBroker",
-        "zh-cn": "适用于 ioBroker 的本地用电监测、费率与成本分析，以及光伏和电池读数"
-      },
-      "0.3.0-beta.8": {
-        "en": "Configure the standard ioBroker release script.",
-        "de": "Das standardmäßige ioBroker-Release-Script eingerichtet.",
-        "es": "Configuración del script de publicación estándar de ioBroker.",
-        "fr": "Configuration du script de publication standard d’ioBroker.",
-        "it": "Configurazione dello script di pubblicazione standard di ioBroker.",
-        "nl": "Het standaard publicatiescript van ioBroker is geconfigureerd.",
-        "pl": "Skonfigurowano standardowy skrypt publikacji ioBroker.",
-        "pt": "Configuração do script de publicação padrão do ioBroker.",
-        "ru": "Настроен стандартный скрипт публикации ioBroker.",
-        "uk": "Налаштовано стандартний скрипт публікації ioBroker.",
-        "zh-cn": "配置了标准的 ioBroker 发布脚本。"
-      }
-    },
-    "adminTab": {
-      "name": {
-        "de": "Energy Manager",
-        "en": "Energy Manager"
-      },
-      "singleton": false,
-      "icon": "energy-manager.png"
-    },
-    "icon": "energy-manager.png",
-    "compact": true,
-    "extIcon": "https://raw.githubusercontent.com/hotwin/ioBroker.hotwin-energy-manager/main/admin/energy-manager.png",
-    "readme": "https://github.com/hotwin/ioBroker.hotwin-energy-manager#readme",
-    "globalDependencies": [
-      {
-        "admin": ">=7.6.20"
-      }
-    ],
-    "docs": {
-      "en": [
-        "doc/en/README.md"
-      ],
-      "de": [
-        "doc/de/README.md"
-      ]
-    },
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "tier": 3,
-    "keywords": [
-      "energy",
-      "power",
-      "consumption",
-      "monitoring"
-    ],
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ]
-  },
-  "native": {
-    "storageInstance": "history.0",
-    "markupCt": null,
-    "vatPercent": null,
-    "tariffConfigured": false,
-    "sources": [],
-    "housePowerId": "",
-    "houseEnergyId": "",
-    "compareHousePower": false,
-    "autoShelly": true,
-    "baseMonthly": null,
-    "meterAnnual": null,
-    "electricityTaxCt": null,
-    "networkCt": null,
-    "concessionCt": null,
-    "leviesCt": null,
-    "advanceMonthly": null,
-    "contractStart": "",
-    "provider": "",
-    "tariffName": "",
-    "tariffFormula": "additive",
-    "marketMarkupPercent": null,
-    "energyMinGrossCt": null,
-    "energyMaxGrossCt": null,
-    "marketPriceSource": "awattar",
-    "marketPriceStateId": "",
-    "solarPowerId": "",
-    "feedInPowerId": "",
-    "batterySocId": ""
-  },
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": {
-          "de": "Adapterinformationen",
-          "en": "Adapter information"
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "de": "Adapterinformationen",
+                    "en": "Adapter information"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": {
+                    "de": "Lokale Messwerterfassung",
+                    "en": "Local source access"
+                },
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.awattarAvailable",
+            "type": "state",
+            "common": {
+                "name": {
+                    "de": "Aktueller aWATTar-Preis verfügbar",
+                    "en": "Current aWATTar price available"
+                },
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
         }
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "name": {
-          "de": "Lokale Messwerterfassung",
-          "en": "Local source access"
-        },
-        "type": "boolean",
-        "role": "indicator.connected",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.awattarAvailable",
-      "type": "state",
-      "common": {
-        "name": {
-          "de": "Aktueller aWATTar-Preis verfügbar",
-          "en": "Current aWATTar price available"
-        },
-        "type": "boolean",
-        "role": "indicator",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    }
-  ]
+    ]
 }
