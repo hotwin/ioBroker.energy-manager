@@ -1,7 +1,7 @@
 # ioBroker Energy Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/hotwin/ioBroker.hotwin-energy-manager)
-[![npm next](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager/next?label=npm%20next)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
+[![npm latest](https://img.shields.io/npm/v/iobroker.hotwin-energy-manager?label=npm%20latest)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hotwin-energy-manager?label=downloads)](https://www.npmjs.com/package/iobroker.hotwin-energy-manager)
 [![Test and Release (main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/actions/workflows/test-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/hotwin/ioBroker.hotwin-energy-manager/blob/main/LICENSE)
@@ -11,7 +11,7 @@
 
 Local electricity monitoring, tariff and cost analysis, and solar and battery readings for ioBroker.
 
-**Development status:** Integration candidate based on 0.6.1-beta.8. A regular release is not yet confirmed. The repository checker and publication prerequisites must be resolved before release.
+**Release status:** See the npm version badge and GitHub releases for publication status. Official ioBroker repository admission is a separate step.
 
 [Deutsch](doc/de/README.md) · [English setup guide](doc/en/README.md) · [Development](DEVELOPMENT.md) · [Changelog](#changelog)
 
@@ -118,6 +118,12 @@ Report bugs and suggestions via [GitHub Issues](https://github.com/hotwin/ioBrok
 Import the [VIS Classic](doc/vis/energy-manager-vis-classic.json) or [VIS 2](doc/vis/energy-manager-vis-2.json) widget templates. In either editor, bind a basic value widget to an object ID such as `hotwin-energy-manager.0.todayEnergy`. The numeric states `totalPower`, `todayEnergy`, `todayCost`, `currentMarketPrice`, `currentGrossPrice` and `houseMeterEnergy` are read-only. Missing readings are empty. Add the desired unit in the widget settings.
 
 ## Changelog
+
+### 0.6.1
+
+- Consolidate the energy monitoring, cost, tariff, solar and battery dashboard features developed for 0.6.0.
+- Add selectable History, InfluxDB and SQL storage, numeric device and room history, period comparisons and monthly archives.
+- Subscribe to measurements, avoid duplicate alias measurements and redundant display writes, and preserve consumption across short day and tariff boundaries.
 
 ### 0.6.1-beta.8 (development)
 

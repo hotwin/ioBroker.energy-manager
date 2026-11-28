@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "hotwin-energy-manager",
-        "version": "0.6.1-beta.8",
+        "version": "0.6.1",
         "titleLang": {
             "de": "Energy Manager",
             "en": "Energy Manager",
@@ -46,18 +46,18 @@
             "_default": "%web_protocol%://%ip%:%web_port%/hotwin-energy-manager/index.html?instance=%instance%"
         },
         "news": {
-            "0.6.1-beta.8": {
-                "de": "Erhält gemessenen Verbrauch bei Tages- und Tarifwechseln.",
-                "en": "Preserves measured consumption across day and tariff boundaries.",
-                "ru": "Сохраняет измеренное потребление при смене дня и тарифа.",
-                "pt": "Preserva o consumo medido nas mudanças de dia e de tarifa.",
-                "nl": "Behoudt gemeten verbruik bij dag- en tariefwisselingen.",
-                "fr": "Conserve la consommation mesurée lors des changements de jour et de tarif.",
-                "it": "Conserva il consumo misurato al cambio di giorno e di tariffa.",
-                "es": "Conserva el consumo medido al cambiar de día y de tarifa.",
-                "pl": "Zachowuje zmierzone zużycie przy zmianie dnia i taryfy.",
-                "uk": "Зберігає виміряне споживання під час зміни дня та тарифу.",
-                "zh-cn": "在日期和电价时段切换时保留已测量的用电量。"
+            "0.6.1": {
+                "de": "Wählbare Verlaufsspeicherung, Zeitraumvergleiche und Korrekturen für Messwertabonnements, doppelte Aliase sowie Tages- und Tarifwechsel.",
+                "en": "Selectable history storage, period comparisons, and fixes for measurement subscriptions, duplicate aliases and day and tariff boundaries.",
+                "ru": "Выбор хранилища истории, сравнение периодов и исправления подписок на измерения, дублирующихся псевдонимов и границ суток и тарифов.",
+                "pt": "Armazenamento de histórico selecionável, comparação de períodos e correções nas subscrições de medições, aliases duplicados e mudanças de dia e tarifa.",
+                "nl": "Selecteerbare historieopslag, periodevergelijkingen en correcties voor meetabonnementen, dubbele aliassen en dag- en tariefwisselingen.",
+                "fr": "Stockage de l’historique configurable, comparaisons de périodes et corrections des abonnements aux mesures, alias en double et changements de jour et de tarif.",
+                "it": "Archivio storico selezionabile, confronti tra periodi e correzioni per sottoscrizioni alle misure, alias duplicati e cambi di giorno e tariffa.",
+                "es": "Almacenamiento histórico configurable, comparaciones de periodos y correcciones de suscripciones a mediciones, alias duplicados y cambios de día y tarifa.",
+                "pl": "Wybór magazynu historii, porównania okresów oraz poprawki subskrypcji pomiarów, zduplikowanych aliasów i zmian dnia i taryfy.",
+                "uk": "Вибір сховища історії, порівняння періодів та виправлення підписок на вимірювання, дубльованих псевдонімів і меж днів та тарифів.",
+                "zh-cn": "可选历史存储、时段比较，并修复测量订阅、重复别名及日期和电价时段切换问题。"
             },
             "0.3.0-beta.8": {
                 "en": "Configure the standard ioBroker release script.",

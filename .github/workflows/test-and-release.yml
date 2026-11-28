@@ -9,12 +9,7 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-**"
   pull_request: {}
-  workflow_dispatch:
-    inputs:
-      admission_issue:
-        description: Documented approved ioBroker admission exception
-        type: string
-        required: false
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -51,6 +46,7 @@ jobs:
           os: ${{ matrix.os }}
 
   repository-check:
+    needs: [check-and-lint, adapter-tests]
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
@@ -71,7 +67,9 @@ jobs:
           node-version: 22
       - name: Confirm release tag belongs to main
         if: startsWith(github.ref, 'refs/tags/v')
-        run: git merge-base --is-ancestor HEAD origin/main
+        run: |
+          git merge-base --is-ancestor HEAD origin/main
+          test "$GITHUB_REF_NAME" = "v$(node -p 'require(\"./package.json\").version')"
       - name: Install official Repository Checker 5.24.3
         run: |
           checker="$RUNNER_TEMP/repochecker"
@@ -83,7 +81,7 @@ jobs:
       - name: Validate the exact candidate with the official checker
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          IOBROKER_ADMISSION_ISSUE: ${{ inputs.admission_issue }}
+          REPOSITORY_CHECK_PHASE: ${{ github.event_name == 'workflow_dispatch' && 'strict' || (startsWith(github.ref, 'refs/tags/v') && 'prepublish' || 'preview') }}
         run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
 
   deploy:
@@ -102,3 +100,40 @@ jobs:
         with:
           node-version: '24.x'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  repository-check-after-publish:
+    needs: deploy
+    if: needs.deploy.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Confirm release tag belongs to main
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          git merge-base --is-ancestor HEAD origin/main
+          test "$GITHUB_REF_NAME" = "v$(node -p 'require(\"./package.json\").version')"
+      - name: Install official Repository Checker 5.24.3
+        run: |
+          checker="$RUNNER_TEMP/repochecker"
+          git init "$checker"
+          git -C "$checker" remote add origin https://github.com/ioBroker/ioBroker.repochecker.git
+          git -C "$checker" fetch --depth=1 origin 755ec6ddde9fd3c9914cd818986ee134a32c4874
+          git -C "$checker" checkout --detach FETCH_HEAD
+          npm --prefix "$checker" ci --omit=dev --ignore-scripts --no-audit --no-fund
+      - name: Validate the exact candidate with the official checker
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPOSITORY_CHECK_PHASE: postpublish
+        run: node scripts/check-repository.js "$RUNNER_TEMP/repochecker"
+

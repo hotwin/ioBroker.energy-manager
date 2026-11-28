@@ -2,14 +2,12 @@
 
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { reviewReport } = require('../scripts/check-repository');
-
+const { reviewReport, legacyErrors } = require('../scripts/check-repository');
 const sha = '0'.repeat(40);
 const packageName = 'iobroker.hotwin-energy-manager';
 const adapterName = 'hotwin-energy-manager';
-const absent = `[E2000] Package ${packageName} not found on npm. Please publish`;
-const unlisted = `[W4001] Cannot find "${adapterName}" in latest repository. Please ignore if PR to add adapter to repositories already exists.`;
-const issue = 'https://github.com/hotwin/ioBroker.hotwin-energy-manager/issues/24';
+const version = '0.6.1';
+const registry = { latest: '0.3.0-beta.8', candidateMissing: true };
 const report = {
     result: 'OK', lastCommitSha: sha, errors: [], warnings: [],
     checks: [
@@ -17,40 +15,42 @@ const report = {
         '"common.name" is valid in io-package.json',
     ],
 };
+const candidate = { sha, packageName, adapterName, version, registry, phase: 'prepublish', tagVerified: true };
+const missingTag = '[E3032] Release 0.6.1 from io-package.json/package.json has not yet been tagged. Tagging releases is required.';
+const news = '[W2004] Version "0.6.1" listed at common.news at io-package.json does not exist at NPM and will be ignored at repository listing. Please remove from news section.';
+const unlisted = '[W4001] Cannot find "hotwin-energy-manager" in latest repository. Please ignore if PR to add adapter to repositories already exists.';
 
-test('requires the exact checker SHA and positive package identity evidence', () => {
-    const candidate = { sha, packageName, adapterName };
+test('requires exact candidate SHA and verified package identity', () => {
     assert.equal(reviewReport(report, candidate).verified, true);
-    for (const mismatch of [
-        { lastCommitSha: '1'.repeat(40) }, { result: 'Errors found' }, { checks: [] },
-        { checks: [report.checks[0].replace(packageName, 'iobroker.energy-manager'), report.checks[1]] },
-    ]) {
-        assert.equal(reviewReport({ ...report, ...mismatch }, candidate).verified, false);
+    for (const mismatch of [{ lastCommitSha: '1'.repeat(40) }, { result: 'Errors found' }, { checks: [] }]) {
+        const result = reviewReport({ ...report, ...mismatch, errors: legacyErrors }, candidate);
+        assert.equal(result.verified, false);
+        assert.equal(result.deferred.length, 0);
     }
 });
 
-test('defers only documented admission findings for the checked adapter', () => {
-    const otherPackage = absent.replace(packageName, 'iobroker.energy-manager');
-    const unpublished = `[E2000] Package ${packageName} was unpublished. Please republish at npm`;
-    const observed = { ...report, errors: [absent, otherPackage, unpublished], warnings: [
-        unlisted, '[W3032] Release 0.3.0-beta.14 has not yet been tagged.',
-    ] };
-    const candidate = { sha, packageName, adapterName, admissionIssue: issue, npmMissing: true };
-    const reviewed = reviewReport(observed, candidate);
-    assert.deepEqual(reviewed.deferred, [absent, unlisted]);
-    assert.equal(reviewed.unresolved.length, 3);
-    assert.deepEqual(reviewReport(observed, { ...candidate, npmMissing: false }).deferred, [unlisted]);
-    assert.deepEqual(reviewReport(observed, { ...candidate, admissionIssue: '' }).deferred, []);
-    assert.deepEqual(reviewReport({ ...observed, checks: [] }, candidate).deferred, []);
+test('only exact historical findings are deferred for the unpublished migration candidate', () => {
+    const unrelated = '[E3053] different job or version';
+    const observed = { ...report, errors: [...legacyErrors, unrelated], warnings: [news, unlisted] };
+    const result = reviewReport(observed, candidate);
+    assert.deepEqual(result.unresolved, [unrelated]);
+    assert.equal(result.deferred.length, 6);
+    assert.ok(reviewReport(observed, { ...candidate, registry: { latest: 'other', candidateMissing: true } }).unresolved.includes(legacyErrors[0]));
+    assert.ok(reviewReport(observed, { ...candidate, version: '0.6.2' }).unresolved.includes(legacyErrors[0]));
 });
 
-test('defers W2004 only for this exact candidate with verified npm absence', () => {
-    const version = '0.3.0-beta.14';
-    const candidateWarning = `[W2004] Version "${version}" listed at common.news at io-package.json does not exist at NPM and will be ignored at repository listing. Please remove from news section.`;
-    const otherWarning = candidateWarning.replace(version, '0.3.0-beta.13');
-    const observed = { ...report, warnings: [candidateWarning, otherWarning] };
-    const candidate = { sha, packageName, adapterName, version, candidateMissing: true };
-    assert.deepEqual(reviewReport(observed, candidate).deferred, [candidateWarning]);
-    assert.deepEqual(reviewReport(observed, { ...candidate, candidateMissing: false }).deferred, []);
-    assert.deepEqual(reviewReport({ ...observed, checks: [] }, candidate).deferred, []);
+test('missing tag is allowed in preview only; tag release must match and be unpublished', () => {
+    const observed = { ...report, errors: [missingTag] };
+    assert.deepEqual(reviewReport(observed, { ...candidate, phase: 'preview' }).unresolved, []);
+    assert.deepEqual(reviewReport(observed, candidate).unresolved, [missingTag]);
+    assert.equal(reviewReport(report, { ...candidate, tagVerified: false }).unresolved.length, 1);
+    assert.equal(reviewReport(report, { ...candidate, registry: { latest: version, candidateMissing: false } }).unresolved.length, 1);
+});
+
+test('postpublish does not defer historical errors and requires npm latest to match', () => {
+    const post = { ...candidate, phase: 'postpublish', registry: { latest: version, candidateMissing: false } };
+    assert.deepEqual(reviewReport({ ...report, errors: legacyErrors, warnings: [news, unlisted] }, post).unresolved, [...legacyErrors, news]);
+    assert.equal(reviewReport(report, post).unresolved.length, 0);
+    assert.equal(reviewReport(report, { ...post, registry }).unresolved.length, 1);
+    assert.deepEqual(reviewReport({ ...report, warnings: [unlisted] }, { ...post, phase: 'strict' }).unresolved, [unlisted]);
 });
